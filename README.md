@@ -30,6 +30,7 @@ To Do -------------------------------------------------------------------------
 		Indicate whether a board has been won.
 
 2. Model (Game Mechanics) (BJClarke & charten)
+	Create Board Class
 	Board methods
 		public int countTriples() - Determine whether a board has three-in-a-row
 			Return number of three-in-a-row's
@@ -42,6 +43,8 @@ To Do -------------------------------------------------------------------------
 			Make sure the cell isn't already marked
 			should probably call isWon()
 		public Cell getCell()
+	Create Cell Class (charten)
+		Cell will just be an enum type with values EMPTY, X, and O.
 		
 3. Algorithm (AI)
 
