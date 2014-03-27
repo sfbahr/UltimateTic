@@ -1,10 +1,12 @@
 Here's that link to free private GitHub repos for students: https://education.github.com/
 
 [Markdown formatting](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+[Live markdown conversion](http://markdown-here.com/livedemo.html)
 
 Proposed Naming Conventions 
 ---------------------------
-
+| Name  | Meaning
+| ----- | -------
 | tac   | Shorthand for tic-tac-toe
 | Grid  | The array of nine tac boards
 | Board | A single tac board
