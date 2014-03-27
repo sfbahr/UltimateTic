@@ -9,21 +9,17 @@ import android.view.Menu;
 public class TacGameScreen
     extends ShapeScreen
 {
+    // ~ Fields ................................................................
+    private Cell[] grid; //the array of nine tac boards
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
+    // ~ Methods ...............................................................
+
+    /**
+     * What is run when the screen is first started.
+     */
+    public void initialize()
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.tacgamescreen);
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.tac_game_screen, menu);
-        return true;
+        //do something
     }
 
 }
