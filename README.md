@@ -1,7 +1,6 @@
 Here's that link to free private GitHub repos for students: https://education.github.com/
 
-[Markdown formatting](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)	
-[Live markdown conversion](http://markdown-here.com/livedemo.html)
+[Markdown formatting](https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet#html) ([Live markdown conversion](http://markdown-here.com/livedemo.html))
 
 Proposed Naming Conventions 
 ---------------------------
