@@ -1,15 +1,15 @@
 Here's that link to free private GitHub repos for students: https://education.github.com/
 
-[https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet](Markdown formatting)
+[Markdown formatting](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 
 Proposed Naming Conventions 
 ---------------------------
 
-tac     - Shorthand for tic-tac-toe
-Grid    - The array of nine tac boards
-Board   - A single tac board
-Mark    - An X or an O that is used to mark possesion of a cell.
-Cell    - One of the nine regions in a single tac board
+| tac   | Shorthand for tic-tac-toe
+| Grid  | The array of nine tac boards
+| Board | A single tac board
+| Mark  | An X or an O that is used to mark possesion of a cell.
+| Cell  | One of the nine regions in a single tac board
 
 e.g. The grid's bottom left board has a mark in its bottom left cell.
 
