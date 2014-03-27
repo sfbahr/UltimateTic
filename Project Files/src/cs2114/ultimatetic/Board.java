@@ -4,7 +4,7 @@ package cs2114.ultimatetic;
 /**
  * Holds information about an individual tac board.
  *
- * @author charten
+ * @author Charles Tenney (charten)
  * @version 26.03.2014
  */
 public class Board
@@ -40,7 +40,8 @@ public class Board
 
     /**
      * Returns a Cell value to indicate the current winner. Returns empty if no
-     * winner exists.
+     * winner exists. (This exists so that the state of the board can be checked
+     * without running all the code in checkForTriples().)
      *
      * @return Cell The side that is winning.
      */
@@ -51,8 +52,9 @@ public class Board
 
 
     /**
-     * Checks if a player has made a triple on this board. If no triples exist,
-     * returns EMPTY.
+     * Checks if a player has made a triple on this board and returns the player
+     * that has. If no triples exist, returns EMPTY. Also sets the whoIsWinning
+     * variable.
      *
      * @return Cell The player that has a triple.
      */
@@ -68,6 +70,7 @@ public class Board
                 && board[i][0].equals(board[i][2])
                 && !board[i][0].equals(Cell.EMPTY))
             {
+                whoIsWinning = board[i][0];
                 return board[i][0];
             }
         }
@@ -79,6 +82,7 @@ public class Board
                 && board[0][i].equals(board[2][i])
                 && !board[0][i].equals(Cell.EMPTY))
             {
+                whoIsWinning = board[0][i];
                 return board[0][i];
             }
         }
@@ -88,6 +92,7 @@ public class Board
             && board[0][0].equals(board[2][2])
             && !board[0][0].equals(Cell.EMPTY))
         {
+            whoIsWinning = board[0][0];
             return board[0][0];
         }
 
@@ -95,20 +100,60 @@ public class Board
             && board[0][2].equals(board[2][0])
             && !board[0][2].equals(Cell.EMPTY))
         {
+            whoIsWinning = board[0][2];
             return board[0][2];
         }
 
         // If none of the above conditions is satisfied, no triples exist.
+        whoIsWinning = Cell.EMPTY;
         return Cell.EMPTY;
     }
 
+
     /**
-     * Place a description of your method here.
+     * Sets the specified cell and checks for triples. Note that indices start
+     * at zero. Rows/columns are numbered from left to right and top to bottom.
+     * Marks cannot be erased with this method.
+     *
      * @param row
+     *            The row index of the cell.
      * @param col
+     *            The column index of the cell.
+     * @param mark
+     *            The mark to be placed in the cell.
      */
-    public void setCell(int row, int col)
+    public void setCell(int row, int col, Cell mark)
     {
-        // TODO Implement this.
+        if (row < 3 && row >= 0 && col < 3 && col >= 0)
+        {
+            if (board[row][col].equals(Cell.EMPTY))
+            {
+                board[row][col] = mark;
+            }
+        }
+
+        checkForTriple();
     }
+
+
+    /**
+     * Gets the specified cell. Note that indices start at zero. Rows/columns
+     * are numbered from left to right and top to bottom.
+     *
+     * @param row
+     *            The row index of the cell.
+     * @param col
+     *            The column index of the cell.
+     * @return Cell The mark in the specified cell. Null if invalid indices.
+     */
+    public Cell getCell(int row, int col)
+    {
+        if (row < 3 && row >= 0 && col < 3 && col >= 0)
+        {
+            return board[row][col];
+        }
+
+        return null;
+    }
+
 }

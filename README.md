@@ -4,13 +4,14 @@ Here's that link to free private GitHub repos for students: https://education.gi
 
 Proposed Naming Conventions 
 ---------------------------
-| Name  | Meaning
-| ----- | -------
-| tac   | Shorthand for tic-tac-toe
-| Grid  | The array of nine tac boards
-| Board | A single tac board
-| Mark  | An X or an O that is used to mark possesion of a cell.
-| Cell  | One of the nine regions in a single tac board
+| Name   | Meaning
+| ------ | -------
+| Board  | A single tac board
+| Cell   | One of the nine regions in a single tac board
+| Grid   | The array of nine tac boards
+| Mark   | An X or an O that is used to mark possesion of a cell.
+| tac    | Shorthand for tic-tac-toe
+| Triple | Shorthand for three-in-a-row
 
 e.g. The grid's bottom left board has a mark in its bottom left cell.
 
@@ -33,18 +34,18 @@ To Do
 2. Model (Game Mechanics) (BJClarke & charten)
   - Create Board Class
   - Board methods
-    * public int countTriples() - Determine whether a board has three-in-a-row
-      + Return number of three-in-a-row's
+    * (DONE) Determine whether a board has three-in-a-row
+      + (option) Return current winner
       + (option) Determine how many triples a board has
-    * public boolean isWon() - Determine whether a board has at least one three-in-a-row
-      + return true if the board has at least one.
-      + might also want to call count triples 
-    * public void setCell(arguments) - Place a mark on one of the cells
-      + Could create a cell class, or a board could be represented by an array of ints.
+	  + Set a variable to indicate current winner
+    * (DONE) Determine if someone has won the board
+      + return the winner 
+    * (DONE) Place a mark on one of the cells
+      + Uses Cell class to indicate who has marked the cell
       + Make sure the cell isn't already marked
-      + should probably call isWon()
+      + should probably call a method to check for victory
     * public Cell getCell()
-  - Create Cell Class (charten)
+  - (DONE) Create Cell Class (charten)
     * Cell will just be an enum type with values EMPTY, X, and O.
 		
 3. Algorithm (AI)
