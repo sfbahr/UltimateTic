@@ -19,7 +19,7 @@ public class TacGameScreen
     extends ShapeScreen
 {
     // ~ Fields ................................................................
-    private Cell[] grid; //the array of nine tac boards
+    private Grid grid; //the array of nine tac boards
 
     // ~ Methods ...............................................................
 
@@ -45,7 +45,7 @@ public class TacGameScreen
      * Return the grid, which is the array of nine tac boards.
      * @return The grid.
      */
-    public Cell[] getGrid()
+    public Grid getGrid()
     {
         return grid;
     }
