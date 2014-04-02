@@ -20,16 +20,18 @@ public class TacGameScreen
     extends ShapeScreen
 {
     // ~ Fields ................................................................
-    private Grid      grid;               // the grid of nine tac boards
-    private final int gridPad        = 20; // The padding on the grid
-    private final int boardPad       = 15;
-    private final int gridLineWidth  = 10;
-    private final int boardLineWidth = 5;
-    private final Color p1Color = Color.cornflowerBlue;
-    private final Color p2Color = Color.indianRed;
-    private float     gridSize;
-    private float     boardSize;
-    private float     cellSize;
+    private Grid        grid;                                 // the grid of
+// nine tac boards
+    private final int   gridPad        = 20;                  // The padding on
+// the grid
+    private final int   boardPad       = 15;
+    private final int   gridLineWidth  = 10;
+    private final int   boardLineWidth = 5;
+    private final Color p1Color        = Color.cornflowerBlue;
+    private final Color p2Color        = Color.indianRed;
+    private float       gridSize;
+    private float       boardSize;
+    private float       cellSize;
 
 
     // ~ Methods ...............................................................
@@ -62,7 +64,7 @@ public class TacGameScreen
                         float top =
                             gridPad + gridSize / 3 * j + boardPad + boardSize
                                 / 3 * b;
-                        RectangleShape board =
+                        RectangleShape cell =
                             new RectangleShape(
                                 left,
                                 top,
@@ -71,14 +73,14 @@ public class TacGameScreen
                         // Temporary code just to show how the colors look
                         if ((a + b) % 3 == 1)
                         {
-                            board.setFillColor(p1Color);
+                            cell.setFillColor(p1Color);
                         }
                         else if ((a + b) % 3 == 2)
                         {
-                            board.setFillColor(p2Color);
+                            cell.setFillColor(p2Color);
                         }
-                        board.setAlpha(255); // Opacity (0-255)
-                        add(board);
+                        cell.setAlpha(255); // Opacity (0-255)
+                        add(cell);
                     }
                 }
             }
