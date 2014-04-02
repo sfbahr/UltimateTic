@@ -21,7 +21,7 @@ To Do
 
 1. Layout (User Interface) (sfbahr)
   - Initialization
-    * (WIP) Draw nine boards in a grid on the screen
+    * (DONE) ~~Draw nine boards in a grid on the screen~~
   - User Interaction
     * Determine what board and what cell in that board the user is touching
     * Figure out how to limit the user to place their mark only on one board.
@@ -34,18 +34,18 @@ To Do
 2. Model (Game Mechanics) (BJClarke & charten)
   - Create Board Class
   - Board methods
-    * (DONE) Determine whether a board has three-in-a-row
+    * (DONE) ~~Determine whether a board has three-in-a-row~~
       + (option) Return current winner
       + (option) Determine how many triples a board has
 	  + Set a variable to indicate current winner
-    * (DONE) Determine if someone has won the board
+    * (DONE) ~~Determine if someone has won the board~~
       + return the winner 
-    * (DONE) Place a mark on one of the cells
+    * (DONE) ~~Place a mark on one of the cells~~
       + Uses Cell class to indicate who has marked the cell
       + Make sure the cell isn't already marked
       + should probably call a method to check for victory
     * public Cell getCell()
-  - (DONE) Create Cell Class (charten)
+  - (DONE) ~~Create Cell Class~~ (charten)
     * Cell will just be an enum type with values EMPTY, X, and O.
 		
 3. Algorithm (AI)
