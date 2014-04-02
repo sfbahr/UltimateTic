@@ -56,7 +56,7 @@ public class TacGameScreen
             add(horizontalLine);
         }
 
-        //Create each board's lines
+        //Create each boards' lines
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)

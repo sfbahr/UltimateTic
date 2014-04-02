@@ -21,7 +21,7 @@ To Do
 
 1. Layout (User Interface) (sfbahr)
   - Initialization
-    * Draw nine boards in a grid on the screen
+    * (WIP) Draw nine boards in a grid on the screen
   - User Interaction
     * Determine what board and what cell in that board the user is touching
     * Figure out how to limit the user to place their mark only on one board.
