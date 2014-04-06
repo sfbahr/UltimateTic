@@ -12,6 +12,7 @@ public class Board
     // Fields
     private Cell[][] board;
     private Cell     whoIsWinning;
+    private Cell     turn;
 
 
     // Constructor
@@ -88,16 +89,14 @@ public class Board
         }
 
         // Check for completed diagonals
-        if (board[0][0].equals(board[1][1])
-            && board[0][0].equals(board[2][2])
+        if (board[0][0].equals(board[1][1]) && board[0][0].equals(board[2][2])
             && !board[0][0].equals(Cell.EMPTY))
         {
             whoIsWinning = board[0][0];
             return board[0][0];
         }
 
-        if (board[0][2].equals(board[1][1])
-            && board[0][2].equals(board[2][0])
+        if (board[0][2].equals(board[1][1]) && board[0][2].equals(board[2][0])
             && !board[0][2].equals(Cell.EMPTY))
         {
             whoIsWinning = board[0][2];
@@ -113,23 +112,31 @@ public class Board
     /**
      * Sets the specified cell and checks for triples. Note that indices start
      * at zero. Rows/columns are numbered from left to right and top to bottom.
-     * Marks cannot be erased with this method.
+     * Marks cannot be erased with this method. Next player's move must be
+     * placed in grid[row][col]
      *
      * @param row
      *            The row index of the cell.
      * @param col
      *            The column index of the cell.
-     * @param mark
-     *            The mark to be placed in the cell.
      */
-    public void setCell(int row, int col, Cell mark)
+    public void setCell(int row, int col)
     {
+
         if (row < 3 && row >= 0 && col < 3 && col >= 0)
         {
             if (board[row][col].equals(Cell.EMPTY))
             {
-                board[row][col] = mark;
+                board[row][col] = turn;
             }
+        }
+        if (turn == Cell.RED1)
+        {
+            turn = Cell.BLUE2;
+        }
+        else
+        {
+            turn = Cell.RED1;
         }
 
         checkForTriple();

@@ -13,6 +13,9 @@ public class Grid
     private Board[][] grid;
     private Cell      whoIsWinning;
 
+    // will be used for Sam to determine whose turn it is
+    private Cell      turn;
+
 
     /**
      * Create a new Grid object.
@@ -20,7 +23,8 @@ public class Grid
     public Grid()
     {
         grid = new Board[3][3];
-        whoIsWinning = Cell.EMPTY;
+        setWhoIsWinning(Cell.EMPTY);
+        turn = Cell.RED1;
     }
 
 
@@ -45,7 +49,7 @@ public class Grid
                     grid[i][2].getWhoIsWinning())
                 && !grid[i][0].getWhoIsWinning().equals(Cell.EMPTY))
             {
-                whoIsWinning = grid[i][0].getWhoIsWinning();
+                setWhoIsWinning(grid[i][0].getWhoIsWinning());
                 return grid[i][0].getWhoIsWinning();
             }
         }
@@ -59,7 +63,7 @@ public class Grid
                     grid[2][i].getWhoIsWinning())
                 && !grid[0][i].getWhoIsWinning().equals(Cell.EMPTY))
             {
-                whoIsWinning = grid[0][i].getWhoIsWinning();
+                setWhoIsWinning(grid[0][i].getWhoIsWinning());
                 return grid[0][i].getWhoIsWinning();
             }
         }
@@ -70,7 +74,7 @@ public class Grid
                 .equals(grid[2][2].getWhoIsWinning())
             && !grid[0][0].getWhoIsWinning().equals(Cell.EMPTY))
         {
-            whoIsWinning = grid[0][0].getWhoIsWinning();
+            setWhoIsWinning(grid[0][0].getWhoIsWinning());
             return grid[0][0].getWhoIsWinning();
         }
 
@@ -79,12 +83,12 @@ public class Grid
                 .equals(grid[2][0].getWhoIsWinning())
             && !grid[0][2].getWhoIsWinning().equals(Cell.EMPTY))
         {
-            whoIsWinning = grid[0][2].getWhoIsWinning();
+            setWhoIsWinning(grid[0][2].getWhoIsWinning());
             return grid[0][2].getWhoIsWinning();
         }
 
         // If none of the above conditions is satisfied, no triples exist.
-        whoIsWinning = Cell.EMPTY;
+        setWhoIsWinning(Cell.EMPTY);
         return Cell.EMPTY;
     }
 
@@ -102,7 +106,36 @@ public class Grid
      */
     public Board getBoard(int row, int col)
     {
-        // TODO error checking
-        return grid[row][col];
+        if (row >= 0 && row <= 2 && col >= 0 && col <= 2)
+        {
+            return grid[row][col];
+        }
+        // possibly throw exception?
+        return null;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Displays who is winning the game currently
+     *
+     * @return the whoIsWinning
+     */
+    public Cell getWhoIsWinning()
+    {
+        return whoIsWinning;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Set a new winner
+     *
+     * @param whoIsWinning
+     *            the whoIsWinning to set
+     */
+    public void setWhoIsWinning(Cell whoIsWinning)
+    {
+        this.whoIsWinning = whoIsWinning;
     }
 }

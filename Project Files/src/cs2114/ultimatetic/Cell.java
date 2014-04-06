@@ -13,11 +13,11 @@ public enum Cell
      */
     EMPTY,
     /**
-     * Cell is marked with an X.
+     * Cell is marked with red for player 1.
      */
-    X,
+    RED1,
     /**
-     * Cell is marked with an O.
+     * Cell is marked with blue for player 2.
      */
-    O;
+    BLUE2;
 }
