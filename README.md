@@ -19,7 +19,7 @@ To Do
 -----
 (Outline is still very unfinished)
 
-1. Layout (User Interface) (sfbahr)
+1. View (User Interface) (sfbahr)
   - Initialization
     * (DONE) ~~Draw nine boards in a grid on the screen~~
   - User Interaction
@@ -30,6 +30,15 @@ To Do
     * Indicate whose turn it is
     * Indicate where a marks have been placed, and by whom (X and O's, or colored squares?)
     * Indicate whether a board has been won.
+  - Methods
+    * setCell
+	  - grid.setCell(0-8,0-8) (change turn and check who has won)
+	* reflectModel
+	  - grid.getwhohaswon
+	  - grid.getturn
+	  - 
+	* reset
+	  - grid.reset
 
 2. Model (Game Mechanics) (BJClarke & charten)
   - Create Board Class

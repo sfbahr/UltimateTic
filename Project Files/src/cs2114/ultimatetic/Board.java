@@ -11,8 +11,8 @@ public class Board
 {
     // Fields
     private Cell[][] board;
-    private Cell     whoIsWinning;
-    private Cell     turn;
+    private Cell     whoHasWon;
+    //private Cell     turn;
 
 
     // Constructor
@@ -33,7 +33,7 @@ public class Board
         }
 
         // Set this to EMPTY to indicate that no one is winning.
-        whoIsWinning = Cell.EMPTY;
+        whoHasWon = Cell.EMPTY;
     }
 
 
@@ -46,15 +46,15 @@ public class Board
      *
      * @return Cell The side that is winning.
      */
-    public Cell getWhoIsWinning()
+    public Cell getWhoHasWon()
     {
-        return whoIsWinning;
+        return whoHasWon;
     }
 
 
     /**
      * Checks if a player has made a triple on this board and returns the player
-     * that has. If no triples exist, returns EMPTY. Also sets the whoIsWinning
+     * that has. If no triples exist, returns EMPTY. Also sets the whoHasWon
      * variable.
      *
      * @return Cell The player that has a triple.
@@ -71,7 +71,7 @@ public class Board
                 && board[i][0].equals(board[i][2])
                 && !board[i][0].equals(Cell.EMPTY))
             {
-                whoIsWinning = board[i][0];
+                whoHasWon = board[i][0];
                 return board[i][0];
             }
         }
@@ -83,7 +83,7 @@ public class Board
                 && board[0][i].equals(board[2][i])
                 && !board[0][i].equals(Cell.EMPTY))
             {
-                whoIsWinning = board[0][i];
+                whoHasWon = board[0][i];
                 return board[0][i];
             }
         }
@@ -92,19 +92,19 @@ public class Board
         if (board[0][0].equals(board[1][1]) && board[0][0].equals(board[2][2])
             && !board[0][0].equals(Cell.EMPTY))
         {
-            whoIsWinning = board[0][0];
+            whoHasWon = board[0][0];
             return board[0][0];
         }
 
         if (board[0][2].equals(board[1][1]) && board[0][2].equals(board[2][0])
             && !board[0][2].equals(Cell.EMPTY))
         {
-            whoIsWinning = board[0][2];
+            whoHasWon = board[0][2];
             return board[0][2];
         }
 
         // If none of the above conditions is satisfied, no triples exist.
-        whoIsWinning = Cell.EMPTY;
+        whoHasWon = Cell.EMPTY;
         return Cell.EMPTY;
     }
 
@@ -120,9 +120,10 @@ public class Board
      * @param col
      *            The column index of the cell.
      */
-    public void setCell(int row, int col)
+    public void setCell(int row, int col, Cell turn)
     {
 
+        // TODO check that the board isn't won
         if (row < 3 && row >= 0 && col < 3 && col >= 0)
         {
             if (board[row][col].equals(Cell.EMPTY))
@@ -130,6 +131,7 @@ public class Board
                 board[row][col] = turn;
             }
         }
+        /*
         if (turn == Cell.RED1)
         {
             turn = Cell.BLUE2;
@@ -138,6 +140,7 @@ public class Board
         {
             turn = Cell.RED1;
         }
+        */
 
         checkForTriple();
     }

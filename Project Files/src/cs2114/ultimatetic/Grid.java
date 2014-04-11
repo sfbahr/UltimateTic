@@ -11,7 +11,7 @@ package cs2114.ultimatetic;
 public class Grid
 {
     private Board[][] grid;
-    private Cell      whoIsWinning;
+    private Cell      WhoHasWon;
 
     // will be used for Sam to determine whose turn it is
     private Cell      turn;
@@ -30,7 +30,7 @@ public class Grid
 
     /**
      * Checks if a player has made a triple on this grid and returns the player
-     * that has. If no triples exist, returns EMPTY. Also sets the whoIsWinning
+     * that has. If no triples exist, returns EMPTY. Also sets the WhoHasWon
      * variable.
      *
      * @return Cell The player that has a triple.
@@ -43,48 +43,48 @@ public class Grid
         // Check for completed columns
         for (int i = 0; i < 3; i++)
         {
-            if (grid[i][0].getWhoIsWinning().equals(
-                grid[i][1].getWhoIsWinning())
-                && grid[i][0].getWhoIsWinning().equals(
-                    grid[i][2].getWhoIsWinning())
-                && !grid[i][0].getWhoIsWinning().equals(Cell.EMPTY))
+            if (grid[i][0].getWhoHasWon().equals(
+                grid[i][1].getWhoHasWon())
+                && grid[i][0].getWhoHasWon().equals(
+                    grid[i][2].getWhoHasWon())
+                && !grid[i][0].getWhoHasWon().equals(Cell.EMPTY))
             {
-                setWhoIsWinning(grid[i][0].getWhoIsWinning());
-                return grid[i][0].getWhoIsWinning();
+                setWhoIsWinning(grid[i][0].getWhoHasWon());
+                return grid[i][0].getWhoHasWon();
             }
         }
 
         // Check for completed rows
         for (int i = 0; i < 3; i++)
         {
-            if (grid[0][i].getWhoIsWinning().equals(
-                grid[1][i].getWhoIsWinning())
-                && grid[0][i].getWhoIsWinning().equals(
-                    grid[2][i].getWhoIsWinning())
-                && !grid[0][i].getWhoIsWinning().equals(Cell.EMPTY))
+            if (grid[0][i].getWhoHasWon().equals(
+                grid[1][i].getWhoHasWon())
+                && grid[0][i].getWhoHasWon().equals(
+                    grid[2][i].getWhoHasWon())
+                && !grid[0][i].getWhoHasWon().equals(Cell.EMPTY))
             {
-                setWhoIsWinning(grid[0][i].getWhoIsWinning());
-                return grid[0][i].getWhoIsWinning();
+                setWhoIsWinning(grid[0][i].getWhoHasWon());
+                return grid[0][i].getWhoHasWon();
             }
         }
 
         // Check for completed diagonals
-        if (grid[0][0].getWhoIsWinning().equals(grid[1][1].getWhoIsWinning())
-            && grid[0][0].getWhoIsWinning()
-                .equals(grid[2][2].getWhoIsWinning())
-            && !grid[0][0].getWhoIsWinning().equals(Cell.EMPTY))
+        if (grid[0][0].getWhoHasWon().equals(grid[1][1].getWhoHasWon())
+            && grid[0][0].getWhoHasWon()
+                .equals(grid[2][2].getWhoHasWon())
+            && !grid[0][0].getWhoHasWon().equals(Cell.EMPTY))
         {
-            setWhoIsWinning(grid[0][0].getWhoIsWinning());
-            return grid[0][0].getWhoIsWinning();
+            setWhoIsWinning(grid[0][0].getWhoHasWon());
+            return grid[0][0].getWhoHasWon();
         }
 
-        if (grid[0][2].getWhoIsWinning().equals(grid[1][1].getWhoIsWinning())
-            && grid[0][2].getWhoIsWinning()
-                .equals(grid[2][0].getWhoIsWinning())
-            && !grid[0][2].getWhoIsWinning().equals(Cell.EMPTY))
+        if (grid[0][2].getWhoHasWon().equals(grid[1][1].getWhoHasWon())
+            && grid[0][2].getWhoHasWon()
+                .equals(grid[2][0].getWhoHasWon())
+            && !grid[0][2].getWhoHasWon().equals(Cell.EMPTY))
         {
-            setWhoIsWinning(grid[0][2].getWhoIsWinning());
-            return grid[0][2].getWhoIsWinning();
+            setWhoIsWinning(grid[0][2].getWhoHasWon());
+            return grid[0][2].getWhoHasWon();
         }
 
         // If none of the above conditions is satisfied, no triples exist.
@@ -119,11 +119,11 @@ public class Grid
     /**
      * Displays who is winning the game currently
      *
-     * @return the whoIsWinning
+     * @return the WhoHasWon
      */
-    public Cell getWhoIsWinning()
+    public Cell getWhoHasWon()
     {
-        return whoIsWinning;
+        return WhoHasWon;
     }
 
 
@@ -131,11 +131,11 @@ public class Grid
     /**
      * Set a new winner
      *
-     * @param whoIsWinning
-     *            the whoIsWinning to set
+     * @param WhoHasWon
+     *            the WhoHasWon to set
      */
-    public void setWhoIsWinning(Cell whoIsWinning)
+    public void setWhoIsWinning(Cell WhoHasWon)
     {
-        this.whoIsWinning = whoIsWinning;
+        this.WhoHasWon = WhoHasWon;
     }
 }
