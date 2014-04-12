@@ -12,8 +12,6 @@ public class Board
     // Fields
     private Cell[][] board;
     private Cell     whoHasWon;
-    //private Cell     turn;
-
 
     // Constructor
     /**
@@ -120,29 +118,25 @@ public class Board
      * @param col
      *            The column index of the cell.
      */
-    public void setCell(int row, int col, Cell turn)
+    public boolean setCell(int row, int col, Cell turn)
     {
 
-        // TODO check that the board isn't won
+        boolean markWasPlaced = false;
+
+        // Check in bounds
         if (row < 3 && row >= 0 && col < 3 && col >= 0)
         {
-            if (board[row][col].equals(Cell.EMPTY))
+            // Check that cell is unoccupied and that the board is in play
+            if (board[row][col].equals(Cell.EMPTY)
+                && whoHasWon.equals(Cell.EMPTY))
             {
                 board[row][col] = turn;
+                markWasPlaced = true;
             }
         }
-        /*
-        if (turn == Cell.RED1)
-        {
-            turn = Cell.BLUE2;
-        }
-        else
-        {
-            turn = Cell.RED1;
-        }
-        */
 
         checkForTriple();
+        return markWasPlaced;
     }
 
 
@@ -164,6 +158,25 @@ public class Board
         }
 
         return null;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Sets every cell on the board to empty, and sets whoHasWon to empty. This
+     * method should really only be called from within the grid's reset method.
+     */
+    public void reset()
+    {
+        for (Cell[] r : board)
+        {
+            for (Cell c : r)
+            {
+                c = Cell.EMPTY;
+            }
+        }
+
+        whoHasWon = Cell.EMPTY;
     }
 
 }

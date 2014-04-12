@@ -34,9 +34,10 @@ To Do
     * setCell
 	  - grid.setCell(0-8,0-8) (change turn and check who has won)
 	* reflectModel
-	  - grid.getwhohaswon
-	  - grid.getturn
-	  - 
+	  - grid.getwhohaswon                         (Cell)
+	  - grid.getturn                              (Cell)
+	  - grid.getBoard(0-2, 0-2).getwhohaswon()    (Cell)
+	  - grid.getBoard(0-2, 0-2).getCell(0-2, 0-2) (Cell)
 	* reset
 	  - grid.reset
 

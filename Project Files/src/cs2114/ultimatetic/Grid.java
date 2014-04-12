@@ -11,7 +11,7 @@ package cs2114.ultimatetic;
 public class Grid
 {
     private Board[][] grid;
-    private Cell      WhoHasWon;
+    private Cell      whoHasWon;
 
     // will be used for Sam to determine whose turn it is
     private Cell      turn;
@@ -30,7 +30,7 @@ public class Grid
 
     /**
      * Checks if a player has made a triple on this grid and returns the player
-     * that has. If no triples exist, returns EMPTY. Also sets the WhoHasWon
+     * that has. If no triples exist, returns EMPTY. Also sets the whoHasWon
      * variable.
      *
      * @return Cell The player that has a triple.
@@ -119,11 +119,23 @@ public class Grid
     /**
      * Displays who is winning the game currently
      *
-     * @return the WhoHasWon
+     * @return the whoHasWon
      */
     public Cell getWhoHasWon()
     {
-        return WhoHasWon;
+        return whoHasWon;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Returns the value of the turn variable.
+     *
+     * @return Cell A value representing whose turn it is.
+     */
+    public Cell getTurn()
+    {
+        return turn;
     }
 
 
@@ -131,11 +143,70 @@ public class Grid
     /**
      * Set a new winner
      *
-     * @param WhoHasWon
-     *            the WhoHasWon to set
+     * @param whoHasWon
+     *            the whoHasWon to set
      */
-    public void setWhoIsWinning(Cell WhoHasWon)
+    public void setWhoIsWinning(Cell whoHasWon)
     {
-        this.WhoHasWon = WhoHasWon;
+        this.whoHasWon = whoHasWon;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Place a mark in any cell in the grid. The cell value is determined by the
+     * turn variable. If the cell is invalid, nothing happens and the turn is
+     * not changed.
+     *
+     * @param row
+     *            The row (0-8) of the cell on the grid.
+     * @param col
+     *            The column (0-8) of the cell on the grid.
+     */
+    public void setCell(int row, int col)
+    {
+        int boardRow = row / 3;
+        int cellRow = row % 3;
+        int boardCol = col / 3;
+        int cellCol = col % 3;
+
+        boolean markWasPlaced =
+            grid[boardRow][boardCol].setCell(cellRow, cellCol, turn);
+
+        if (markWasPlaced)
+        {
+            if (turn == Cell.RED1)
+            {
+                turn = Cell.BLUE2;
+            }
+            else
+            {
+                turn = Cell.RED1;
+            }
+        }
+
+        checkForTriple();
+
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Sets every cell on the grid to empty, sets whoHasWon to empty everywhere,
+     * and sets the turn to Red/player1.
+     */
+    public void reset()
+    {
+        for (Board[] r : grid)
+        {
+            for (Board b : r)
+            {
+                b.reset();
+            }
+        }
+
+        whoHasWon = Cell.EMPTY;
+
+        turn = Cell.RED1;
     }
 }
