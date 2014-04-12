@@ -13,6 +13,7 @@ public class Board
     private Cell[][] board;
     private Cell     whoHasWon;
 
+
     // Constructor
     /**
      * Create a new Board object.
@@ -179,4 +180,74 @@ public class Board
         whoHasWon = Cell.EMPTY;
     }
 
+
+    // ----------------------------------------------------------
+    /**
+     * Tests for equality of two boards.
+     *
+     * @param b
+     *            The board to compare against.
+     * @return boolean Whether the boards are equal.
+     */
+    @Override
+    public boolean equals(Object b)
+    {
+        boolean areEqual = true;
+
+        // Check that b is not null
+        if (b == null)
+        {
+            return false;
+        }
+
+        // Check that the class is the same
+        if (!b.getClass().equals(this.getClass()))
+        {
+            return false;
+        }
+
+        // Check that all the cells have the same value.
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (!this.getCell(i, j).equals(((Board)b).getCell(i, j)))
+                {
+                    areEqual = false;
+                }
+            }
+        }
+
+        return areEqual;
+    }
+
+
+    /**
+     * Returns a representation of the board as a 9 character long string, one
+     * letter for each cell.
+     *
+     * return String The string representation of the board.
+     */
+    @Override
+    public String toString()
+    {
+        StringBuilder s = new StringBuilder("");
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                Cell cell = this.getCell(i, j);
+
+                if (cell.equals(Cell.RED1))
+                    s.append("R");
+                else if (cell.equals(Cell.BLUE2))
+                    s.append("B");
+                else
+                    s.append("E");
+            }
+        }
+
+        return s.toString();
+    }
 }

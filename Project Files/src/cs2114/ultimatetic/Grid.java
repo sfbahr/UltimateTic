@@ -209,4 +209,30 @@ public class Grid
 
         turn = Cell.RED1;
     }
+
+    // ----------------------------------------------------------
+    /**
+     * Tests for equality of two grids.
+     *
+     * @param g
+     *            The grid to compare against.
+     * @return boolean Whether the grids are equal.
+     */
+    public boolean equals(Grid g)
+    {
+        boolean areEqual = true;
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (!this.getBoard(i, j).equals(g.getBoard(i, j)))
+                {
+                    areEqual = false;
+                }
+            }
+        }
+
+        return areEqual;
+    }
 }
