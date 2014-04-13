@@ -292,11 +292,11 @@ public class Board
                 c = state.charAt((3 * i) + j);
 
                 if (c == 'R')
-                    this.setCell(i, j, Cell.RED1);
+                    board[i][j] = Cell.RED1;
                 else if (c == 'B')
-                    this.setCell(i, j, Cell.BLUE2);
+                    board[i][j] = Cell.BLUE2;
                 else if (c == 'E')
-                    this.setCell(i, j, Cell.EMPTY);
+                    board[i][j] = Cell.EMPTY;
                 else
                 {
                     throw new IllegalArgumentException("Your string has a " +
@@ -305,5 +305,6 @@ public class Board
                 }
             }
         }
+        checkForTriple();
     }
 }

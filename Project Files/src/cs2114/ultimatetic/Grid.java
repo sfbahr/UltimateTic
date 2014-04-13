@@ -219,15 +219,28 @@ public class Grid
      *            The grid to compare against.
      * @return boolean Whether the grids are equal.
      */
-    public boolean equals(Grid g)
+    public boolean equals(Object g)
     {
         boolean areEqual = true;
 
+        // Check that g is not null
+        if (g == null)
+        {
+            return false;
+        }
+
+        // Check that the class is the same
+        if (!g.getClass().equals(this.getClass()))
+        {
+            return false;
+        }
+
+        // Check that all the boards are equal
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
             {
-                if (!this.getBoard(i, j).equals(g.getBoard(i, j)))
+                if (!this.getBoard(i, j).equals(((Grid)g).getBoard(i, j)))
                 {
                     areEqual = false;
                 }
