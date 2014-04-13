@@ -118,10 +118,12 @@ public class Board
      *            The row index of the cell.
      * @param col
      *            The column index of the cell.
+     * @param turn
+     *            A Cell value indicating which mark should be placed.
+     * @return boolean A value indicating whether the cell was set.
      */
     public boolean setCell(int row, int col, Cell turn)
     {
-
         boolean markWasPlaced = false;
 
         // Check in bounds
@@ -169,11 +171,14 @@ public class Board
      */
     public void reset()
     {
-        for (Cell[] r : board)
+        // Row iterator
+        for (int i = 0; i < 3; i++)
         {
-            for (Cell c : r)
+            // Column iterator
+            for (int j = 0; j < 3; j++)
             {
-                c = Cell.EMPTY;
+                // Don't use setCell since it has error checking.
+                board[i][j] = Cell.EMPTY;
             }
         }
 
@@ -226,18 +231,21 @@ public class Board
      * Returns a representation of the board as a 9 character long string, one
      * letter for each cell.
      *
-     * return String The string representation of the board.
+     * @return String The string representation of the board.
      */
     @Override
     public String toString()
     {
         StringBuilder s = new StringBuilder("");
 
+        // Initialize variable
+        Cell cell = null;
+
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
             {
-                Cell cell = this.getCell(i, j);
+                cell = this.getCell(i, j);
 
                 if (cell.equals(Cell.RED1))
                     s.append("R");
@@ -249,5 +257,53 @@ public class Board
         }
 
         return s.toString();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Takes a 9 character long string and configures the board state to match.
+     * Only takes upper case values to allow toString/fromString compatibility.
+     * R -> Cell.RED1, B -> Cell.BLUE2, E -> Cell.EMPTY. Reads in row by row
+     * from left to right. It will throw an error if you put in something weird.
+     *
+     * @param state
+     *            A string representing the desired state of the board.
+     */
+    public void fromString(String state)
+    {
+        if (state.length() != 9)
+        {
+            throw new IllegalArgumentException("Your state identifying " +
+                "string is the wrong length. It must be nine characters" +
+                " long with no spaces.");
+        }
+
+        // Reset the board first.
+        this.reset();
+
+        // Initialize a variable
+        char c = 'X';
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                c = state.charAt((3 * i) + j);
+
+                if (c == 'R')
+                    this.setCell(i, j, Cell.RED1);
+                else if (c == 'B')
+                    this.setCell(i, j, Cell.BLUE2);
+                else if (c == 'E')
+                    this.setCell(i, j, Cell.EMPTY);
+                else
+                {
+                    throw new IllegalArgumentException("Your string has a " +
+                        "value in it that doesn't match one of our cell " +
+                        "types.");
+                }
+            }
+        }
     }
 }
