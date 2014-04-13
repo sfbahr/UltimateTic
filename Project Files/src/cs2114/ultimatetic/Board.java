@@ -12,6 +12,7 @@ public class Board
     // Fields
     private Cell[][] board;
     private Cell     whoHasWon;
+    private boolean  isPlayable;
 
 
     // Constructor
@@ -33,6 +34,8 @@ public class Board
 
         // Set this to EMPTY to indicate that no one is winning.
         whoHasWon = Cell.EMPTY;
+
+        setIsPlayable(false);
     }
 
 
@@ -306,5 +309,27 @@ public class Board
             }
         }
         checkForTriple();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Getter for isPlayable.
+     * @return boolean The value of isPlayable.
+     */
+    public boolean getIsPlayable()
+    {
+        return isPlayable;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Setter for isPlayable.
+     * @param isPlayable The desired value of isPlayable.
+     */
+    public void setIsPlayable(boolean isPlayable)
+    {
+        this.isPlayable = isPlayable;
     }
 }

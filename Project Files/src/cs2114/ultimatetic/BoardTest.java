@@ -345,8 +345,29 @@ public class BoardTest
             "types.");
         }
 
-
-
     }
 
+    // ----------------------------------------------------------
+    /**
+     * Tests the getIsPlayable method.
+     */
+    public void testGetIsPlayable()
+    {
+        assertEquals(b1.getIsPlayable(), false);
+        b1.setIsPlayable(true);
+        assertEquals(b1.getIsPlayable(), true);
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Tests the setIsPlayable method.
+     */
+    public void testSetIsPlayable()
+    {
+        assertEquals(b1.getIsPlayable(), false);
+        b1.setIsPlayable(true);
+        assertEquals(b1.getIsPlayable(), true);
+
+    }
 }

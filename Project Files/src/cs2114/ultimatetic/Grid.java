@@ -23,8 +23,18 @@ public class Grid
     public Grid()
     {
         grid = new Board[3][3];
-        setWhoIsWinning(Cell.EMPTY);
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                grid[i][j] = new Board();
+            }
+        }
+
+        whoHasWon = Cell.EMPTY;
         turn = Cell.RED1;
+
+        this.getBoard(0, 0).setIsPlayable(true);
     }
 
 
@@ -49,7 +59,7 @@ public class Grid
                     grid[i][2].getWhoHasWon())
                 && !grid[i][0].getWhoHasWon().equals(Cell.EMPTY))
             {
-                setWhoIsWinning(grid[i][0].getWhoHasWon());
+                setWhoHasWon(grid[i][0].getWhoHasWon());
                 return grid[i][0].getWhoHasWon();
             }
         }
@@ -63,7 +73,7 @@ public class Grid
                     grid[2][i].getWhoHasWon())
                 && !grid[0][i].getWhoHasWon().equals(Cell.EMPTY))
             {
-                setWhoIsWinning(grid[0][i].getWhoHasWon());
+                setWhoHasWon(grid[0][i].getWhoHasWon());
                 return grid[0][i].getWhoHasWon();
             }
         }
@@ -74,7 +84,7 @@ public class Grid
                 .equals(grid[2][2].getWhoHasWon())
             && !grid[0][0].getWhoHasWon().equals(Cell.EMPTY))
         {
-            setWhoIsWinning(grid[0][0].getWhoHasWon());
+            setWhoHasWon(grid[0][0].getWhoHasWon());
             return grid[0][0].getWhoHasWon();
         }
 
@@ -83,12 +93,12 @@ public class Grid
                 .equals(grid[2][0].getWhoHasWon())
             && !grid[0][2].getWhoHasWon().equals(Cell.EMPTY))
         {
-            setWhoIsWinning(grid[0][2].getWhoHasWon());
+            setWhoHasWon(grid[0][2].getWhoHasWon());
             return grid[0][2].getWhoHasWon();
         }
 
         // If none of the above conditions is satisfied, no triples exist.
-        setWhoIsWinning(Cell.EMPTY);
+        setWhoHasWon(Cell.EMPTY);
         return Cell.EMPTY;
     }
 
@@ -127,6 +137,12 @@ public class Grid
     }
 
 
+    private void setWhoHasWon(Cell mark)
+    {
+        this.whoHasWon = mark;
+    }
+
+
     // ----------------------------------------------------------
     /**
      * Returns the value of the turn variable.
@@ -136,19 +152,6 @@ public class Grid
     public Cell getTurn()
     {
         return turn;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Set a new winner
-     *
-     * @param whoHasWon
-     *            the whoHasWon to set
-     */
-    public void setWhoIsWinning(Cell whoHasWon)
-    {
-        this.whoHasWon = whoHasWon;
     }
 
 
@@ -175,6 +178,7 @@ public class Grid
 
         if (markWasPlaced)
         {
+            // Change the turn
             if (turn == Cell.RED1)
             {
                 turn = Cell.BLUE2;
@@ -183,9 +187,60 @@ public class Grid
             {
                 turn = Cell.RED1;
             }
+
+            // Set isPlayable
+            // First, make nothing playable
+            for (Board[] r : grid)
+            {
+                for (Board b : r)
+                {
+                    b.setIsPlayable(false);
+                }
+            }
+            // Set one board playable if it is not won
+            if (this.getBoard(cellRow, cellCol).getWhoHasWon() == Cell.EMPTY)
+            {
+                this.getBoard(cellRow, cellCol).setIsPlayable(true);
+            }
+            // Otherwise, set all un-won boards playable
+            else
+            {
+                for (Board[] r : grid)
+                {
+                    for (Board b : r)
+                    {
+                        if (b.getWhoHasWon() == Cell.EMPTY)
+                        {
+                            b.setIsPlayable(true);
+                        }
+                    }
+                }
+            }
         }
 
         checkForTriple();
+
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * A method to match the grid's setCell. Takes 0-8 values as arguments.
+     *
+     * @param row
+     *            The row (0-8) of the cell on the grid.
+     * @param col
+     *            The column (0-8) of the cell on the grid.
+     * @return Cell The cell value at that location.
+     */
+    public Cell getCell(int row, int col)
+    {
+        int boardRow = row / 3;
+        int cellRow = row % 3;
+        int boardCol = col / 3;
+        int cellCol = col % 3;
+
+        return grid[boardRow][boardCol].getCell(cellRow, cellCol);
 
     }
 
@@ -260,7 +315,8 @@ public class Grid
      * boards from left to right, top to bottom. It will throw an error if you
      * put in something weird.
      *
-     * @param state The string representing the state of the grid.
+     * @param state
+     *            The string representing the state of the grid.
      */
     public void fromString(String state)
     {
@@ -287,6 +343,7 @@ public class Grid
             }
         }
     }
+
 
     /**
      * Returns a string representation of this grid.
