@@ -161,6 +161,13 @@ public class TacGameScreen
         }
     }
 
+    /**
+     *
+     */
+    public void reflectModel()
+    {
+
+    }
 
     /**
      * The restart/refresh button was pressed, reset the board after a
@@ -168,9 +175,53 @@ public class TacGameScreen
      */
     public void action_refreshClicked()
     {
-
+        grid.reset();
+        this.reflectModel();
     }
 
+    /**
+     * Enter in the touch floating point value and this method will return the
+     * corresponding grid location as an integer.
+     *
+     * @param touchWithPadding Where the user touched the screen
+     * @return Where the touch corresponds to on the grid
+     */
+    public int gridLocation(float touchWithPadding)
+    {
+        float touch = touchWithPadding - gridPad + boardPad;
+        int loca = -1;
+        if (touch >= 0 && touch <= boardSize)
+        {
+            loca = 0;
+        }
+        else if (touch >= boardSize + boardPad && touch <= boardSize * 2 + boardPad)
+        {
+            loca = 3;
+            touch = touch - (boardSize + boardPad);
+        }
+        else if (touch >= boardSize * 2 + boardPad * 2 && touch <= boardSize * 3 + boardPad * 2)
+        {
+            loca = 6;
+            touch = touch - (boardSize * 2 + boardPad * 2);
+        }
+
+        if (loca != -1)
+        {
+            if (touch <= boardSize / 3)
+            {
+                //loca is already set to the first cell, leave it alone
+            }
+            else if (touch <= (boardSize / 3) * 2)
+            {
+                loca += 1;
+            }
+            else
+            {
+                loca += 2;
+            }
+        }
+        return loca;
+    }
 
     /**
      * Return the grid, which is the array of nine tac boards.
