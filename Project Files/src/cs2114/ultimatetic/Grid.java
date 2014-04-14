@@ -15,6 +15,7 @@ public class Grid
 
     // will be used for Sam to determine whose turn it is
     private Cell      turn;
+    private AI easy;
 
 
     /**
@@ -25,6 +26,7 @@ public class Grid
         grid = new Board[3][3];
         setWhoIsWinning(Cell.EMPTY);
         turn = Cell.RED1;
+        easy = new AI(this);
     }
 
 

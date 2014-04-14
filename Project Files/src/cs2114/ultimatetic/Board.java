@@ -12,6 +12,8 @@ public class Board
     // Fields
     private Cell[][] board;
     private Cell     whoHasWon;
+    private static int currentRow = 0;
+    private static int currentCol = 0;
 
 
     // Constructor
@@ -132,6 +134,8 @@ public class Board
                 && whoHasWon.equals(Cell.EMPTY))
             {
                 board[row][col] = turn;
+                setCurrentRow(row);
+                setCurrentCol(col);
                 markWasPlaced = true;
             }
         }
@@ -250,4 +254,45 @@ public class Board
 
         return s.toString();
     }
+
+
+    // ----------------------------------------------------------
+    /**
+     * @return the currentRow
+     */
+    public static int getCurrentRow()
+    {
+        return currentRow;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * @param currentRow the currentRow to set
+     */
+    public static void setCurrentRow(int currentRow)
+    {
+        Board.currentRow = currentRow;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * @return the currentCol
+     */
+    public static int getCurrentCol()
+    {
+        return currentCol;
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * @param currentCol the currentCol to set
+     */
+    public static void setCurrentCol(int currentCol)
+    {
+        Board.currentCol = currentCol;
+    }
+
 }

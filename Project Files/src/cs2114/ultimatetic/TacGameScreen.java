@@ -1,6 +1,7 @@
 package cs2114.ultimatetic;
 
 import sofia.graphics.Color;
+
 import sofia.app.ShapeScreen;
 import sofia.graphics.*;
 import sofia.app.OptionsMenu;
