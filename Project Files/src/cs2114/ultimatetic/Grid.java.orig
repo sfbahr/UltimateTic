@@ -15,6 +15,7 @@ public class Grid
 
     // will be used for Sam to determine whose turn it is
     private Cell      turn;
+    private AI easy;
 
 
     /**
@@ -33,8 +34,12 @@ public class Grid
 
         whoHasWon = Cell.EMPTY;
         turn = Cell.RED1;
+<<<<<<< HEAD
+        easy = new AI(this);
+=======
 
         this.getBoard(0, 0).setIsPlayable(true);
+>>>>>>> 46087f22792f0d29cc44a5962221df2a45075006
     }
 
 
