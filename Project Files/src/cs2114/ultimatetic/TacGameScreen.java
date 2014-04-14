@@ -20,18 +20,20 @@ public class TacGameScreen
     extends ShapeScreen
 {
     // ~ Fields ................................................................
-    private Grid        grid;                                 // the grid of
-// nine tac boards
-    private final int   gridPad        = 20;                  // The padding on
-// the grid
-    private final int   boardPad       = 15;
-    private final int   gridLineWidth  = 10;
-    private final int   boardLineWidth = 5;
-    private final Color p1Color        = Color.cornflowerBlue;
-    private final Color p2Color        = Color.indianRed;
-    private float       gridSize;
-    private float       boardSize;
-    private float       cellSize;
+    private Grid               grid;                                 // the
+// grid of nine tac boards
+    private final int          gridPad        = 20;                  // The
+// padding on the grid
+    private final int          boardPad       = 15;
+    private final int          gridLineWidth  = 10;
+    private final int          boardLineWidth = 5;
+    private final Color        p1Color        = Color.cornflowerBlue;
+    private final Color        p2Color        = Color.indianRed;
+    private float              gridSize;
+    private float              boardSize;
+    private float              cellSize;
+    private RectangleShape[][] cells;
+    private RectangleShape[][] boards;
 
 
     // ~ Methods ...............................................................
@@ -81,6 +83,7 @@ public class TacGameScreen
                         }
                         cell.setAlpha(255); // Opacity (0-255)
                         add(cell);
+                        cells[i * 3 + a][j * 3 + b] = cell;
                     }
                 }
             }
@@ -140,6 +143,7 @@ public class TacGameScreen
                 }
                 board.setAlpha(150); // Opacity (0-255)
                 add(board);
+                boards[i][j] = board;
             }
         }
 
@@ -161,6 +165,7 @@ public class TacGameScreen
         }
     }
 
+
     /**
      *
      */
@@ -168,6 +173,7 @@ public class TacGameScreen
     {
 
     }
+
 
     /**
      * The restart/refresh button was pressed, reset the board after a
@@ -179,12 +185,15 @@ public class TacGameScreen
         this.reflectModel();
     }
 
+
     /**
      * Enter in the touch floating point value and this method will return the
      * corresponding grid location as an integer.
      *
-     * @param touchWithPadding Where the user touched the screen
-     * @return Where the touch corresponds to on the grid
+     * @param touchWithPadding
+     *            Where the user touched the screen
+     * @return Where the touch corresponds to on the grid. It returns -1 if the
+     *         touch wasn't on a value corresponding to the grid.
      */
     public int gridLocation(float touchWithPadding)
     {
@@ -194,12 +203,14 @@ public class TacGameScreen
         {
             loca = 0;
         }
-        else if (touch >= boardSize + boardPad && touch <= boardSize * 2 + boardPad)
+        else if (touch >= boardSize + boardPad
+            && touch <= boardSize * 2 + boardPad)
         {
             loca = 3;
             touch = touch - (boardSize + boardPad);
         }
-        else if (touch >= boardSize * 2 + boardPad * 2 && touch <= boardSize * 3 + boardPad * 2)
+        else if (touch >= boardSize * 2 + boardPad * 2
+            && touch <= boardSize * 3 + boardPad * 2)
         {
             loca = 6;
             touch = touch - (boardSize * 2 + boardPad * 2);
@@ -207,11 +218,11 @@ public class TacGameScreen
 
         if (loca != -1)
         {
-            if (touch <= boardSize / 3)
+            if (touch <= cellSize)
             {
-                //loca is already set to the first cell, leave it alone
+                // loca is already set to the first cell, leave it alone
             }
-            else if (touch <= (boardSize / 3) * 2)
+            else if (touch <= cellSize * 2)
             {
                 loca += 1;
             }
@@ -222,6 +233,7 @@ public class TacGameScreen
         }
         return loca;
     }
+
 
     /**
      * Return the grid, which is the array of nine tac boards.
