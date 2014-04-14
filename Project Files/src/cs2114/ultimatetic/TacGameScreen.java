@@ -20,20 +20,27 @@ public class TacGameScreen
     extends ShapeScreen
 {
     // ~ Fields ................................................................
-    private Grid               grid;                                 // the
+    private Grid               grid;                                  // the
 // grid of nine tac boards
-    private final int          gridPad        = 20;                  // The
+    private final int          gridPad         = 20;                  // The
 // padding on the grid
-    private final int          boardPad       = 15;
-    private final int          gridLineWidth  = 10;
-    private final int          boardLineWidth = 5;
-    private final Color        p1Color        = Color.cornflowerBlue;
-    private final Color        p2Color        = Color.indianRed;
+    private final int          boardPad        = 15;
+    private final int          gridLineWidth   = 10;
+    private final int          boardLineWidth  = 5;
+    private final Color        p1Color         = Color.indianRed;
+    private final Color        p2Color         = Color.cornflowerBlue;
+    private final Color        invalidColor    = Color.gray;
+    private final int          boardOpacity    = 150;
+    private final int          cellOpacity     = 225;
+    private final int          lastCellOpacity = 255;
     private float              gridSize;
     private float              boardSize;
     private float              cellSize;
     private RectangleShape[][] cells;
     private RectangleShape[][] boards;
+    private RectangleShape     guiGrid;
+    private RectangleShape     turnInd;                               // turn
+// indicator
 
 
     // ~ Methods ...............................................................
@@ -50,6 +57,32 @@ public class TacGameScreen
         gridSize = Math.min(getWidth(), getHeight()) - 2 * gridPad;
         boardSize = gridSize / 3 - 2 * boardPad;
         cellSize = boardSize / 3;
+
+        cells = new RectangleShape[9][9];
+        boards = new RectangleShape[3][3];
+
+        // Create the turn indicator
+        if (getWidth() < getHeight())
+        {
+            turnInd =
+                new RectangleShape(
+                    0,
+                    gridSize + 2 * gridPad,
+                    getWidth(),
+                    getHeight());
+        }
+        else
+        {
+            turnInd =
+                new RectangleShape(
+                    gridSize + 2 * gridPad,
+                    0,
+                    getWidth(),
+                    getHeight());
+        }
+        turnInd.setFillColor(p1Color);
+        turnInd.setAlpha(150);
+        add(turnInd);
 
         // Create the 9 cells for each board
         for (int i = 0; i < 3; i++)
@@ -72,16 +105,9 @@ public class TacGameScreen
                                 top,
                                 left + boardSize / 3,
                                 top + boardSize / 3);
-                        // Temporary code just to show how the colors look
-                        if ((a + b) % 3 == 1)
-                        {
-                            cell.setFillColor(p1Color);
-                        }
-                        else if ((a + b) % 3 == 2)
-                        {
-                            cell.setFillColor(p2Color);
-                        }
-                        cell.setAlpha(255); // Opacity (0-255)
+
+                        cell.setFillColor(p1Color);
+                        cell.setAlpha(cellOpacity); // Opacity (0-255)
                         add(cell);
                         cells[i * 3 + a][j * 3 + b] = cell;
                     }
@@ -132,16 +158,9 @@ public class TacGameScreen
                 RectangleShape board =
                     new RectangleShape(left, top, left + gridSize / 3, top
                         + gridSize / 3);
-                // Temporary code just to show how the colors look
-                if ((i + j) % 3 == 1)
-                {
-                    board.setFillColor(p1Color);
-                }
-                else if ((i + j) % 3 == 2)
-                {
-                    board.setFillColor(p2Color);
-                }
-                board.setAlpha(150); // Opacity (0-255)
+
+                board.setFillColor(invalidColor);
+                board.setAlpha(0); // Opacity (0-255);
                 add(board);
                 boards[i][j] = board;
             }
@@ -163,15 +182,118 @@ public class TacGameScreen
             add(verticalLine);
             add(horizontalLine);
         }
+
+        // Create a shape covering the whole grid
+        guiGrid =
+            new RectangleShape(gridPad, gridPad, gridSize + gridPad, gridSize
+                + gridPad);
+        guiGrid.setFillColor(invalidColor);
+        guiGrid.setAlpha(150);
+        add(guiGrid);
     }
 
 
     /**
      *
      */
+    public void onTouchDown(float x, float y)
+    {
+        reflectModel();
+    }
+
+
+    /**
+     * Updates the GUI to reflect the state of the model.
+     */
     public void reflectModel()
     {
+        // Check if someone won
+        Cell whoHasWon = grid.getWhoHasWon();
+        if (whoHasWon == Cell.RED1)
+        {
+            guiGrid.setFillColor(p1Color);
+            guiGrid.setAlpha(200);
+        }
+        else if (whoHasWon == Cell.BLUE2)
+        {
+            guiGrid.setFillColor(p2Color);
+            guiGrid.setAlpha(200);
+        }
+        else
+        {
+            guiGrid.setAlpha(0);
+        }
 
+        // Get whose turn it is
+        Cell turn = grid.getTurn();
+        if (turn == Cell.RED1)
+        {
+            turnInd.setFillColor(p1Color);
+        }
+        else
+        {
+            turnInd.setFillColor(p2Color);
+        }
+
+        // Get the boards
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                /*
+                 * The screen does the 2d array (x, y) whereas the model does it
+                 * (row, column), so the coordinates are switched on the call to
+                 * the model.
+                 */
+                Cell boardWin = grid.getBoard(j, i).getWhoHasWon();
+                if (boardWin == Cell.RED1)
+                {
+                    boards[i][j].setFillColor(p1Color);
+                    boards[i][j].setAlpha(boardOpacity);
+                }
+                else if (boardWin == Cell.BLUE2)
+                {
+                    boards[i][j].setFillColor(p2Color);
+                    boards[i][j].setAlpha(boardOpacity);
+                }
+                else
+                {
+                    if (!grid.getBoard(j, i).getIsPlayable())
+                    {
+                        boards[i][j].setFillColor(invalidColor);
+                        boards[i][j].setAlpha(boardOpacity);
+                    }
+                    else
+                    {
+                        boards[i][j].setAlpha(0);
+                    }
+                }
+
+            }
+        }
+
+        // Get each individual cell
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                Cell cellColor = grid.getCell(j, i);
+                if (cellColor == Cell.RED1)
+                {
+                    cells[i][j].setFillColor(p1Color);
+                    cells[i][j].setAlpha(cellOpacity);
+                }
+                else if (cellColor == Cell.BLUE2)
+                {
+                    cells[i][j].setFillColor(p2Color);
+                    cells[i][j].setAlpha(cellOpacity);
+                }
+                else
+                {
+                    cells[i][j].setAlpha(0);
+                }
+            }
+        }
     }
 
 
