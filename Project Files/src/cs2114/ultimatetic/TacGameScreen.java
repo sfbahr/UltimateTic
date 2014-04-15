@@ -1,5 +1,6 @@
 package cs2114.ultimatetic;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import sofia.graphics.Color;
 import sofia.app.ShapeScreen;
@@ -19,6 +20,7 @@ import android.widget.*;
 @OptionsMenu("tacgamescreen")
 public class TacGameScreen
     extends ShapeScreen
+    implements RestartGameDialogFragment.RestartGameDialogListener
 {
     // ~ Fields ................................................................
     private Grid               grid;                                  // the
@@ -306,8 +308,29 @@ public class TacGameScreen
      */
     public void action_refreshClicked()
     {
+        DialogFragment restartDialog =
+            new RestartGameDialogFragment();
+        restartDialog.show(getFragmentManager(), "NoticeDialogFragment");
+        /*
+         * grid.reset(); this.reflectModel();
+         */
+    }
+
+    /**
+     *
+     */
+    public void onDialogPositiveClick(DialogFragment dialog)
+    {
         grid.reset();
         this.reflectModel();
+    }
+
+    /**
+     *
+     */
+    public void onDialogNegativeClick(DialogFragment dialog)
+    {
+
     }
 
     /**
@@ -315,11 +338,10 @@ public class TacGameScreen
      */
     public void action_undoClicked()
     {
-        Context context = getApplicationContext();
         CharSequence text = "Undo isn't supported yet :(";
         int duration = Toast.LENGTH_SHORT;
 
-        Toast.makeText(context, text, duration).show();
+        Toast.makeText(getApplicationContext(), text, duration).show();
     }
 
 

@@ -12,7 +12,10 @@ int string action_refresh 0x7f040004
 int string action_settings 0x7f040002
 int string action_undo 0x7f040005
 int string app_name 0x7f040000
+int string cancel 0x7f040008
+int string dialog_restart_game 0x7f040006
 int string hello_world 0x7f040003
+int string restart 0x7f040007
 int string title_activity_tac_game_screen 0x7f040001
 int style AppBaseTheme 0x7f050000
 int style AppTheme 0x7f050001
