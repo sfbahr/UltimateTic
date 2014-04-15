@@ -44,6 +44,8 @@ public class TacGameScreen
     private RectangleShape     guiGrid;
     private RectangleShape     turnInd;                               // turn
 // indicator
+    private float              xDown;
+    private float              yDown;
 
 
     // ~ Methods ...............................................................
@@ -109,8 +111,8 @@ public class TacGameScreen
                                 left + boardSize / 3,
                                 top + boardSize / 3);
 
-                        cell.setFillColor(p1Color);
-                        cell.setAlpha(cellOpacity); // Opacity (0-255)
+                        cell.setFillColor(invalidColor);
+                        cell.setAlpha(0); // Opacity (0-255)
                         add(cell);
                         cells[i * 3 + a][j * 3 + b] = cell;
                     }
@@ -191,7 +193,7 @@ public class TacGameScreen
             new RectangleShape(gridPad, gridPad, gridSize + gridPad, gridSize
                 + gridPad);
         guiGrid.setFillColor(invalidColor);
-        guiGrid.setAlpha(150);
+        guiGrid.setAlpha(0);
         add(guiGrid);
     }
 
@@ -201,11 +203,23 @@ public class TacGameScreen
      */
     public void onTouchDown(float x, float y)
     {
-        int gridX = gridLocation(x);
-        int gridY = gridLocation(y);
-        reflectModel();
+        xDown = x;
+        yDown = y;
     }
 
+    /**
+     *
+     */
+    public void onTouchUp(float x, float y)
+    {
+        if (Math.abs(xDown - x) < 10 && Math.abs(yDown - y) < 10)
+        {
+            int gridX = gridLocation(x);
+            int gridY = gridLocation(y);
+            grid.setCell(gridY, gridX);
+            this.reflectModel();
+        }
+    }
 
     /**
      * Updates the GUI to reflect the state of the model.
@@ -303,21 +317,19 @@ public class TacGameScreen
 
 
     /**
-     * The restart/refresh button was pressed, reset the board after a
-     * confirmation dialog.
+     * The restart/refresh button was pressed, open the confirmation dialog.
      */
     public void action_refreshClicked()
     {
         DialogFragment restartDialog =
             new RestartGameDialogFragment();
         restartDialog.show(getFragmentManager(), "NoticeDialogFragment");
-        /*
-         * grid.reset(); this.reflectModel();
-         */
     }
 
     /**
+     * The user decided to really restart so go ahead and do that.
      *
+     * @param dialog The dialog object that received the positive click.
      */
     public void onDialogPositiveClick(DialogFragment dialog)
     {
@@ -326,11 +338,13 @@ public class TacGameScreen
     }
 
     /**
+     * The user decided not to restart, do nothing.
      *
+     * @param dialog The dialog object that received the negative click.
      */
     public void onDialogNegativeClick(DialogFragment dialog)
     {
-
+        // Do nothing
     }
 
     /**
@@ -356,7 +370,7 @@ public class TacGameScreen
      */
     public int gridLocation(float touchWithPadding)
     {
-        float touch = touchWithPadding - gridPad + boardPad;
+        float touch = touchWithPadding - (gridPad + boardPad);
         int loca = -1;
         if (touch >= 0 && touch <= boardSize)
         {
