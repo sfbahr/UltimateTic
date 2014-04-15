@@ -21,7 +21,8 @@
 
         <activity
             android:name="cs2114.ultimatetic.TacGameScreen"
-            android:label="@string/title_activity_tac_game_screen" >
+            android:label="@string/title_activity_tac_game_screen" 
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
