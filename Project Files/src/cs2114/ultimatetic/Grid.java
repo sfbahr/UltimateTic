@@ -1,5 +1,7 @@
 package cs2114.ultimatetic;
 
+import java.util.Stack;
+
 // -------------------------------------------------------------------------
 /**
  * The array of nine tac boards. Follow it with additional details about its
@@ -10,11 +12,13 @@ package cs2114.ultimatetic;
  */
 public class Grid
 {
-    private Board[][] grid;
-    private Cell      whoHasWon;
+    private Board[][]    grid;
+    private Cell         whoHasWon;
 
     // will be used for Sam to determine whose turn it is
-    private Cell      turn;
+    private Cell         turn;
+
+    private Stack<int[]> moves;
 
 
     /**
@@ -28,13 +32,17 @@ public class Grid
             for (int j = 0; j < 3; j++)
             {
                 grid[i][j] = new Board();
+
+                // All boards are initially playable.
+                grid[i][j].setIsPlayable(true);
+
             }
         }
 
         whoHasWon = Cell.EMPTY;
         turn = Cell.RED1;
 
-        this.getBoard(0, 0).setIsPlayable(true);
+        moves = new Stack<int[]>();
     }
 
 
@@ -216,6 +224,13 @@ public class Grid
                     }
                 }
             }
+
+            // Add the move to the stack
+
+            int[] lastMove = new int[2];
+            lastMove[0] = row;
+            lastMove[1] = col;
+            moves.push(lastMove);
         }
 
         checkForTriple();
@@ -364,5 +379,40 @@ public class Grid
         }
 
         return s.toString();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Checks the last move made _without_ popping it from the stack.
+     *
+     * @return int[] The last move made.
+     */
+    public int[] getLastMove()
+    {
+        return moves.peek();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * (To be implemented) Pops the last move off of the stack and applies it in
+     * reverse to the grid.
+     */
+    public void undoMove()
+    {
+        // TODO Implement this.
+
+        // Pop last move off stack
+
+        // Set isPlayable to the board on which the last move was played
+
+        // Remove the mark from that board
+        //   -> Write some method in board that will allow mark deletion
+
+        // Change the turn to the other player
+
+        // (Consider what happens when ai is playing)
+
     }
 }
