@@ -1,5 +1,6 @@
 package cs2114.ultimatetic;
 
+import android.content.Context;
 import sofia.graphics.Color;
 import sofia.app.ShapeScreen;
 import sofia.graphics.*;
@@ -198,6 +199,8 @@ public class TacGameScreen
      */
     public void onTouchDown(float x, float y)
     {
+        int gridX = gridLocation(x);
+        int gridY = gridLocation(y);
         reflectModel();
     }
 
@@ -305,6 +308,18 @@ public class TacGameScreen
     {
         grid.reset();
         this.reflectModel();
+    }
+
+    /**
+     * The undo button was pressed, undo the move recent move.
+     */
+    public void action_undoClicked()
+    {
+        Context context = getApplicationContext();
+        CharSequence text = "Undo isn't supported yet :(";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast.makeText(context, text, duration).show();
     }
 
 
