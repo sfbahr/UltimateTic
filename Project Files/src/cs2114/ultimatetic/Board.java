@@ -186,6 +186,7 @@ public class Board
         }
 
         whoHasWon = Cell.EMPTY;
+        isPlayable = true;
     }
 
 

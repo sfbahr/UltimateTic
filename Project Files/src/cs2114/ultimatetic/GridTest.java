@@ -4,11 +4,10 @@ import junit.framework.TestCase;
 
 // -------------------------------------------------------------------------
 /**
-/**
- *  Tests the Grid class.
+ * /** Tests the Grid class.
  *
- *  @author Charles Tenney (charten)
- *  @version 2014.04.13
+ * @author Charles Tenney (charten)
+ * @version 2014.04.13
  */
 public class GridTest
     extends TestCase
@@ -17,11 +16,160 @@ public class GridTest
     private Grid g1;
     private Grid g2;
 
+
     protected void setUp()
         throws Exception
     {
         g1 = new Grid();
         g2 = new Grid();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Tests the initial setup of the grid.
+     */
+    public void testConstructor()
+    {
+        // No one is winning, it's red's turn, and no moves have been made
+        assertEquals(g1.getTurn(), Cell.RED1);
+        assertEquals(g1.getWhoHasWon(), Cell.EMPTY);
+        assertNull(g1.getLastMove());
+
+        // Everywhere is playable, no boards have been won
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                assertTrue(g1.getBoard(i, j).getIsPlayable());
+                assertEquals(g1.getBoard(i, j).getWhoHasWon(), Cell.EMPTY);
+            }
+        }
+
+        // Every cell is empty everywhere
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                assertEquals(g1.getCell(i, j), Cell.EMPTY);
+            }
+        }
+
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Tests the behavior of the isPlayable variable.
+     */
+    public void testRefreshIsPlayable()
+    {
+        // Initially, everywhere is playable
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                assertTrue(g1.getBoard(i, j).getIsPlayable());
+                assertEquals(g1.getBoard(i, j).getWhoHasWon(), Cell.EMPTY);
+            }
+        }
+
+        // ----------------------------
+        // You cannot make a move on a board that is not playable
+        // ----------------------------
+        // This sequence should win the (0,0) board for red
+        int[][] moves =
+            new int[][] { { 1, 1 }, { 3, 3 }, { 2, 2 }, { 6, 6 }, { 0, 0 } };
+
+        // Win a board
+        for (int[] move : moves)
+        {
+            Cell turn = g1.getTurn();
+            g1.setCell(move[0], move[1]);
+            // Check that the mark was placed
+            // (I'm checking that my move sequence is valid too)
+            assertEquals(g1.getCell(move[0], move[1]), turn);
+        }
+
+        // Check that isplayable is set correctly
+        // (since the last move directs to a won board, everything else should
+        // be playable.)
+        assertFalse(g1.getBoard(0, 0).getIsPlayable());
+        assertTrue(g1.getBoard(1, 0).getIsPlayable());
+        assertTrue(g1.getBoard(2, 0).getIsPlayable());
+        assertTrue(g1.getBoard(0, 1).getIsPlayable());
+        assertTrue(g1.getBoard(1, 1).getIsPlayable());
+        assertTrue(g1.getBoard(2, 1).getIsPlayable());
+        assertTrue(g1.getBoard(0, 2).getIsPlayable());
+        assertTrue(g1.getBoard(1, 2).getIsPlayable());
+        assertTrue(g1.getBoard(2, 2).getIsPlayable());
+
+        // Try to play in that non-playable board
+        assertEquals(g1.getCell(0, 1), Cell.EMPTY);
+        Cell turn = g1.getTurn();
+        g1.setCell(0, 1);
+        // Turn doesn't change
+        assertEquals(g1.getTurn(), turn);
+        // Cell value doesn't change
+        assertEquals(g1.getCell(0, 1), Cell.EMPTY);
+
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Tests the behavior of the grid after someone has won.
+     */
+    public void testPostVictoryBehavior()
+    {
+        // Nowhere should be playable
+
+        // (hopefully) a series of 17 moves leading to grid-level victory for red
+        String moves = "1133226600352661036414342577174708";
+
+        //int row = Integer.parseInt(moves.charAt(0) + "");
+        //int col = Integer.parseInt(moves.charAt(1) + "");
+
+        //g1.setCell(row, col);
+
+
+        // Make all the moves
+        for (int i = 0;i<17;i++)
+        {
+            int row = Integer.parseInt(moves.charAt(2*i) + "");
+            int col = Integer.parseInt(moves.charAt(1 + 2*i) + "");
+            //int row = moves.charAt(2*i);
+            //int col = moves.charAt(1+ (2*i));
+
+            g1.setCell(row, col);
+        }
+
+        // not playable anywhere
+        assertFalse(g1.getBoard(0, 0).getIsPlayable());
+        assertFalse(g1.getBoard(1, 0).getIsPlayable());
+        assertFalse(g1.getBoard(2, 0).getIsPlayable());
+        assertFalse(g1.getBoard(0, 1).getIsPlayable());
+        assertFalse(g1.getBoard(1, 1).getIsPlayable());
+        assertFalse(g1.getBoard(2, 1).getIsPlayable());
+        assertFalse(g1.getBoard(0, 2).getIsPlayable());
+        assertFalse(g1.getBoard(1, 2).getIsPlayable());
+        assertFalse(g1.getBoard(2, 2).getIsPlayable());
+
+        // Try to play, just for kicks.
+        assertEquals(g1.getCell(0, 1), Cell.EMPTY);
+        Cell turn = g1.getTurn();
+        g1.setCell(0, 1);
+        // Turn doesn't change
+        assertEquals(g1.getTurn(), turn);
+        // Cell value doesn't change
+        assertEquals(g1.getCell(0, 1), Cell.EMPTY);
+
+
+        // Haswon should equal getTriple
+        assertEquals(g1.getWhoHasWon(), g1.checkForTriple());
+        assertEquals(g1.getWhoHasWon(), Cell.RED1);
+
+        //
     }
 
 
@@ -176,8 +324,8 @@ public class GridTest
         assertTrue(g1.getBoard(2, 1).getIsPlayable());
         assertTrue(g1.getBoard(2, 2).getIsPlayable());
 
-
     }
+
 
     // ----------------------------------------------------------
     /**
@@ -191,13 +339,13 @@ public class GridTest
 
         // Should place a mark
         assertEquals(g1.getCell(2, 2), Cell.RED1);
-        assertEquals(g1.getCell(2, 2), g1.getBoard(0, 0).getCell(2,2));
+        assertEquals(g1.getCell(2, 2), g1.getBoard(0, 0).getCell(2, 2));
 
         g1.setCell(6, 8);
 
         // Should place a mark
         assertEquals(g1.getCell(6, 8), Cell.BLUE2);
-        assertEquals(g1.getCell(6, 8), g1.getBoard(2, 2).getCell(0,2));
+        assertEquals(g1.getCell(6, 8), g1.getBoard(2, 2).getCell(0, 2));
     }
 
 
@@ -224,7 +372,6 @@ public class GridTest
 
         // No one should be winning.
         assertEquals(g1.getWhoHasWon(), Cell.EMPTY);
-
 
         // Try a won grid.
         // Make a won board
@@ -253,6 +400,17 @@ public class GridTest
 
         // No one should be winning.
         assertEquals(g1.getWhoHasWon(), Cell.EMPTY);
+
+        // everything should be playable
+        assertTrue(g1.getBoard(0, 0).getIsPlayable());
+        assertTrue(g1.getBoard(1, 0).getIsPlayable());
+        assertTrue(g1.getBoard(2, 0).getIsPlayable());
+        assertTrue(g1.getBoard(0, 1).getIsPlayable());
+        assertTrue(g1.getBoard(1, 1).getIsPlayable());
+        assertTrue(g1.getBoard(2, 1).getIsPlayable());
+        assertTrue(g1.getBoard(0, 2).getIsPlayable());
+        assertTrue(g1.getBoard(1, 2).getIsPlayable());
+        assertTrue(g1.getBoard(2, 2).getIsPlayable());
     }
 
 
@@ -274,17 +432,17 @@ public class GridTest
         assertTrue(g1.equals(g2));
 
         // Different contents
-        g1.getBoard(0,0).setCell(0, 0, Cell.RED1);
+        g1.getBoard(0, 0).setCell(0, 0, Cell.RED1);
         assertFalse(g1.equals(g2));
 
         // Same Contents
-        g2.getBoard(0,0).setCell(0, 0, Cell.RED1);
+        g2.getBoard(0, 0).setCell(0, 0, Cell.RED1);
         assertTrue(g1.equals(g2));
 
         // Some more complex cases
-        g1.getBoard(0,0).fromString("RRRBEEBBE");
+        g1.getBoard(0, 0).fromString("RRRBEEBBE");
         assertFalse(g1.equals(g2));
-        g2.getBoard(0,0).fromString("RRRBEEBBE");
+        g2.getBoard(0, 0).fromString("RRRBEEBBE");
         assertTrue(g1.equals(g2));
     }
 
@@ -306,12 +464,15 @@ public class GridTest
         assertEquals(g1.toString(), f + e + e + e + e + e + e + e + e);
 
         // Wrong string length
-        try { g1.fromString("E"); }
+        try
+        {
+            g1.fromString("E");
+        }
         catch (Exception ex)
         {
-        assertEquals(ex.getClass(),
-            (new IllegalArgumentException()).getClass());
-        assertEquals(ex.getMessage(), "Your state identifying " +
+            assertEquals(ex.getClass(),
+                (new IllegalArgumentException()).getClass());
+            assertEquals(ex.getMessage(), "Your state identifying " +
                 "string is the wrong length. It must be 81 characters" +
                 " long with no spaces.");
         }

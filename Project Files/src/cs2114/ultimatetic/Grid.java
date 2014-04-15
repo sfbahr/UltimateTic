@@ -1,5 +1,6 @@
 package cs2114.ultimatetic;
 
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 // -------------------------------------------------------------------------
@@ -181,8 +182,17 @@ public class Grid
         int boardCol = col / 3;
         int cellCol = col % 3;
 
-        boolean markWasPlaced =
-            grid[boardRow][boardCol].setCell(cellRow, cellCol, turn);
+        boolean markWasPlaced = false;
+
+        // Check that the selected cell is playable
+        if (grid[boardRow][boardCol].getIsPlayable())
+        {
+            // Check if the move was valid
+            markWasPlaced =
+                grid[boardRow][boardCol].setCell(cellRow, cellCol, turn);
+        }
+
+        checkForTriple();
 
         if (markWasPlaced)
         {
@@ -197,33 +207,7 @@ public class Grid
             }
 
             // Set isPlayable
-            // First, make nothing playable
-            for (Board[] r : grid)
-            {
-                for (Board b : r)
-                {
-                    b.setIsPlayable(false);
-                }
-            }
-            // Set one board playable if it is not won
-            if (this.getBoard(cellRow, cellCol).getWhoHasWon() == Cell.EMPTY)
-            {
-                this.getBoard(cellRow, cellCol).setIsPlayable(true);
-            }
-            // Otherwise, set all un-won boards playable
-            else
-            {
-                for (Board[] r : grid)
-                {
-                    for (Board b : r)
-                    {
-                        if (b.getWhoHasWon() == Cell.EMPTY)
-                        {
-                            b.setIsPlayable(true);
-                        }
-                    }
-                }
-            }
+            refreshIsPlayable(cellRow, cellCol);
 
             // Add the move to the stack
 
@@ -233,7 +217,7 @@ public class Grid
             moves.push(lastMove);
         }
 
-        checkForTriple();
+
 
     }
 
@@ -272,6 +256,7 @@ public class Grid
             for (Board b : r)
             {
                 b.reset();
+
             }
         }
 
@@ -384,13 +369,22 @@ public class Grid
 
     // ----------------------------------------------------------
     /**
-     * Checks the last move made _without_ popping it from the stack.
+     * Checks the last move made _without_ popping it from the stack. Returns
+     * null if no moves have been made.
      *
-     * @return int[] The last move made.
+     * @return int[] The last move made. (Null if none available.)
      */
     public int[] getLastMove()
     {
-        return moves.peek();
+        if (!moves.isEmpty())
+        {
+            return moves.peek();
+        }
+        else
+        {
+            return null;
+        }
+
     }
 
 
@@ -408,11 +402,62 @@ public class Grid
         // Set isPlayable to the board on which the last move was played
 
         // Remove the mark from that board
-        //   -> Write some method in board that will allow mark deletion
+        // -> Write some method in board that will allow mark deletion
 
         // Change the turn to the other player
 
         // (Consider what happens when ai is playing)
 
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Place a description of your method here.
+     *
+     * @param boardRow
+     *            The row of the board that will be played in next.
+     * @param boardCol
+     *            The col of the board that will be played in next.
+     */
+    private void refreshIsPlayable(int boardRow, int boardCol)
+    {
+        // First, make nothing playable
+        for (Board[] r : grid)
+        {
+            for (Board b : r)
+            {
+                b.setIsPlayable(false);
+            }
+        }
+        // Set one board playable if it is not won
+        if (this.getBoard(boardRow, boardCol).getWhoHasWon() == Cell.EMPTY)
+        {
+            this.getBoard(boardRow, boardCol).setIsPlayable(true);
+        }
+        // Otherwise, set all un-won boards playable
+        else if (this.whoHasWon == Cell.EMPTY)
+        {
+            for (Board[] r : grid)
+            {
+                for (Board b : r)
+                {
+                    if (b.getWhoHasWon() == Cell.EMPTY)
+                    {
+                        b.setIsPlayable(true);
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (Board[] r : grid)
+            {
+                for (Board b : r)
+                {
+                    b.setIsPlayable(false);
+                }
+            }
+        }
     }
 }
