@@ -12,18 +12,20 @@ import android.app.DialogFragment;
  * Write a one-sentence summary of your class here. Follow it with additional
  * details about its purpose, what abstraction it represents, and how to use it.
  *
- * @author Me
- * @version Apr 14, 2014
+ * @author Samuel Bahr (sfbahr)
+ * @author Brian Clarke (golfboy1)
+ * @author Charles Tenney (charten)
+ * @version 2014.04.16
  */
 
 public class RestartGameDialogFragment
     extends DialogFragment
 {
 
-    /*
-     * The activity that creates an instance of this dialog fragment must  *
-     * implement this interface in order to receive event callbacks.    * Each
-     * method passes the DialogFragment in case the host needs to query it.
+    /**
+     * The activity that creates an instance of this dialog fragment must
+     * implement this interface in order to receive event callbacks.
+     * Each method passes the DialogFragment in case the host needs to query it.
      */
     public interface RestartGameDialogListener
     {

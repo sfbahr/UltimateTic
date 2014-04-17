@@ -5,11 +5,12 @@ import java.util.Stack;
 
 // -------------------------------------------------------------------------
 /**
- * The array of nine tac boards. Follow it with additional details about its
- * purpose, what abstraction it represents, and how to use it.
+ * The array of nine tac boards.
  *
+ * @author Samuel Bahr (sfbahr)
+ * @author Brian Clarke (golfboy1)
  * @author Charles Tenney (charten)
- * @version 2014.03.28
+ * @version 2014.04.16
  */
 public class Grid
 {

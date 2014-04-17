@@ -1,21 +1,19 @@
 package cs2114.ultimatetic;
 
 import android.app.DialogFragment;
-import android.content.Context;
 import sofia.graphics.Color;
 import sofia.app.ShapeScreen;
 import sofia.graphics.*;
 import sofia.app.OptionsMenu;
-import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
 import android.widget.*;
 
 /**
  * The main game screen where Ultimate Tic-Tac-Toe goes down.
  *
  * @author Samuel Bahr (sfbahr)
- * @version 03.27.2014
+ * @author Brian Clarke (golfboy1)
+ * @author Charles Tenney (charten)
+ * @version 2014.04.16
  */
 @OptionsMenu("tacgamescreen")
 public class TacGameScreen
@@ -199,7 +197,10 @@ public class TacGameScreen
 
 
     /**
+     * Handles touch events by storing where the user pressed down.
      *
+     * @param x Where the user touched on the x-axis
+     * @param y Where the user touched on the y-axis
      */
     public void onTouchDown(float x, float y)
     {
@@ -208,7 +209,11 @@ public class TacGameScreen
     }
 
     /**
+     * Handles touch events by setting a cell and then updating the GUI if the
+     * user tapped in the cell.
      *
+     * @param x Where the user let go on the screen in the x-axis
+     * @param y Where the user let go on the screen in the y-axis
      */
     public void onTouchUp(float x, float y)
     {
@@ -231,12 +236,17 @@ public class TacGameScreen
         if (whoHasWon == Cell.RED1)
         {
             guiGrid.setFillColor(p1Color);
-            guiGrid.setAlpha(200);
+            guiGrid.setAlpha(100);
+
+            Toast.makeText(getApplicationContext(), "Red Player has won",
+                Toast.LENGTH_SHORT).show();
         }
         else if (whoHasWon == Cell.BLUE2)
         {
             guiGrid.setFillColor(p2Color);
-            guiGrid.setAlpha(200);
+            guiGrid.setAlpha(100);
+            Toast.makeText(getApplicationContext(), "Blue Player has won",
+                Toast.LENGTH_SHORT).show();
         }
         else
         {

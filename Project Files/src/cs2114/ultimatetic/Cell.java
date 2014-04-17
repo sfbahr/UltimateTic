@@ -3,8 +3,10 @@ package cs2114.ultimatetic;
 /**
  *  This class enumerates the state of a cell on a tac board.
  *
- *  @author Charles Tenney (charten)
- *  @version 26.03.2014
+ * @author Samuel Bahr (sfbahr)
+ * @author Brian Clarke (golfboy1)
+ * @author Charles Tenney (charten)
+ * @version 2014.04.16
  */
 public enum Cell
 {
