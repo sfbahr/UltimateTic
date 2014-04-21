@@ -1,20 +1,26 @@
 package cs2114.ultimatetic;
 
+import java.util.EmptyStackException;
+import java.util.Stack;
+
 // -------------------------------------------------------------------------
 /**
- * The array of nine tac boards. Follow it with additional details about its
- * purpose, what abstraction it represents, and how to use it.
+ * The array of nine tac boards.
  *
+ * @author Samuel Bahr (sfbahr)
+ * @author Brian Clarke (golfboy1)
  * @author Charles Tenney (charten)
- * @version 2014.03.28
+ * @version 2014.04.16
  */
 public class Grid
 {
-    private Board[][] grid;
-    private Cell      whoHasWon;
+    private Board[][]    grid;
+    private Cell         whoHasWon;
 
     // will be used for Sam to determine whose turn it is
-    private Cell      turn;
+    private Cell         turn;
+
+    private Stack<int[]> moves;
 
 
     /**
@@ -28,13 +34,17 @@ public class Grid
             for (int j = 0; j < 3; j++)
             {
                 grid[i][j] = new Board();
+
+                // All boards are initially playable.
+                grid[i][j].setIsPlayable(true);
+
             }
         }
 
         whoHasWon = Cell.EMPTY;
         turn = Cell.RED1;
-
-        this.getBoard(0, 0).setIsPlayable(true);
+        easy = new AI(this);
+        moves = new Stack<int[]>();
     }
 
 
@@ -173,8 +183,17 @@ public class Grid
         int boardCol = col / 3;
         int cellCol = col % 3;
 
-        boolean markWasPlaced =
-            grid[boardRow][boardCol].setCell(cellRow, cellCol, turn);
+        boolean markWasPlaced = false;
+
+        // Check that the selected cell is playable
+        if (grid[boardRow][boardCol].getIsPlayable())
+        {
+            // Check if the move was valid
+            markWasPlaced =
+                grid[boardRow][boardCol].setCell(cellRow, cellCol, turn);
+        }
+
+        checkForTriple();
 
         if (markWasPlaced)
         {
@@ -189,36 +208,17 @@ public class Grid
             }
 
             // Set isPlayable
-            // First, make nothing playable
-            for (Board[] r : grid)
-            {
-                for (Board b : r)
-                {
-                    b.setIsPlayable(false);
-                }
-            }
-            // Set one board playable if it is not won
-            if (this.getBoard(cellRow, cellCol).getWhoHasWon() == Cell.EMPTY)
-            {
-                this.getBoard(cellRow, cellCol).setIsPlayable(true);
-            }
-            // Otherwise, set all un-won boards playable
-            else
-            {
-                for (Board[] r : grid)
-                {
-                    for (Board b : r)
-                    {
-                        if (b.getWhoHasWon() == Cell.EMPTY)
-                        {
-                            b.setIsPlayable(true);
-                        }
-                    }
-                }
-            }
+            refreshIsPlayable(cellRow, cellCol);
+
+            // Add the move to the stack
+
+            int[] lastMove = new int[2];
+            lastMove[0] = row;
+            lastMove[1] = col;
+            moves.push(lastMove);
         }
 
-        checkForTriple();
+
 
     }
 
@@ -257,6 +257,7 @@ public class Grid
             for (Board b : r)
             {
                 b.reset();
+
             }
         }
 
@@ -364,5 +365,100 @@ public class Grid
         }
 
         return s.toString();
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Checks the last move made _without_ popping it from the stack. Returns
+     * null if no moves have been made.
+     *
+     * @return int[] The last move made. (Null if none available.)
+     */
+    public int[] getLastMove()
+    {
+        if (!moves.isEmpty())
+        {
+            return moves.peek();
+        }
+        else
+        {
+            return null;
+        }
+
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * (To be implemented) Pops the last move off of the stack and applies it in
+     * reverse to the grid.
+     */
+    public void undoMove()
+    {
+        // TODO Implement this.
+
+        // Pop last move off stack
+
+        // Set isPlayable to the board on which the last move was played
+
+        // Remove the mark from that board
+        // -> Write some method in board that will allow mark deletion
+
+        // Change the turn to the other player
+
+        // (Consider what happens when ai is playing)
+
+    }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Place a description of your method here.
+     *
+     * @param boardRow
+     *            The row of the board that will be played in next.
+     * @param boardCol
+     *            The col of the board that will be played in next.
+     */
+    private void refreshIsPlayable(int boardRow, int boardCol)
+    {
+        // First, make nothing playable
+        for (Board[] r : grid)
+        {
+            for (Board b : r)
+            {
+                b.setIsPlayable(false);
+            }
+        }
+        // Set one board playable if it is not won
+        if (this.getBoard(boardRow, boardCol).getWhoHasWon() == Cell.EMPTY)
+        {
+            this.getBoard(boardRow, boardCol).setIsPlayable(true);
+        }
+        // Otherwise, set all un-won boards playable
+        else if (this.whoHasWon == Cell.EMPTY)
+        {
+            for (Board[] r : grid)
+            {
+                for (Board b : r)
+                {
+                    if (b.getWhoHasWon() == Cell.EMPTY)
+                    {
+                        b.setIsPlayable(true);
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (Board[] r : grid)
+            {
+                for (Board b : r)
+                {
+                    b.setIsPlayable(false);
+                }
+            }
+        }
     }
 }

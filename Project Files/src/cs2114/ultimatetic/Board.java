@@ -4,8 +4,10 @@ package cs2114.ultimatetic;
 /**
  * Holds information about an individual tac board.
  *
+ * @author Samuel Bahr (sfbahr)
+ * @author Brian Clarke (golfboy1)
  * @author Charles Tenney (charten)
- * @version 26.03.2014
+ * @version 2014.04.16
  */
 public class Board
 {
@@ -186,6 +188,7 @@ public class Board
         }
 
         whoHasWon = Cell.EMPTY;
+        isPlayable = true;
     }
 
 

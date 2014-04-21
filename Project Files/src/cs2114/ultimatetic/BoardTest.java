@@ -6,8 +6,10 @@ import junit.framework.TestCase;
 /**
  *  Tests the Board class.
  *
- *  @author Charles Tenney (charten)
- *  @version 2014.04.13
+ *  @author Samuel Bahr (sfbahr)
+ * @author Brian Clarke (golfboy1)
+ * @author Charles Tenney (charten)
+ * @version 2014.04.16
  */
 public class BoardTest
     extends TestCase
