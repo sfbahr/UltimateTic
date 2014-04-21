@@ -4,16 +4,17 @@ package cs2114.ultimatetic;
 /**
  * Holds information about an individual tac board.
  *
+ * @author Samuel Bahr (sfbahr)
+ * @author Brian Clarke (golfboy1)
  * @author Charles Tenney (charten)
- * @version 26.03.2014
+ * @version 2014.04.16
  */
 public class Board
 {
     // Fields
     private Cell[][] board;
     private Cell     whoHasWon;
-    private static int currentRow = 0;
-    private static int currentCol = 0;
+    private boolean  isPlayable;
 
 
     // Constructor
@@ -35,6 +36,8 @@ public class Board
 
         // Set this to EMPTY to indicate that no one is winning.
         whoHasWon = Cell.EMPTY;
+
+        setIsPlayable(false);
     }
 
 
@@ -120,10 +123,12 @@ public class Board
      *            The row index of the cell.
      * @param col
      *            The column index of the cell.
+     * @param turn
+     *            A Cell value indicating which mark should be placed.
+     * @return boolean A value indicating whether the cell was set.
      */
     public boolean setCell(int row, int col, Cell turn)
     {
-
         boolean markWasPlaced = false;
 
         // Check in bounds
@@ -134,8 +139,6 @@ public class Board
                 && whoHasWon.equals(Cell.EMPTY))
             {
                 board[row][col] = turn;
-                setCurrentRow(row);
-                setCurrentCol(col);
                 markWasPlaced = true;
             }
         }
@@ -173,15 +176,19 @@ public class Board
      */
     public void reset()
     {
-        for (Cell[] r : board)
+        // Row iterator
+        for (int i = 0; i < 3; i++)
         {
-            for (Cell c : r)
+            // Column iterator
+            for (int j = 0; j < 3; j++)
             {
-                c = Cell.EMPTY;
+                // Don't use setCell since it has error checking.
+                board[i][j] = Cell.EMPTY;
             }
         }
 
         whoHasWon = Cell.EMPTY;
+        isPlayable = true;
     }
 
 
@@ -230,18 +237,21 @@ public class Board
      * Returns a representation of the board as a 9 character long string, one
      * letter for each cell.
      *
-     * return String The string representation of the board.
+     * @return String The string representation of the board.
      */
     @Override
     public String toString()
     {
         StringBuilder s = new StringBuilder("");
 
+        // Initialize variable
+        Cell cell = null;
+
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
             {
-                Cell cell = this.getCell(i, j);
+                cell = this.getCell(i, j);
 
                 if (cell.equals(Cell.RED1))
                     s.append("R");
@@ -258,41 +268,71 @@ public class Board
 
     // ----------------------------------------------------------
     /**
-     * @return the currentRow
+     * Takes a 9 character long string and configures the board state to match.
+     * Only takes upper case values to allow toString/fromString compatibility.
+     * R -> Cell.RED1, B -> Cell.BLUE2, E -> Cell.EMPTY. Reads in row by row
+     * from left to right. It will throw an error if you put in something weird.
+     *
+     * @param state
+     *            A string representing the desired state of the board.
      */
-    public static int getCurrentRow()
+    public void fromString(String state)
     {
-        return currentRow;
+        if (state.length() != 9)
+        {
+            throw new IllegalArgumentException("Your state identifying " +
+                "string is the wrong length. It must be nine characters" +
+                " long with no spaces.");
+        }
+
+        // Reset the board first.
+        this.reset();
+
+        // Initialize a variable
+        char c = 'X';
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                c = state.charAt((3 * i) + j);
+
+                if (c == 'R')
+                    board[i][j] = Cell.RED1;
+                else if (c == 'B')
+                    board[i][j] = Cell.BLUE2;
+                else if (c == 'E')
+                    board[i][j] = Cell.EMPTY;
+                else
+                {
+                    throw new IllegalArgumentException("Your string has a " +
+                        "value in it that doesn't match one of our cell " +
+                        "types.");
+                }
+            }
+        }
+        checkForTriple();
     }
 
 
     // ----------------------------------------------------------
     /**
-     * @param currentRow the currentRow to set
+     * Getter for isPlayable.
+     * @return boolean The value of isPlayable.
      */
-    public static void setCurrentRow(int currentRow)
+    public boolean getIsPlayable()
     {
-        Board.currentRow = currentRow;
+        return isPlayable;
     }
 
 
     // ----------------------------------------------------------
     /**
-     * @return the currentCol
+     * Setter for isPlayable.
+     * @param isPlayable The desired value of isPlayable.
      */
-    public static int getCurrentCol()
+    public void setIsPlayable(boolean isPlayable)
     {
-        return currentCol;
+        this.isPlayable = isPlayable;
     }
-
-
-    // ----------------------------------------------------------
-    /**
-     * @param currentCol the currentCol to set
-     */
-    public static void setCurrentCol(int currentCol)
-    {
-        Board.currentCol = currentCol;
-    }
-
 }
