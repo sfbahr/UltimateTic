@@ -81,7 +81,7 @@ public class AI
                 Board.getCurrentRow(),
                 Board.getCurrentCol()).getCell(1, i))
                 && grid.getBoard(Board.getCurrentRow(), Board.getCurrentCol())
-                    .getCell(0, 1) == Cell.BLUE2)
+                    .getCell(0, i) == Cell.BLUE2)
             {
                 grid.getBoard(Board.getCurrentRow(), Board.getCurrentCol())
                     .setCell(2, i, Cell.BLUE2);
