@@ -83,7 +83,7 @@ public class TacGameScreen
                     getWidth(),
                     getHeight());
         }
-        turnInd.setFillColor(p1Color);
+        turnInd.setImage("player_one");
         turnInd.setAlpha(150);
         add(turnInd);
 
@@ -257,11 +257,11 @@ public class TacGameScreen
         Cell turn = grid.getTurn();
         if (turn == Cell.RED1)
         {
-            turnInd.setFillColor(p1Color);
+            turnInd.setImage("player_one");
         }
         else
         {
-            turnInd.setFillColor(p2Color);
+            turnInd.setImage("player_two");
         }
 
         // Get the boards

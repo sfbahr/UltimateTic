@@ -3,7 +3,9 @@ int dimen activity_vertical_margin 0x7f060001
 int drawable ic_action_refresh 0x7f020000
 int drawable ic_action_undo 0x7f020001
 int drawable ic_launcher 0x7f020002
-int drawable tic_icon 0x7f020003
+int drawable player_one 0x7f020003
+int drawable player_two 0x7f020004
+int drawable tic_icon 0x7f020005
 int id action_refresh 0x7f080002
 int id action_undo 0x7f080001
 int id shapeView 0x7f080000
