@@ -421,8 +421,34 @@ public class Grid
         getBoard(boardRow, boardCol).setCell(cellRow, cellCol,
             Cell.EMPTY, true);
 
-        // Set isPlayable to the board on which the last move was played
-        refreshIsPlayable(boardRow, boardCol);
+        // Set isPlayable based on the prior move
+        if (!moves.isEmpty())
+        {
+            int[] move2 = moves.peek();
+
+            // Figure out where the move was
+            int boardRow2 = move2[0] / 3;
+            int cellRow2 = move2[0] % 3;
+            int boardCol2 = move2[1] / 3;
+            int cellCol2 = move2[1] % 3;
+
+            refreshIsPlayable(cellRow2, cellCol2);
+        }
+        else
+        {
+            for (Board[] r : grid)
+            {
+                for (Board b : r)
+                {
+                    if (b.getWhoHasWon() == Cell.EMPTY)
+                    {
+                        b.setIsPlayable(true);
+                    }
+                }
+            }
+        }
+
+
 
         // Change the turn to the other player
         if (turn == Cell.RED1)
