@@ -199,8 +199,10 @@ public class TacGameScreen
     /**
      * Handles touch events by storing where the user pressed down.
      *
-     * @param x Where the user touched on the x-axis
-     * @param y Where the user touched on the y-axis
+     * @param x
+     *            Where the user touched on the x-axis
+     * @param y
+     *            Where the user touched on the y-axis
      */
     public void onTouchDown(float x, float y)
     {
@@ -208,12 +210,15 @@ public class TacGameScreen
         yDown = y;
     }
 
+
     /**
      * Handles touch events by setting a cell and then updating the GUI if the
      * user tapped in the cell.
      *
-     * @param x Where the user let go on the screen in the x-axis
-     * @param y Where the user let go on the screen in the y-axis
+     * @param x
+     *            Where the user let go on the screen in the x-axis
+     * @param y
+     *            Where the user let go on the screen in the y-axis
      */
     public void onTouchUp(float x, float y)
     {
@@ -226,6 +231,7 @@ public class TacGameScreen
         }
     }
 
+
     /**
      * Updates the GUI to reflect the state of the model.
      */
@@ -237,16 +243,21 @@ public class TacGameScreen
         {
             guiGrid.setFillColor(p1Color);
             guiGrid.setAlpha(100);
-
-            Toast.makeText(getApplicationContext(), "Red Player has won",
-                Toast.LENGTH_SHORT).show();
+            turnInd.setImage("player_one_won");
+            /*
+             * Toast.makeText(getApplicationContext(), "Player One has won",
+             * Toast.LENGTH_SHORT).show();
+             */
         }
         else if (whoHasWon == Cell.BLUE2)
         {
             guiGrid.setFillColor(p2Color);
             guiGrid.setAlpha(100);
-            Toast.makeText(getApplicationContext(), "Blue Player has won",
-                Toast.LENGTH_SHORT).show();
+            turnInd.setImage("player_two_won");
+            /*
+             * Toast.makeText(getApplicationContext(), "Player Two has won",
+             * Toast.LENGTH_SHORT).show();
+             */
         }
         else
         {
@@ -255,13 +266,16 @@ public class TacGameScreen
 
         // Get whose turn it is
         Cell turn = grid.getTurn();
-        if (turn == Cell.RED1)
+        if (whoHasWon == Cell.EMPTY)
         {
-            turnInd.setImage("player_one");
-        }
-        else
-        {
-            turnInd.setImage("player_two");
+            if (turn == Cell.RED1)
+            {
+                turnInd.setImage("player_one");
+            }
+            else
+            {
+                turnInd.setImage("player_two");
+            }
         }
 
         // Get the boards
@@ -331,15 +345,16 @@ public class TacGameScreen
      */
     public void action_refreshClicked()
     {
-        DialogFragment restartDialog =
-            new RestartGameDialogFragment();
+        DialogFragment restartDialog = new RestartGameDialogFragment();
         restartDialog.show(getFragmentManager(), "NoticeDialogFragment");
     }
+
 
     /**
      * The user decided to really restart so go ahead and do that.
      *
-     * @param dialog The dialog object that received the positive click.
+     * @param dialog
+     *            The dialog object that received the positive click.
      */
     public void onDialogPositiveClick(DialogFragment dialog)
     {
@@ -347,15 +362,18 @@ public class TacGameScreen
         this.reflectModel();
     }
 
+
     /**
      * The user decided not to restart, do nothing.
      *
-     * @param dialog The dialog object that received the negative click.
+     * @param dialog
+     *            The dialog object that received the negative click.
      */
     public void onDialogNegativeClick(DialogFragment dialog)
     {
         // Do nothing
     }
+
 
     /**
      * The undo button was pressed, undo the move recent move.
