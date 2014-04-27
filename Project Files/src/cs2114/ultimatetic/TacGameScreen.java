@@ -227,6 +227,7 @@ public class TacGameScreen
         {
             int gridX = gridLocation(x);
             int gridY = gridLocation(y);
+            // Animates the cell entering the new cell if it was a valid touch
             if (grid.setCell(gridY, gridX))
             {
                 Cell cell = grid.getCell(gridY, gridX);
@@ -412,10 +413,7 @@ public class TacGameScreen
      */
     public void action_undoClicked()
     {
-        CharSequence text = "Undo isn't supported yet :(";
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast.makeText(getApplicationContext(), text, duration).show();
+        grid.undoMove();
     }
 
 
