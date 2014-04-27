@@ -32,8 +32,8 @@ public class TacGameScreen
     private final Color        p1Color         = Color.indianRed;
     private final Color        p2Color         = Color.cornflowerBlue;
     private final Color        invalidColor    = Color.gray;
-    private final int          boardOpacity    = 150;
-    private final int          cellOpacity     = 225;
+    private final int          boardOpacity    = 100;
+    private final int          cellOpacity     = 170;
     private final int          lastCellOpacity = 255;
     private float              gridSize;
     private float              boardSize;
@@ -227,11 +227,12 @@ public class TacGameScreen
         {
             int gridX = gridLocation(x);
             int gridY = gridLocation(y);
-            grid.setCell(gridY, gridX);
-            /*if (grid.setCell(gridY, gridX))
+            if (grid.setCell(gridY, gridX))
             {
-                zoomIn(cells[i][j], p2Color, cellOpacity);
-            }*/
+                Cell cell = grid.getCell(gridY, gridX);
+                Color cellColor = (cell == Cell.RED1) ? p1Color : p2Color;
+                zoomIn(cells[gridX][gridY], cellColor, lastCellOpacity);
+            }
             this.reflectModel();
         }
     }
@@ -247,7 +248,7 @@ public class TacGameScreen
         if (whoHasWon == Cell.RED1)
         {
             guiGrid.setFillColor(p1Color);
-            guiGrid.setAlpha(100);
+            guiGrid.setAlpha(40);
             turnInd.setImage("player_one_won");
             /*
              * Toast.makeText(getApplicationContext(), "Player One has won",
@@ -257,7 +258,7 @@ public class TacGameScreen
         else if (whoHasWon == Cell.BLUE2)
         {
             guiGrid.setFillColor(p2Color);
-            guiGrid.setAlpha(100);
+            guiGrid.setAlpha(40);
             turnInd.setImage("player_two_won");
             /*
              * Toast.makeText(getApplicationContext(), "Player Two has won",
@@ -342,6 +343,12 @@ public class TacGameScreen
                 }
             }
         }
+
+        // Set the last move
+        int x = grid.getLastMove()[1];
+        int y = grid.getLastMove()[0];
+        // No need to set the FillColor since it's the same as all other moves
+        cells[x][y].setAlpha(lastCellOpacity);
     }
 
     /**
