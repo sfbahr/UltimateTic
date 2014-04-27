@@ -175,8 +175,9 @@ public class Grid
      *            The row (0-8) of the cell on the grid.
      * @param col
      *            The column (0-8) of the cell on the grid.
+     * @return boolean True if a mark was placed.
      */
-    public void setCell(int row, int col)
+    public boolean setCell(int row, int col)
     {
         int boardRow = row / 3;
         int cellRow = row % 3;
@@ -216,9 +217,13 @@ public class Grid
             lastMove[0] = row;
             lastMove[1] = col;
             moves.push(lastMove);
+
+            // Indicate that a move was made
+            return true;
         }
 
 
+        return false;
 
     }
 
@@ -432,7 +437,8 @@ public class Grid
             }
         }
         // Set one board playable if it is not won
-        if (this.getBoard(boardRow, boardCol).getWhoHasWon() == Cell.EMPTY)
+        if (this.getBoard(boardRow, boardCol).getWhoHasWon() == Cell.EMPTY
+            && this.getWhoHasWon() == Cell.EMPTY)
         {
             this.getBoard(boardRow, boardCol).setIsPlayable(true);
         }
