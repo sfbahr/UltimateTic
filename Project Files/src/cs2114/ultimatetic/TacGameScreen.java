@@ -381,12 +381,16 @@ public class TacGameScreen
         }
         else
         {
-            shape.animate(100).bounds(centerBounds).alpha(0).play();
+            /*
+             *  For some reason when this code is run the shapes no longer
+             *  display
+             */
+            //shape.animate(100).bounds(centerBounds).alpha(0).play();
             /*
              * After it appears to have zoomed into oblivion, return it to it's
              * initial size
              */
-            shape.setBounds(origBounds);
+            //shape.setBounds(origBounds);
         }
     }
 
@@ -431,7 +435,8 @@ public class TacGameScreen
      */
     public void action_undoClicked()
     {
-        if (grid.undoMove())
+        //if there was a last move show an animation zooming it out
+        if (grid.getLastMove() != null)
         {
             int x = grid.getLastMove()[1];
             int y = grid.getLastMove()[0];
@@ -439,7 +444,7 @@ public class TacGameScreen
             Cell cell = grid.getCell(y, x);
             Color cellColor = (cell == Cell.RED1) ? p1Color : p2Color;
             zoom(cells[x][y], cellColor, 0, false);
-
+            grid.undoMove();
             reflectModel();
         }
     }
