@@ -19,7 +19,6 @@ public class Grid
 
     // will be used for Sam to determine whose turn it is
     private Cell         turn;
-
     private Stack<int[]> moves;
 
 
@@ -43,7 +42,6 @@ public class Grid
 
         whoHasWon = Cell.EMPTY;
         turn = Cell.RED1;
-        easy = new AI(this);
         moves = new Stack<int[]>();
     }
 
