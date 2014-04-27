@@ -28,6 +28,7 @@ public class AIGrid
     {
         boolean boo = super.setCell(row, col);
         this.makeMove();
+        super.setTurn(Cell.RED1);
         return boo;
     }
 

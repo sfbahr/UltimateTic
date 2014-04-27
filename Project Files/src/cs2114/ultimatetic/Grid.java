@@ -162,6 +162,15 @@ public class Grid
         return turn;
     }
 
+    /**
+     * Returns the value of the turn variable.
+     * @param turn is the new turn
+     */
+    public void setTurn(Cell turn)
+    {
+        this.turn = turn;
+    }
+
 
     // ----------------------------------------------------------
     /**
