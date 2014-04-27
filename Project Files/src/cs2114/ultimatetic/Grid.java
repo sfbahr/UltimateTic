@@ -222,7 +222,6 @@ public class Grid
             return true;
         }
 
-
         return false;
 
     }
@@ -399,27 +398,51 @@ public class Grid
      * (To be implemented) Pops the last move off of the stack and applies it in
      * reverse to the grid.
      */
-    public void undoMove()
+    public boolean undoMove()
     {
-        // TODO Implement this.
+        // Check that a move has been made
+        if (moves.isEmpty())
+        {
+            return false;
+        }
 
         // Pop last move off stack
+        int[] move = moves.pop();
 
-        // Set isPlayable to the board on which the last move was played
+        // Figure out where the move was
+        int boardRow = move[1] / 3;
+        int cellRow = move[1] % 3;
+        int boardCol = move[2] / 3;
+        int cellCol = move[2] % 3;
 
         // Remove the mark from that board
-        // -> Write some method in board that will allow mark deletion
+        getBoard(boardRow, boardCol).setCell(cellRow, cellCol,
+            Cell.EMPTY, true);
+
+        // Set isPlayable to the board on which the last move was played
+        refreshIsPlayable(boardRow, boardCol);
 
         // Change the turn to the other player
+        if (turn == Cell.RED1)
+        {
+            turn = Cell.BLUE2;
+        }
+        else
+        {
+            turn = Cell.RED1;
+        }
 
-        // (Consider what happens when ai is playing)
+        return true;
+
+        // TODO (Consider what happens when ai is playing)
 
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Place a description of your method here.
+     * Set a certain board to be playable, and reset other boards' "playability"
+     * as necessary.
      *
      * @param boardRow
      *            The row of the board that will be played in next.
