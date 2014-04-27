@@ -232,7 +232,7 @@ public class TacGameScreen
             {
                 Cell cell = grid.getCell(gridY, gridX);
                 Color cellColor = (cell == Cell.RED1) ? p1Color : p2Color;
-                zoomIn(cells[gridX][gridY], cellColor, lastCellOpacity);
+                zoom(cells[gridX][gridY], cellColor, lastCellOpacity, true);
             }
             this.reflectModel();
         }
@@ -352,10 +352,12 @@ public class TacGameScreen
         cells[x][y].setAlpha(lastCellOpacity);
     }
 
+
     /**
-     *
+     * @param opac
+     *            The opacity that the shape ends with on a zoom in
      */
-    public void zoomIn(RectangleShape shape, Color color, int opac)
+    public void zoom(RectangleShape shape, Color color, int opac, boolean in)
     {
         float centerX = shape.getBounds().centerX();
         float centerY = shape.getBounds().centerY();
@@ -365,13 +367,25 @@ public class TacGameScreen
         float bottom = centerY + shape.getBounds().height() / 2;
 
         RectF centerBounds = new RectF(centerX, centerY, centerX, centerY);
-        shape.setBounds(centerBounds);
-        shape.setAlpha(0);
-
         shape.setFillColor(color);
         RectF origBounds = new RectF(left, top, right, bottom);
-        shape.animate(100).bounds(origBounds).alpha(opac).play();
+        if (in)
+        {
+            shape.setAlpha(0);
+            shape.setBounds(centerBounds);
+            shape.animate(100).bounds(origBounds).alpha(opac).play();
+        }
+        else
+        {
+            shape.animate(100).bounds(centerBounds).alpha(0).play();
+            /*
+             * After it appears to have zoomed into oblivion, return it to it's
+             * initial size
+             */
+            shape.setBounds(origBounds);
+        }
     }
+
 
     /**
      * The restart/refresh button was pressed, open the confirmation dialog.
@@ -413,7 +427,15 @@ public class TacGameScreen
      */
     public void action_undoClicked()
     {
-        grid.undoMove();
+        int x = grid.getLastMove()[1];
+        int y = grid.getLastMove()[0];
+        if (grid.undoMove())
+        {
+            Cell cell = grid.getCell(y, x);
+            Color cellColor = (cell == Cell.RED1) ? p1Color : p2Color;
+            zoom(cells[x][y], cellColor, 0, false);
+        }
+        reflectModel();
     }
 
 
