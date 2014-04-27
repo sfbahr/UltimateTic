@@ -1,5 +1,6 @@
 package cs2114.ultimatetic;
 
+import android.graphics.RectF;
 import android.app.DialogFragment;
 import sofia.graphics.Color;
 
@@ -32,9 +33,8 @@ public class TacGameScreen
     private final Color        p1Color         = Color.indianRed;
     private final Color        p2Color         = Color.cornflowerBlue;
     private final Color        invalidColor    = Color.gray;
-    private final int          boardOpacity    = 150;
+    private final int          boardOpacity    = 120;
     private final int          cellOpacity     = 225;
-    private final int          lastCellOpacity = 255;
     private float              gridSize;
     private float              boardSize;
     private float              cellSize;
@@ -84,7 +84,7 @@ public class TacGameScreen
                     getWidth(),
                     getHeight());
         }
-        turnInd.setFillColor(p1Color);
+        turnInd.setImage("player_one");
         turnInd.setAlpha(150);
         add(turnInd);
 
@@ -200,8 +200,10 @@ public class TacGameScreen
     /**
      * Handles touch events by storing where the user pressed down.
      *
-     * @param x Where the user touched on the x-axis
-     * @param y Where the user touched on the y-axis
+     * @param x
+     *            Where the user touched on the x-axis
+     * @param y
+     *            Where the user touched on the y-axis
      */
     public void onTouchDown(float x, float y)
     {
@@ -209,12 +211,15 @@ public class TacGameScreen
         yDown = y;
     }
 
+
     /**
      * Handles touch events by setting a cell and then updating the GUI if the
      * user tapped in the cell.
      *
-     * @param x Where the user let go on the screen in the x-axis
-     * @param y Where the user let go on the screen in the y-axis
+     * @param x
+     *            Where the user let go on the screen in the x-axis
+     * @param y
+     *            Where the user let go on the screen in the y-axis
      */
     public void onTouchUp(float x, float y)
     {
@@ -222,10 +227,17 @@ public class TacGameScreen
         {
             int gridX = gridLocation(x);
             int gridY = gridLocation(y);
-            grid.setCell(gridY, gridX);
+            // Animates the cell entering the new cell if it was a valid touch
+            if (grid.setCell(gridY, gridX))
+            {
+                Cell cell = grid.getCell(gridY, gridX);
+                Color cellColor = (cell == Cell.RED1) ? p1Color : p2Color;
+                zoom(cells[gridX][gridY], cellColor, cellOpacity, true);
+            }
             this.reflectModel();
         }
     }
+
 
     /**
      * Updates the GUI to reflect the state of the model.
@@ -237,17 +249,22 @@ public class TacGameScreen
         if (whoHasWon == Cell.RED1)
         {
             guiGrid.setFillColor(p1Color);
-            guiGrid.setAlpha(100);
-
-            Toast.makeText(getApplicationContext(), "Red Player has won",
-                Toast.LENGTH_SHORT).show();
+            guiGrid.setAlpha(75);
+            turnInd.setImage("player_one_won");
+            /*
+             * Toast.makeText(getApplicationContext(), "Player One has won",
+             * Toast.LENGTH_SHORT).show();
+             */
         }
         else if (whoHasWon == Cell.BLUE2)
         {
             guiGrid.setFillColor(p2Color);
-            guiGrid.setAlpha(100);
-            Toast.makeText(getApplicationContext(), "Blue Player has won",
-                Toast.LENGTH_SHORT).show();
+            guiGrid.setAlpha(75);
+            turnInd.setImage("player_two_won");
+            /*
+             * Toast.makeText(getApplicationContext(), "Player Two has won",
+             * Toast.LENGTH_SHORT).show();
+             */
         }
         else
         {
@@ -256,13 +273,16 @@ public class TacGameScreen
 
         // Get whose turn it is
         Cell turn = grid.getTurn();
-        if (turn == Cell.RED1)
+        if (whoHasWon == Cell.EMPTY)
         {
-            turnInd.setFillColor(p1Color);
-        }
-        else
-        {
-            turnInd.setFillColor(p2Color);
+            if (turn == Cell.RED1)
+            {
+                turnInd.setImage("player_one");
+            }
+            else
+            {
+                turnInd.setImage("player_two");
+            }
         }
 
         // Get the boards
@@ -324,6 +344,57 @@ public class TacGameScreen
                 }
             }
         }
+
+        // Set the last move
+        if (grid.getLastMove() != null)
+        {
+            int x = grid.getLastMove()[1];
+            int y = grid.getLastMove()[0];
+            // No need to set the FillColor since it's the same as all other
+            // moves
+            String last = (grid.getCell(y, x) == Cell.RED1) ? "last_move_one" : "last_move_two";
+            cells[x][y].setImage(last);
+        }
+    }
+
+
+    /**
+     * @param opac
+     *            The opacity that the shape ends with on a zoom in
+     */
+    public void zoom(RectangleShape shape, Color color, int opac, boolean in)
+    {
+        float centerX = shape.getBounds().centerX();
+        float centerY = shape.getBounds().centerY();
+        float left = centerX - shape.getBounds().width() / 2;
+        float top = centerY - shape.getBounds().height() / 2;
+        float right = centerX + shape.getBounds().width() / 2;
+        float bottom = centerY + shape.getBounds().height() / 2;
+
+        RectF centerBounds = new RectF(centerX, centerY, centerX, centerY);
+        shape.setFillColor(color);
+        RectF origBounds = new RectF(left, top, right, bottom);
+        if (in)
+        {
+            shape.setAlpha(0);
+            shape.setBounds(centerBounds);
+            String imgClr = (color == p1Color) ? "last_move_one" : "last_move_two";
+            shape.setImage(imgClr);
+            shape.animate(100).bounds(origBounds).alpha(opac).play();
+        }
+        else
+        {
+            /*
+             *  For some reason when this code is run the shapes no longer
+             *  display
+             */
+            //shape.animate(100).bounds(centerBounds).alpha(0).play();
+            /*
+             * After it appears to have zoomed into oblivion, return it to it's
+             * initial size
+             */
+            //shape.setBounds(origBounds);
+        }
     }
 
 
@@ -332,15 +403,16 @@ public class TacGameScreen
      */
     public void action_refreshClicked()
     {
-        DialogFragment restartDialog =
-            new RestartGameDialogFragment();
+        DialogFragment restartDialog = new RestartGameDialogFragment();
         restartDialog.show(getFragmentManager(), "NoticeDialogFragment");
     }
+
 
     /**
      * The user decided to really restart so go ahead and do that.
      *
-     * @param dialog The dialog object that received the positive click.
+     * @param dialog
+     *            The dialog object that received the positive click.
      */
     public void onDialogPositiveClick(DialogFragment dialog)
     {
@@ -348,25 +420,36 @@ public class TacGameScreen
         this.reflectModel();
     }
 
+
     /**
      * The user decided not to restart, do nothing.
      *
-     * @param dialog The dialog object that received the negative click.
+     * @param dialog
+     *            The dialog object that received the negative click.
      */
     public void onDialogNegativeClick(DialogFragment dialog)
     {
         // Do nothing
     }
 
+
     /**
      * The undo button was pressed, undo the move recent move.
      */
     public void action_undoClicked()
     {
-        CharSequence text = "Undo isn't supported yet :(";
-        int duration = Toast.LENGTH_SHORT;
+        //if there was a last move show an animation zooming it out
+        if (grid.getLastMove() != null)
+        {
+            int x = grid.getLastMove()[1];
+            int y = grid.getLastMove()[0];
 
-        Toast.makeText(getApplicationContext(), text, duration).show();
+            Cell cell = grid.getCell(y, x);
+            Color cellColor = (cell == Cell.RED1) ? p1Color : p2Color;
+            zoom(cells[x][y], cellColor, 0, false);
+            grid.undoMove();
+            reflectModel();
+        }
     }
 
 
@@ -387,17 +470,17 @@ public class TacGameScreen
         {
             loca = 0;
         }
-        else if (touch >= boardSize + boardPad
-            && touch <= boardSize * 2 + boardPad)
+        else if (touch >= boardSize + boardPad * 2
+            && touch <= boardSize * 2 + boardPad * 2)
         {
             loca = 3;
-            touch = touch - (boardSize + boardPad);
+            touch = touch - (boardSize + boardPad * 2);
         }
-        else if (touch >= boardSize * 2 + boardPad * 2
-            && touch <= boardSize * 3 + boardPad * 2)
+        else if (touch >= boardSize * 2 + boardPad * 4
+            && touch <= boardSize * 3 + boardPad * 4)
         {
             loca = 6;
-            touch = touch - (boardSize * 2 + boardPad * 2);
+            touch = touch - (boardSize * 2 + boardPad * 4);
         }
 
         if (loca != -1)

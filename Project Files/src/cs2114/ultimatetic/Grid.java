@@ -173,8 +173,9 @@ public class Grid
      *            The row (0-8) of the cell on the grid.
      * @param col
      *            The column (0-8) of the cell on the grid.
+     * @return boolean True if a mark was placed.
      */
-    public void setCell(int row, int col)
+    public boolean setCell(int row, int col)
     {
         int boardRow = row / 3;
         int cellRow = row % 3;
@@ -214,9 +215,12 @@ public class Grid
             lastMove[0] = row;
             lastMove[1] = col;
             moves.push(lastMove);
+
+            // Indicate that a move was made
+            return true;
         }
 
-
+        return false;
 
     }
 
@@ -262,6 +266,8 @@ public class Grid
         whoHasWon = Cell.EMPTY;
 
         turn = Cell.RED1;
+
+        moves.clear();
     }
 
 
@@ -392,27 +398,77 @@ public class Grid
      * (To be implemented) Pops the last move off of the stack and applies it in
      * reverse to the grid.
      */
-    public void undoMove()
+    public boolean undoMove()
     {
-        // TODO Implement this.
+        // Check that a move has been made
+        if (moves.isEmpty())
+        {
+            return false;
+        }
 
         // Pop last move off stack
+        int[] move = moves.pop();
 
-        // Set isPlayable to the board on which the last move was played
+        // Figure out where the move was
+        int boardRow = move[0] / 3;
+        int cellRow = move[0] % 3;
+        int boardCol = move[1] / 3;
+        int cellCol = move[1] % 3;
 
         // Remove the mark from that board
-        // -> Write some method in board that will allow mark deletion
+        getBoard(boardRow, boardCol).setCell(cellRow, cellCol,
+            Cell.EMPTY, true);
+
+        // Set isPlayable based on the prior move
+        if (!moves.isEmpty())
+        {
+            int[] move2 = moves.peek();
+
+            // Figure out where the move was
+            int boardRow2 = move2[0] / 3;
+            int cellRow2 = move2[0] % 3;
+            int boardCol2 = move2[1] / 3;
+            int cellCol2 = move2[1] % 3;
+
+            refreshIsPlayable(cellRow2, cellCol2);
+        }
+        else
+        {
+            for (Board[] r : grid)
+            {
+                for (Board b : r)
+                {
+                    if (b.getWhoHasWon() == Cell.EMPTY)
+                    {
+                        b.setIsPlayable(true);
+                    }
+                }
+            }
+        }
+
+
 
         // Change the turn to the other player
+        if (turn == Cell.RED1)
+        {
+            turn = Cell.BLUE2;
+        }
+        else
+        {
+            turn = Cell.RED1;
+        }
 
-        // (Consider what happens when ai is playing)
+        return true;
+
+        // TODO (Consider what happens when ai is playing)
 
     }
 
 
     // ----------------------------------------------------------
     /**
-     * Place a description of your method here.
+     * Set a certain board to be playable, and reset other boards' "playability"
+     * as necessary.
      *
      * @param boardRow
      *            The row of the board that will be played in next.
@@ -430,7 +486,8 @@ public class Grid
             }
         }
         // Set one board playable if it is not won
-        if (this.getBoard(boardRow, boardCol).getWhoHasWon() == Cell.EMPTY)
+        if (this.getBoard(boardRow, boardCol).getWhoHasWon() == Cell.EMPTY
+            && this.getWhoHasWon() == Cell.EMPTY)
         {
             this.getBoard(boardRow, boardCol).setIsPlayable(true);
         }

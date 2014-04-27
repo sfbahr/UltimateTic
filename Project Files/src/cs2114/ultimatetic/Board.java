@@ -148,6 +148,27 @@ public class Board
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Sets the specified cell without any checks. Just does it. For use with
+     * the undo function.
+     *
+     * @param row
+     *            The row index of the cell.
+     * @param col
+     *            The column index of the cell.
+     * @param mark
+     *            A Cell value indicating which mark should be placed.
+     * @param overload
+     *            Overloads the method to do the checkless setcell.
+     */
+    public void setCell(int row, int col, Cell mark, boolean overload)
+    {
+        board[row][col] = mark;
+        checkForTriple();
+    }
+
+
     /**
      * Gets the specified cell. Note that indices start at zero. Rows/columns
      * are numbered from left to right and top to bottom.
@@ -318,6 +339,7 @@ public class Board
     // ----------------------------------------------------------
     /**
      * Getter for isPlayable.
+     *
      * @return boolean The value of isPlayable.
      */
     public boolean getIsPlayable()
@@ -329,7 +351,9 @@ public class Board
     // ----------------------------------------------------------
     /**
      * Setter for isPlayable.
-     * @param isPlayable The desired value of isPlayable.
+     *
+     * @param isPlayable
+     *            The desired value of isPlayable.
      */
     public void setIsPlayable(boolean isPlayable)
     {
