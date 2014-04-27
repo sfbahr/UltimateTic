@@ -24,11 +24,10 @@ public class AIGrid
 
 
     // ----------------------------------------------------------
-    public boolean setCell(int row, int col)
+    public void setCell(int row, int col)
     {
-        boolean boo = super.setCell(row, col);
+        super.setCell(row, col);
         this.makeMove();
-        return boo;
     }
 
 

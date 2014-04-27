@@ -57,7 +57,7 @@ public class TacGameScreen
      */
     public void initialize()
     {
-        grid = new Grid();
+        grid = new AIGrid();
         gridSize = Math.min(getWidth(), getHeight()) - 2 * gridPad;
         boardSize = gridSize / 3 - 2 * boardPad;
         cellSize = boardSize / 3;
