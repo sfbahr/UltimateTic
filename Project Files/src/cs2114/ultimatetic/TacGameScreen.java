@@ -32,9 +32,8 @@ public class TacGameScreen
     private final Color        p1Color         = Color.indianRed;
     private final Color        p2Color         = Color.cornflowerBlue;
     private final Color        invalidColor    = Color.gray;
-    private final int          boardOpacity    = 100;
-    private final int          cellOpacity     = 170;
-    private final int          lastCellOpacity = 255;
+    private final int          boardOpacity    = 120;
+    private final int          cellOpacity     = 225;
     private float              gridSize;
     private float              boardSize;
     private float              cellSize;
@@ -232,7 +231,7 @@ public class TacGameScreen
             {
                 Cell cell = grid.getCell(gridY, gridX);
                 Color cellColor = (cell == Cell.RED1) ? p1Color : p2Color;
-                zoom(cells[gridX][gridY], cellColor, lastCellOpacity, true);
+                zoom(cells[gridX][gridY], cellColor, cellOpacity, true);
             }
             this.reflectModel();
         }
@@ -249,7 +248,7 @@ public class TacGameScreen
         if (whoHasWon == Cell.RED1)
         {
             guiGrid.setFillColor(p1Color);
-            guiGrid.setAlpha(40);
+            guiGrid.setAlpha(75);
             turnInd.setImage("player_one_won");
             /*
              * Toast.makeText(getApplicationContext(), "Player One has won",
@@ -259,7 +258,7 @@ public class TacGameScreen
         else if (whoHasWon == Cell.BLUE2)
         {
             guiGrid.setFillColor(p2Color);
-            guiGrid.setAlpha(40);
+            guiGrid.setAlpha(75);
             turnInd.setImage("player_two_won");
             /*
              * Toast.makeText(getApplicationContext(), "Player Two has won",
@@ -352,7 +351,8 @@ public class TacGameScreen
             int y = grid.getLastMove()[0];
             // No need to set the FillColor since it's the same as all other
             // moves
-            cells[x][y].setAlpha(lastCellOpacity);
+            String last = (grid.getCell(y, x) == Cell.RED1) ? "last_move_one" : "last_move_two";
+            cells[x][y].setImage(last);
         }
     }
 
@@ -377,6 +377,8 @@ public class TacGameScreen
         {
             shape.setAlpha(0);
             shape.setBounds(centerBounds);
+            String imgClr = (color == p1Color) ? "last_move_one" : "last_move_two";
+            shape.setImage(imgClr);
             shape.animate(100).bounds(origBounds).alpha(opac).play();
         }
         else
