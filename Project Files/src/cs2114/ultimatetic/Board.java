@@ -165,6 +165,7 @@ public class Board
     public void setCell(int row, int col, Cell mark, boolean overload)
     {
         board[row][col] = mark;
+        checkForTriple();
     }
 
 
