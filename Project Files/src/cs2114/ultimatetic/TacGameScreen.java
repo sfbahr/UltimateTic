@@ -346,10 +346,14 @@ public class TacGameScreen
         }
 
         // Set the last move
-        int x = grid.getLastMove()[1];
-        int y = grid.getLastMove()[0];
-        // No need to set the FillColor since it's the same as all other moves
-        cells[x][y].setAlpha(lastCellOpacity);
+        if (grid.getLastMove() != null)
+        {
+            int x = grid.getLastMove()[1];
+            int y = grid.getLastMove()[0];
+            // No need to set the FillColor since it's the same as all other
+            // moves
+            cells[x][y].setAlpha(lastCellOpacity);
+        }
     }
 
 
@@ -427,15 +431,17 @@ public class TacGameScreen
      */
     public void action_undoClicked()
     {
-        int x = grid.getLastMove()[1];
-        int y = grid.getLastMove()[0];
         if (grid.undoMove())
         {
+            int x = grid.getLastMove()[1];
+            int y = grid.getLastMove()[0];
+
             Cell cell = grid.getCell(y, x);
             Color cellColor = (cell == Cell.RED1) ? p1Color : p2Color;
             zoom(cells[x][y], cellColor, 0, false);
+
+            reflectModel();
         }
-        reflectModel();
     }
 
 
