@@ -268,6 +268,8 @@ public class Grid
         whoHasWon = Cell.EMPTY;
 
         turn = Cell.RED1;
+
+        moves.clear();
     }
 
 
@@ -410,10 +412,10 @@ public class Grid
         int[] move = moves.pop();
 
         // Figure out where the move was
-        int boardRow = move[1] / 3;
-        int cellRow = move[1] % 3;
-        int boardCol = move[2] / 3;
-        int cellCol = move[2] % 3;
+        int boardRow = move[0] / 3;
+        int cellRow = move[0] % 3;
+        int boardCol = move[1] / 3;
+        int cellCol = move[1] % 3;
 
         // Remove the mark from that board
         getBoard(boardRow, boardCol).setCell(cellRow, cellCol,
