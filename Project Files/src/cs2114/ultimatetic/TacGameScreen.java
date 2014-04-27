@@ -1,5 +1,6 @@
 package cs2114.ultimatetic;
 
+import android.graphics.RectF;
 import android.app.DialogFragment;
 import sofia.graphics.Color;
 import sofia.app.ShapeScreen;
@@ -227,6 +228,10 @@ public class TacGameScreen
             int gridX = gridLocation(x);
             int gridY = gridLocation(y);
             grid.setCell(gridY, gridX);
+            /*if (grid.setCell(gridY, gridX))
+            {
+                zoomIn(cells[i][j], p2Color, cellOpacity);
+            }*/
             this.reflectModel();
         }
     }
@@ -339,6 +344,26 @@ public class TacGameScreen
         }
     }
 
+    /**
+     *
+     */
+    public void zoomIn(RectangleShape shape, Color color, int opac)
+    {
+        float centerX = shape.getBounds().centerX();
+        float centerY = shape.getBounds().centerY();
+        float left = centerX - shape.getBounds().width() / 2;
+        float top = centerY - shape.getBounds().height() / 2;
+        float right = centerX + shape.getBounds().width() / 2;
+        float bottom = centerY + shape.getBounds().height() / 2;
+
+        RectF centerBounds = new RectF(centerX, centerY, centerX, centerY);
+        shape.setBounds(centerBounds);
+        shape.setAlpha(0);
+
+        shape.setFillColor(color);
+        RectF origBounds = new RectF(left, top, right, bottom);
+        shape.animate(100).bounds(origBounds).alpha(opac).play();
+    }
 
     /**
      * The restart/refresh button was pressed, open the confirmation dialog.
@@ -404,17 +429,17 @@ public class TacGameScreen
         {
             loca = 0;
         }
-        else if (touch >= boardSize + boardPad
-            && touch <= boardSize * 2 + boardPad)
+        else if (touch >= boardSize + boardPad * 2
+            && touch <= boardSize * 2 + boardPad * 2)
         {
             loca = 3;
-            touch = touch - (boardSize + boardPad);
+            touch = touch - (boardSize + boardPad * 2);
         }
-        else if (touch >= boardSize * 2 + boardPad * 2
-            && touch <= boardSize * 3 + boardPad * 2)
+        else if (touch >= boardSize * 2 + boardPad * 4
+            && touch <= boardSize * 3 + boardPad * 4)
         {
             loca = 6;
-            touch = touch - (boardSize * 2 + boardPad * 2);
+            touch = touch - (boardSize * 2 + boardPad * 4);
         }
 
         if (loca != -1)
