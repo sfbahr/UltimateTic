@@ -421,6 +421,9 @@ public class Grid
         getBoard(boardRow, boardCol).setCell(cellRow, cellCol,
             Cell.EMPTY, true);
 
+        // Set the grid to playable
+        setWhoHasWon(Cell.EMPTY);
+
         // Set isPlayable based on the prior move
         if (!moves.isEmpty())
         {
