@@ -114,21 +114,24 @@ public class AIGrid
         for (int i = board[0]; i <= board[0] + 2; i++)
         {
             if ((this.getCell(i, board[1]) == this.getCell(i, board[1] + 1))
-                && this.getCell(i, board[1]) == Cell.BLUE2)
+                && this.getCell(i, board[1]) == Cell.BLUE2
+                && this.getCell(i, board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(i, board[1] + 2);
                 return true;
             }
 
             if ((this.getCell(i, board[1] + 1) == this.getCell(i, board[1] + 2))
-                && this.getCell(i, board[1] + 1) == Cell.BLUE2)
+                && this.getCell(i, board[1] + 1) == Cell.BLUE2
+                && this.getCell(i, board[1]) == Cell.EMPTY)
             {
                 super.setCell(i, board[1]);
                 return true;
             }
 
             if ((this.getCell(i, board[1]) == this.getCell(i, board[1] + 2))
-                && this.getCell(i, board[1]) == Cell.BLUE2)
+                && this.getCell(i, board[1]) == Cell.BLUE2
+                && this.getCell(i, board[1] + 1) == Cell.EMPTY)
             {
                 super.setCell(i, board[1] + 1);
                 return true;
@@ -139,21 +142,24 @@ public class AIGrid
         for (int i = board[1]; i <= board[1] + 2; i++)
         {
             if ((this.getCell(board[0], i) == this.getCell(board[0] + 1, i))
-                && this.getCell(board[0], i) == Cell.BLUE2)
+                && this.getCell(board[0], i) == Cell.BLUE2
+                && this.getCell(board[0] + 2, i) == Cell.EMPTY)
             {
-                super.setCell(board[0], i);
+                super.setCell(board[0] + 2, i);
                 return true;
             }
 
             if ((this.getCell(board[0] + 1, i) == this.getCell(board[0] + 2, i))
-                && this.getCell(board[0] + 1, i) == Cell.BLUE2)
+                && this.getCell(board[0] + 1, i) == Cell.BLUE2
+                && this.getCell(board[0], i) == Cell.EMPTY)
             {
                 super.setCell(board[0], i);
                 return true;
             }
 
             if ((this.getCell(board[0], i) == this.getCell(board[0] + 2, i))
-                && this.getCell(board[0], i) == Cell.BLUE2)
+                && this.getCell(board[0], i) == Cell.BLUE2
+                && this.getCell(board[0] + 1, i) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 1, i);
                 return true;
@@ -163,7 +169,9 @@ public class AIGrid
         // check diagonals for win
         if ((this.getCell(board[0], board[1]) == this.getCell(
             board[0] + 1,
-            board[1] + 1)) && this.getCell(board[0], board[1]) == Cell.BLUE2)
+            board[1] + 1))
+            && this.getCell(board[0], board[1]) == Cell.BLUE2
+            && this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
         {
             super.setCell(board[0] + 2, board[1] + 2);
             return true;
@@ -171,7 +179,9 @@ public class AIGrid
 
         if ((this.getCell(board[0], board[1]) == this.getCell(
             board[0] + 2,
-            board[1] + 2)) && this.getCell(board[0], board[1]) == Cell.BLUE2)
+            board[1] + 2))
+            && this.getCell(board[0], board[1]) == Cell.BLUE2
+            && this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
         {
             super.setCell(board[0] + 1, board[1] + 1);
             return true;
@@ -180,7 +190,8 @@ public class AIGrid
         if ((this.getCell(board[0] + 1, board[1] + 1) == this.getCell(
             board[0] + 2,
             board[1] + 2))
-            && this.getCell(board[0] + 1, board[1] + 1) == Cell.BLUE2)
+            && this.getCell(board[0] + 1, board[1] + 1) == Cell.BLUE2
+            && this.getCell(board[0], board[1]) == Cell.EMPTY)
         {
             super.setCell(board[0], board[1]);
             return true;
@@ -189,7 +200,8 @@ public class AIGrid
         if ((this.getCell(board[0], board[1] + 2) == this.getCell(
             board[0] + 1,
             board[1] + 1))
-            && this.getCell(board[0], board[1] + 2) == Cell.BLUE2)
+            && this.getCell(board[0], board[1] + 2) == Cell.BLUE2
+            && this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
         {
             super.setCell(board[0] + 2, board[1]);
             return true;
@@ -197,8 +209,8 @@ public class AIGrid
 
         if ((this.getCell(board[0], board[1] + 2) == this.getCell(
             board[0] + 2,
-            board[1]))
-            && this.getCell(board[0] + 1, board[1] + 1) == Cell.BLUE2)
+            board[1])) && this.getCell(board[0], board[1] + 2) == Cell.BLUE2
+            && this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
         {
             super.setCell(board[0] + 1, board[1] + 1);
             return true;
@@ -207,7 +219,8 @@ public class AIGrid
         if ((this.getCell(board[0] + 1, board[1] + 1) == this.getCell(
             board[0] + 2,
             board[1]))
-            && this.getCell(board[0] + 1, board[1] + 1) == Cell.BLUE2)
+            && this.getCell(board[0] + 1, board[1] + 1) == Cell.BLUE2
+            && this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
         {
             super.setCell(board[0], board[1] + 2);
             return true;
@@ -283,7 +296,8 @@ public class AIGrid
         // check to block diagonals
         if ((this.getCell(board[0], board[1]) == this.getCell(
             board[0] + 1,
-            board[1] + 1)) && this.getCell(board[0], board[1]) == Cell.RED1
+            board[1] + 1))
+            && this.getCell(board[0], board[1]) == Cell.RED1
             && this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
         {
             super.setCell(board[0] + 2, board[1] + 2);
@@ -292,7 +306,8 @@ public class AIGrid
 
         if ((this.getCell(board[0], board[1]) == this.getCell(
             board[0] + 2,
-            board[1] + 2)) && this.getCell(board[0], board[1]) == Cell.RED1
+            board[1] + 2))
+            && this.getCell(board[0], board[1]) == Cell.RED1
             && this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
         {
             super.setCell(board[0] + 1, board[1] + 1);
@@ -311,7 +326,8 @@ public class AIGrid
 
         if ((this.getCell(board[0], board[1] + 2) == this.getCell(
             board[0] + 1,
-            board[1] + 1)) && this.getCell(board[0], board[1] + 2) == Cell.RED1
+            board[1] + 1))
+            && this.getCell(board[0], board[1] + 2) == Cell.RED1
             && this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
         {
             super.setCell(board[0] + 2, board[1]);
@@ -320,7 +336,8 @@ public class AIGrid
 
         if ((this.getCell(board[0], board[1] + 2) == this.getCell(
             board[0] + 2,
-            board[1])) && this.getCell(board[0] + 1, board[1] + 1) == Cell.RED1
+            board[1]))
+            && this.getCell(board[0] + 1, board[1] + 1) == Cell.RED1
             && this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
         {
             super.setCell(board[0] + 1, board[1] + 1);
@@ -329,7 +346,8 @@ public class AIGrid
 
         if ((this.getCell(board[0] + 1, board[1] + 1) == this.getCell(
             board[0] + 2,
-            board[1])) && this.getCell(board[0] + 1, board[1] + 1) == Cell.RED1
+            board[1]))
+            && this.getCell(board[0] + 1, board[1] + 1) == Cell.RED1
             && this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
         {
             super.setCell(board[0], board[1] + 2);
