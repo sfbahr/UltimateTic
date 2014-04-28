@@ -41,7 +41,11 @@ public class AIGrid
 
     public boolean undoMove()
     {
-        super.undoMove();
+        if (this.getWhoHasWon() == Cell.EMPTY
+            || this.getWhoHasWon() == Cell.BLUE2)
+        {
+            super.undoMove();
+        }
         return super.undoMove();
     }
 
@@ -209,7 +213,8 @@ public class AIGrid
 
         if ((this.getCell(board[0], board[1] + 2) == this.getCell(
             board[0] + 2,
-            board[1])) && this.getCell(board[0], board[1] + 2) == Cell.BLUE2
+            board[1]))
+            && this.getCell(board[0], board[1] + 2) == Cell.BLUE2
             && this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
         {
             super.setCell(board[0] + 1, board[1] + 1);
