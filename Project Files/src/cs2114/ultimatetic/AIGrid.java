@@ -13,6 +13,9 @@ public class AIGrid
     extends Grid
 {
 
+    private int[] board;
+
+
     // ----------------------------------------------------------
     /**
      * Create a new AI object.
@@ -27,9 +30,19 @@ public class AIGrid
     public boolean setCell(int row, int col)
     {
         boolean boo = super.setCell(row, col);
-        this.makeMove();
-        super.setTurn(Cell.RED1);
+        if (boo)
+        {
+            this.whichIsPlayable();
+            this.makeMove();
+        }
         return boo;
+    }
+
+
+    public boolean undoMove()
+    {
+        super.undoMove();
+        return super.undoMove();
     }
 
 
@@ -71,192 +84,132 @@ public class AIGrid
 
     // ----------------------------------------------------------
     /**
+     * Determines which board is playable
+     */
+    // ----------------------------------------------------------
+    public void whichIsPlayable()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (this.getBoard(i, j).getIsPlayable())
+                {
+                    board = new int[] { i * 3, j * 3 };
+                }
+            }
+        }
+    }
+
+
+    /**
      * Win if possible
      *
      * @return true if win
      */
     public boolean checkForWin()
     {
+
         // check columns for win
-        for (int i = 0; i <= 2; i++)
+        for (int i = board[0]; i <= board[0] + 2; i++)
         {
-            if ((this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(i, 0) == this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(i, 1))
-                && this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).getCell(i, 0) == Cell.BLUE2)
+            if ((this.getCell(i, board[1]) == this.getCell(i, board[1] + 1))
+                && this.getCell(i, board[1]) == Cell.BLUE2)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(i, 2, Cell.BLUE2);
+                super.setCell(i, board[1] + 2);
                 return true;
             }
 
-            if ((this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(i, 1) == this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(i, 2))
-                && this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).getCell(i, 1) == Cell.BLUE2)
+            if ((this.getCell(i, board[1] + 1) == this.getCell(i, board[1] + 2))
+                && this.getCell(i, board[1] + 1) == Cell.BLUE2)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(i, 0, Cell.BLUE2);
+                super.setCell(i, board[1]);
                 return true;
             }
 
-            if ((this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(i, 0) == this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(i, 2))
-                && this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).getCell(i, 0) == Cell.BLUE2)
+            if ((this.getCell(i, board[1]) == this.getCell(i, board[1] + 2))
+                && this.getCell(i, board[1]) == Cell.BLUE2)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(i, 1, Cell.BLUE2);
+                super.setCell(i, board[1] + 1);
                 return true;
             }
         }
 
         // check rows for win
-        for (int i = 0; i <= 2; i++)
+        for (int i = board[1]; i <= board[1] + 2; i++)
         {
-            if ((this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, i) == this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, i))
-                && this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).getCell(0, i) == Cell.BLUE2)
+            if ((this.getCell(board[0], i) == this.getCell(board[0] + 1, i))
+                && this.getCell(board[0], i) == Cell.BLUE2)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, i, Cell.BLUE2);
+                super.setCell(board[0], i);
                 return true;
             }
 
-            if ((this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, i) == this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, i))
-                && this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).getCell(1, i) == Cell.BLUE2)
+            if ((this.getCell(board[0] + 1, i) == this.getCell(board[0] + 2, i))
+                && this.getCell(board[0] + 1, i) == Cell.BLUE2)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, i, Cell.BLUE2);
+                super.setCell(board[0], i);
                 return true;
             }
 
-            if ((this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, i) == this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, i))
-                && this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).getCell(0, i) == Cell.BLUE2)
+            if ((this.getCell(board[0], i) == this.getCell(board[0] + 2, i))
+                && this.getCell(board[0], i) == Cell.BLUE2)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, i, Cell.BLUE2);
+                super.setCell(board[0] + 1, i);
                 return true;
             }
         }
 
         // check diagonals for win
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0] + 1,
+            board[1] + 1)) && this.getCell(board[0], board[1]) == Cell.BLUE2)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(2, 2, Cell.BLUE2);
+            super.setCell(board[0] + 2, board[1] + 2);
             return true;
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0] + 2,
+            board[1] + 2)) && this.getCell(board[0], board[1]) == Cell.BLUE2)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(1, 1, Cell.BLUE2);
+            super.setCell(board[0] + 1, board[1] + 1);
             return true;
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 1, board[1] + 1) == this.getCell(
+            board[0] + 2,
+            board[1] + 2))
+            && this.getCell(board[0] + 1, board[1] + 1) == Cell.BLUE2)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(0, 0, Cell.BLUE2);
+            super.setCell(board[0], board[1]);
             return true;
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1] + 2) == this.getCell(
+            board[0] + 1,
+            board[1] + 1))
+            && this.getCell(board[0], board[1] + 2) == Cell.BLUE2)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(2, 0, Cell.BLUE2);
+            super.setCell(board[0] + 2, board[1]);
             return true;
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1] + 2) == this.getCell(
+            board[0] + 2,
+            board[1]))
+            && this.getCell(board[0] + 1, board[1] + 1) == Cell.BLUE2)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(1, 1, Cell.BLUE2);
+            super.setCell(board[0] + 1, board[1] + 1);
             return true;
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 1, board[1] + 1) == this.getCell(
+            board[0] + 2,
+            board[1]))
+            && this.getCell(board[0] + 1, board[1] + 1) == Cell.BLUE2)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(0, 2, Cell.BLUE2);
+            super.setCell(board[0], board[1] + 2);
             return true;
         }
         return false;
@@ -271,186 +224,115 @@ public class AIGrid
      */
     public boolean blockLoss()
     {
-        // check to block columns
-        for (int i = 0; i <= 2; i++)
+        // check to block rows
+        for (int i = board[0]; i <= board[0] + 2; i++)
         {
-            if ((this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(i, 0) == this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(i, 1))
-                && this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).getCell(i, 0) == Cell.RED1)
+            if ((this.getCell(i, board[1]) == this.getCell(i, board[1] + 1))
+                && this.getCell(i, board[1]) == Cell.RED1
+                && this.getCell(i, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(i, 2, Cell.BLUE2);
+                super.setCell(i, board[1] + 2);
                 return true;
             }
 
-            if ((this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(i, 1) == this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(i, 2))
-                && this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).getCell(i, 1) == Cell.RED1)
+            if ((this.getCell(i, board[1] + 1) == this.getCell(i, board[1] + 2))
+                && this.getCell(i, board[1] + 1) == Cell.RED1
+                && this.getCell(i, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(i, 0, Cell.BLUE2);
+                super.setCell(i, board[1]);
                 return true;
             }
 
-            if ((this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(i, 0) == this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(i, 2))
-                && this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).getCell(i, 0) == Cell.RED1)
+            if ((this.getCell(i, board[1]) == this.getCell(i, board[1] + 2))
+                && this.getCell(i, board[1]) == Cell.RED1
+                && this.getCell(i, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(i, 1, Cell.BLUE2);
+                super.setCell(i, board[1] + 1);
                 return true;
             }
         }
 
-        // check to block rows
-        for (int i = 0; i <= 2; i++)
+        // check to block columns
+        for (int i = board[1]; i <= board[1] + 2; i++)
         {
-            if ((this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, i) == this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, i))
-                && this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).getCell(0, 1) == Cell.RED1)
+            if ((this.getCell(board[0], i) == this.getCell(board[0] + 1, i))
+                && this.getCell(board[0], i) == Cell.RED1
+                && this.getCell(board[0] + 2, i) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, i, Cell.BLUE2);
+                super.setCell(board[0] + 2, i);
                 return true;
             }
 
-            if ((this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, i) == this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, i))
-                && this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).getCell(1, i) == Cell.RED1)
+            if ((this.getCell(board[0] + 1, i) == this.getCell(board[0] + 2, i))
+                && this.getCell(board[0] + 1, i) == Cell.RED1
+                && this.getCell(board[0], i) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, i, Cell.BLUE2);
+                super.setCell(board[0], i);
                 return true;
             }
 
-            if ((this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, i) == this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, i))
-                && this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).getCell(0, i) == Cell.RED1)
+            if ((this.getCell(board[0], i) == this.getCell(board[0] + 2, i))
+                && this.getCell(board[0], i) == Cell.RED1
+                && this.getCell(board[0] + 1, i) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, i, Cell.BLUE2);
+                super.setCell(board[0] + 1, i);
                 return true;
             }
         }
 
         // check to block diagonals
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.RED1)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0] + 1,
+            board[1] + 1)) && this.getCell(board[0], board[1]) == Cell.RED1
+            && this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(2, 2, Cell.BLUE2);
+            super.setCell(board[0] + 2, board[1] + 2);
             return true;
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.RED1)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0] + 2,
+            board[1] + 2)) && this.getCell(board[0], board[1]) == Cell.RED1
+            && this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(1, 1, Cell.BLUE2);
+            super.setCell(board[0] + 1, board[1] + 1);
             return true;
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.RED1)
+        if ((this.getCell(board[0] + 1, board[1] + 1) == this.getCell(
+            board[0] + 2,
+            board[1] + 2))
+            && this.getCell(board[0] + 1, board[1] + 1) == Cell.RED1
+            && this.getCell(board[0], board[1]) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(0, 0, Cell.BLUE2);
+            super.setCell(board[0], board[1]);
             return true;
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.RED1)
+        if ((this.getCell(board[0], board[1] + 2) == this.getCell(
+            board[0] + 1,
+            board[1] + 1)) && this.getCell(board[0], board[1] + 2) == Cell.RED1
+            && this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(2, 0, Cell.BLUE2);
+            super.setCell(board[0] + 2, board[1]);
             return true;
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.RED1)
+        if ((this.getCell(board[0], board[1] + 2) == this.getCell(
+            board[0] + 2,
+            board[1])) && this.getCell(board[0] + 1, board[1] + 1) == Cell.RED1
+            && this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(1, 1, Cell.BLUE2);
+            super.setCell(board[0] + 1, board[1] + 1);
             return true;
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.RED1)
+        if ((this.getCell(board[0] + 1, board[1] + 1) == this.getCell(
+            board[0] + 2,
+            board[1])) && this.getCell(board[0] + 1, board[1] + 1) == Cell.RED1
+            && this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(0, 2, Cell.BLUE2);
+            super.setCell(board[0], board[1] + 2);
             return true;
         }
         return false;
@@ -466,932 +348,528 @@ public class AIGrid
     public boolean createFork()
     {
         // 1) 3 corners
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(0, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0],
+            board[1] + 2)) && this.getCell(board[0], board[1]) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0] + 2,
+            board[1])) && this.getCell(board[0], board[1]) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0] + 2,
+            board[1] + 2)) && this.getCell(board[0], board[1]) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1] + 2) == this.getCell(
+            board[0] + 2,
+            board[1])) && this.getCell(board[0], board[1] + 2) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1] + 2) == this.getCell(
+            board[0] + 2,
+            board[1] + 2))
+            && this.getCell(board[0], board[1] + 2) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 2, board[1]) == this.getCell(
+            board[0] + 2,
+            board[1] + 2))
+            && this.getCell(board[0] + 2, board[1]) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
         }
 
         // 2) 2 corners and the middle
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0] + 1,
+            board[1] + 1)) && this.getCell(board[0], board[1]) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1] + 2) == this.getCell(
+            board[0] + 1,
+            board[1] + 1))
+            && this.getCell(board[0], board[1] + 2) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 2, board[1]) == this.getCell(
+            board[0] + 1,
+            board[1] + 1))
+            && this.getCell(board[0] + 2, board[1]) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 2, board[1] + 2) == this.getCell(
+            board[0] + 1,
+            board[1] + 1)) && this.getCell(board[0], board[1]) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(0, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0],
+            board[1] + 2)) && this.getCell(board[0], board[1]) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0] + 2,
+            board[1])) && this.getCell(board[0], board[1]) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0] + 2,
+            board[1] + 2)) && this.getCell(board[0], board[1]) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1] + 2) == this.getCell(
+            board[0] + 2,
+            board[1])) && this.getCell(board[0], board[1] + 2) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1] + 2) == this.getCell(
+            board[0] + 2,
+            board[1] + 2))
+            && this.getCell(board[0], board[1] + 2) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 2, board[1]) == this.getCell(
+            board[0] + 2,
+            board[1] + 2))
+            && this.getCell(board[0] + 2, board[1]) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
 
         // 3 & 4) 2 sides and adjacent corner & middle and adjacent sides
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 1) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1])) && this.getCell(board[0], board[1] + 1) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 1) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1] + 2))
+            && this.getCell(board[0], board[1] + 1) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 1) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 2, board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1]))
+            && this.getCell(board[0] + 2, board[1] + 1) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 1) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 2, board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1] + 2))
+            && this.getCell(board[0] + 2, board[1] + 1) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
 
         // 5) corner, middle, and adjacent side
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 0) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 1, board[1]) == this.getCell(
+            board[0] + 1,
+            board[1] + 1))
+            && this.getCell(board[0] + 1, board[1]) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 1) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1] + 1))
+            && this.getCell(board[0], board[1] + 1) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 2) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 1, board[1] + 2) == this.getCell(
+            board[0] + 1,
+            board[1] + 1))
+            && this.getCell(board[0] + 1, board[1] + 2) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 1) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 2, board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1] + 1))
+            && this.getCell(board[0] + 2, board[1] + 1) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 1) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1])) && this.getCell(board[0], board[1] + 1) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 1) == Cell.BLUE2)
+        if ((this.getCell(board[0], board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1] + 2))
+            && this.getCell(board[0], board[1] + 1) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 1) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 2, board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1]))
+            && this.getCell(board[0] + 2, board[1] + 1) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 1) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 2, board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1] + 2))
+            && this.getCell(board[0] + 2, board[1] + 1) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
 
         // 6 & 7) 2 adjacent corners and adjacent side &
-        //opposite sides and corner
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(0, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 0) == Cell.BLUE2)
+        // opposite sides and corner
+        if ((this.getCell(board[0] + 1, board[1]) == this.getCell(
+            board[0],
+            board[1] + 2))
+            && this.getCell(board[0] + 1, board[1]) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 2, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 0) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 1, board[1]) == this.getCell(
+            board[0] + 2,
+            board[1] + 2))
+            && this.getCell(board[0] + 1, board[1]) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 2, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(0, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 2) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 1, board[1] + 2) == this.getCell(
+            board[0],
+            board[1]))
+            && this.getCell(board[0] + 1, board[1] + 2) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 0, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(0, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 2) == Cell.BLUE2)
+        if ((this.getCell(board[0] + 1, board[1] + 2) == this.getCell(
+            board[0],
+            board[1]))
+            && this.getCell(board[0] + 1, board[1] + 2) == Cell.BLUE2)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 0, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
@@ -1407,933 +885,513 @@ public class AIGrid
      */
     public boolean blockFork()
     {
-     // 1) 3 corners
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(0, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.RED1)
+        // 1) 3 corners
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0],
+            board[1] + 2)) && this.getCell(board[0], board[1]) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.RED1)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0] + 2,
+            board[1])) && this.getCell(board[0], board[1]) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.RED1)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0] + 2,
+            board[1] + 2)) && this.getCell(board[0], board[1]) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.RED1)
+        if ((this.getCell(board[0], board[1] + 2) == this.getCell(
+            board[0] + 2,
+            board[1])) && this.getCell(board[0], board[1] + 2) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.RED1)
+        if ((this.getCell(board[0], board[1] + 2) == this.getCell(
+            board[0] + 2,
+            board[1] + 2)) && this.getCell(board[0], board[1] + 2) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.RED1)
+        if ((this.getCell(board[0] + 2, board[1]) == this.getCell(
+            board[0] + 2,
+            board[1] + 2)) && this.getCell(board[0] + 2, board[1]) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
         }
 
         // 2) 2 corners and the middle
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.RED1)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0] + 1,
+            board[1] + 1)) && this.getCell(board[0], board[1]) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
 
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.RED1)
+        if ((this.getCell(board[0], board[1] + 2) == this.getCell(
+            board[0] + 1,
+            board[1] + 1)) && this.getCell(board[0], board[1] + 2) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.RED1)
+        if ((this.getCell(board[0] + 2, board[1]) == this.getCell(
+            board[0] + 1,
+            board[1] + 1)) && this.getCell(board[0] + 2, board[1]) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.RED1)
+        if ((this.getCell(board[0] + 2, board[1] + 2) == this.getCell(
+            board[0] + 1,
+            board[1] + 1)) && this.getCell(board[0], board[1]) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(0, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.RED1)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0],
+            board[1] + 2)) && this.getCell(board[0], board[1]) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.RED1)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0] + 2,
+            board[1])) && this.getCell(board[0], board[1]) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.RED1)
+        if ((this.getCell(board[0], board[1]) == this.getCell(
+            board[0] + 2,
+            board[1] + 2)) && this.getCell(board[0], board[1]) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.RED1)
+        if ((this.getCell(board[0], board[1] + 2) == this.getCell(
+            board[0] + 2,
+            board[1])) && this.getCell(board[0], board[1] + 2) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.RED1)
+        if ((this.getCell(board[0], board[1] + 2) == this.getCell(
+            board[0] + 2,
+            board[1] + 2)) && this.getCell(board[0], board[1] + 2) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.RED1)
+        if ((this.getCell(board[0] + 2, board[1]) == this.getCell(
+            board[0] + 2,
+            board[1] + 2)) && this.getCell(board[0] + 2, board[1]) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
 
         // 3 & 4) 2 sides and adjacent corner & middle and adjacent sides
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 1) == Cell.RED1)
+        if ((this.getCell(board[0], board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1])) && this.getCell(board[0], board[1] + 1) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 1) == Cell.RED1)
+        if ((this.getCell(board[0], board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1] + 2)) && this.getCell(board[0], board[1] + 1) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 1) == Cell.RED1)
+        if ((this.getCell(board[0] + 2, board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1])) && this.getCell(board[0] + 2, board[1] + 1) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 1) == Cell.RED1)
+        if ((this.getCell(board[0] + 2, board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1] + 2))
+            && this.getCell(board[0] + 2, board[1] + 1) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
 
         // 5) corner, middle, and adjacent side
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 0) == Cell.RED1)
+        if ((this.getCell(board[0] + 1, board[1]) == this.getCell(
+            board[0] + 1,
+            board[1] + 1)) && this.getCell(board[0] + 1, board[1]) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 1) == Cell.RED1)
+        if ((this.getCell(board[0], board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1] + 1)) && this.getCell(board[0], board[1] + 1) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 2) == Cell.RED1)
+        if ((this.getCell(board[0] + 1, board[1] + 2) == this.getCell(
+            board[0] + 1,
+            board[1] + 1))
+            && this.getCell(board[0] + 1, board[1] + 2) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 1))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 1) == Cell.RED1)
+        if ((this.getCell(board[0] + 2, board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1] + 1))
+            && this.getCell(board[0] + 2, board[1] + 1) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 1) == Cell.RED1)
+        if ((this.getCell(board[0], board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1])) && this.getCell(board[0], board[1] + 1) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 1) == Cell.RED1)
+        if ((this.getCell(board[0], board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1] + 2)) && this.getCell(board[0], board[1] + 1) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 1) == Cell.RED1)
+        if ((this.getCell(board[0] + 2, board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1])) && this.getCell(board[0] + 2, board[1] + 1) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 1) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(1, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 1) == Cell.RED1)
+        if ((this.getCell(board[0] + 2, board[1] + 1) == this.getCell(
+            board[0] + 1,
+            board[1] + 2))
+            && this.getCell(board[0] + 2, board[1] + 1) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
 
         // 6 & 7) 2 adjacent corners and adjacent side &
-        //opposite sides and corner
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(0, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 0) == Cell.RED1)
+        // opposite sides and corner
+        if ((this.getCell(board[0] + 1, board[1]) == this.getCell(
+            board[0],
+            board[1] + 2)) && this.getCell(board[0] + 1, board[1]) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 2, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 0) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(2, 2))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 0) == Cell.RED1)
+        if ((this.getCell(board[0] + 1, board[1]) == this.getCell(
+            board[0] + 2,
+            board[1] + 2)) && this.getCell(board[0] + 1, board[1]) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 0) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 0, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 2, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 0, Cell.BLUE2);
+                super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(0, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 2) == Cell.RED1)
+        if ((this.getCell(board[0] + 1, board[1] + 2) == this.getCell(
+            board[0],
+            board[1])) && this.getCell(board[0] + 1, board[1] + 2) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 0, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
-        if ((this
-            .getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 2) == this.getBoard(
-            this.getLastMove()[0] / 3,
-            this.getLastMove()[1] / 3).getCell(0, 0))
-            && this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 2) == Cell.RED1)
+        if ((this.getCell(board[0] + 1, board[1] + 2) == this.getCell(
+            board[0],
+            board[1])) && this.getCell(board[0] + 1, board[1] + 2) == Cell.RED1)
         {
-            if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(2, 2) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(2, 2, Cell.BLUE2);
+                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 0) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1]) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 0, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1]);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(0, 2) == Cell.EMPTY)
+            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(0, 2, Cell.BLUE2);
+                super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getBoard(
-                this.getLastMove()[0] / 3,
-                this.getLastMove()[1] / 3).getCell(1, 1) == Cell.EMPTY)
+            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
-                this.getBoard(
-                    this.getLastMove()[0] / 3,
-                    this.getLastMove()[1] / 3).setCell(1, 1, Cell.BLUE2);
+                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
@@ -2349,11 +1407,9 @@ public class AIGrid
      */
     public boolean playCenter()
     {
-        if (this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 1) == Cell.EMPTY)
+        if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(1, 1, Cell.BLUE2);
+            super.setCell(board[0] + 1, board[1] + 1);
             return true;
         }
         return false;
@@ -2368,35 +1424,31 @@ public class AIGrid
      */
     public boolean playOppositeCorner()
     {
-        if (this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == Cell.RED1)
+        if (this.getCell(board[0], board[1]) == Cell.RED1
+            && this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(2, 2, Cell.BLUE2);
+            super.setCell(board[0] + 2, board[1] + 2);
             return true;
         }
 
-        if (this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 0) == Cell.RED1)
+        if (this.getCell(board[0] + 2, board[1]) == Cell.RED1
+            && this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(0, 2, Cell.BLUE2);
+            super.setCell(board[0], board[1] + 2);
             return true;
         }
 
-        if (this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == Cell.RED1)
+        if (this.getCell(board[0], board[1] + 2) == Cell.RED1
+            && this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(2, 0, Cell.BLUE2);
+            super.setCell(board[0] + 2, board[1]);
             return true;
         }
 
-        if (this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 2) == Cell.RED1)
+        if (this.getCell(board[0] + 2, board[1] + 2) == Cell.RED1
+            && this.getCell(board[0], board[1]) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(0, 0, Cell.BLUE2);
+            super.setCell(board[0], board[1]);
             return true;
         }
         return false;
@@ -2411,35 +1463,27 @@ public class AIGrid
      */
     public boolean playEmptyCorner()
     {
-        if (this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 0) == Cell.EMPTY)
+        if (this.getCell(board[0], board[1]) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(0, 0, Cell.BLUE2);
+            super.setCell(board[0], board[1]);
             return true;
         }
 
-        if (this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 0) == Cell.EMPTY)
+        if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(2, 0, Cell.BLUE2);
+            super.setCell(board[0] + 2, board[1]);
             return true;
         }
 
-        if (this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 2) == Cell.EMPTY)
+        if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(0, 2, Cell.BLUE2);
+            super.setCell(board[0], board[1] + 2);
             return true;
         }
 
-        if (this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 2) == Cell.EMPTY)
+        if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(2, 2, Cell.BLUE2);
+            super.setCell(board[0] + 2, board[1] + 2);
             return true;
         }
         return false;
@@ -2454,55 +1498,50 @@ public class AIGrid
      */
     public boolean playSide()
     {
-        if (this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 0) == Cell.EMPTY)
+        if (this.getCell(board[0] + 1, board[1]) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(1, 0, Cell.BLUE2);
+            super.setCell(board[0] + 1, board[1]);
             return true;
         }
 
-        if (this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(0, 1) == Cell.EMPTY)
+        if (this.getCell(board[0], board[1] + 1) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(0, 1, Cell.BLUE2);
+            super.setCell(board[0], board[1] + 1);
             return true;
         }
 
-        if (this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(1, 2) == Cell.EMPTY)
+        if (this.getCell(board[0] + 1, board[1] + 2) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(1, 2, Cell.BLUE2);
+            super.setCell(board[0] + 1, board[1] + 2);
             return true;
         }
 
-        if (this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-            .getCell(2, 1) == Cell.EMPTY)
+        if (this.getCell(board[0] + 2, board[1] + 1) == Cell.EMPTY)
         {
-            this.getBoard(this.getLastMove()[0] / 3, this.getLastMove()[1] / 3)
-                .setCell(2, 1, Cell.BLUE2);
+            super.setCell(board[0] + 2, board[1] + 1);
             return true;
         }
         return false;
     }
 
+
     // ----------------------------------------------------------
     /**
      * Plays random move
+     *
      * @return true if move is played
      */
     public boolean playRandom()
     {
-        int x = 4;
-        int y = 4;
-        while (this.getCell(x, y) != Cell.EMPTY)
+        int x = 0;
+        int y = 0;
+        while (this.getCell(x, y) != Cell.EMPTY
+            || !this.getBoard(x / 3, y / 3).getIsPlayable())
         {
             x = new Random().nextInt(9);
             y = new Random().nextInt(9);
         }
-        this.setCell(x, y);
+        super.setCell(x, y);
         return true;
     }
 }
