@@ -69,13 +69,7 @@ public class AIGrid
                         {
                             if (!playOppositeCorner())
                             {
-                                if (!playEmptyCorner())
-                                {
-                                    if (!playSide())
-                                    {
-                                        playRandom();
-                                    }
-                                }
+                                playRandom();
                             }
                         }
                     }
@@ -342,7 +336,7 @@ public class AIGrid
         if ((this.getCell(board[0], board[1] + 2) == this.getCell(
             board[0] + 2,
             board[1]))
-            && this.getCell(board[0] + 1, board[1] + 1) == Cell.RED1
+            && this.getCell(board[0], board[1] + 2) == Cell.RED1
             && this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
         {
             super.setCell(board[0] + 1, board[1] + 1);
@@ -479,14 +473,9 @@ public class AIGrid
                 super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1]);
-                return true;
-            }
-            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
@@ -501,12 +490,7 @@ public class AIGrid
                 super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 2, board[1]);
-                return true;
-            }
-            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1] + 2);
                 return true;
@@ -522,12 +506,7 @@ public class AIGrid
                 super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
-            {
-                super.setCell(board[0], board[1] + 2);
-                return true;
-            }
-            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1] + 2);
                 return true;
@@ -535,19 +514,15 @@ public class AIGrid
         }
         if ((this.getCell(board[0] + 2, board[1] + 2) == this.getCell(
             board[0] + 1,
-            board[1] + 1)) && this.getCell(board[0], board[1]) == Cell.BLUE2)
+            board[1] + 1))
+            && this.getCell(board[0] + 2, board[1] + 2) == Cell.BLUE2)
         {
-            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
-            {
-                super.setCell(board[0], board[1]);
-                return true;
-            }
-            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1]);
                 return true;
@@ -566,26 +541,6 @@ public class AIGrid
         if ((this.getCell(board[0], board[1]) == this.getCell(
             board[0] + 2,
             board[1])) && this.getCell(board[0], board[1]) == Cell.BLUE2)
-        {
-            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 1, board[1] + 1);
-                return true;
-            }
-        }
-        if ((this.getCell(board[0], board[1]) == this.getCell(
-            board[0] + 2,
-            board[1] + 2)) && this.getCell(board[0], board[1]) == Cell.BLUE2)
-        {
-            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 1, board[1] + 1);
-                return true;
-            }
-        }
-        if ((this.getCell(board[0], board[1] + 2) == this.getCell(
-            board[0] + 2,
-            board[1])) && this.getCell(board[0], board[1] + 2) == Cell.BLUE2)
         {
             if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
             {
@@ -692,11 +647,6 @@ public class AIGrid
                 super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 2, board[1]);
-                return true;
-            }
         }
         if ((this.getCell(board[0], board[1] + 1) == this.getCell(
             board[0] + 1,
@@ -706,11 +656,6 @@ public class AIGrid
             if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0], board[1]);
-                return true;
-            }
-            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
-            {
-                super.setCell(board[0], board[1] + 2);
                 return true;
             }
         }
@@ -724,11 +669,6 @@ public class AIGrid
                 super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 2, board[1] + 2);
-                return true;
-            }
         }
         if ((this.getCell(board[0] + 2, board[1] + 1) == this.getCell(
             board[0] + 1,
@@ -738,54 +678,6 @@ public class AIGrid
             if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1]);
-                return true;
-            }
-            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 2, board[1] + 2);
-                return true;
-            }
-        }
-        if ((this.getCell(board[0], board[1] + 1) == this.getCell(
-            board[0] + 1,
-            board[1])) && this.getCell(board[0], board[1] + 1) == Cell.BLUE2)
-        {
-            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 1, board[1] + 1);
-                return true;
-            }
-        }
-        if ((this.getCell(board[0], board[1] + 1) == this.getCell(
-            board[0] + 1,
-            board[1] + 2))
-            && this.getCell(board[0], board[1] + 1) == Cell.BLUE2)
-        {
-            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 1, board[1] + 1);
-                return true;
-            }
-        }
-        if ((this.getCell(board[0] + 2, board[1] + 1) == this.getCell(
-            board[0] + 1,
-            board[1]))
-            && this.getCell(board[0] + 2, board[1] + 1) == Cell.BLUE2)
-        {
-            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 1, board[1] + 1);
-                return true;
-            }
-        }
-        if ((this.getCell(board[0] + 2, board[1] + 1) == this.getCell(
-            board[0] + 1,
-            board[1] + 2))
-            && this.getCell(board[0] + 2, board[1] + 1) == Cell.BLUE2)
-        {
-            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
@@ -797,24 +689,24 @@ public class AIGrid
             board[1] + 2))
             && this.getCell(board[0] + 1, board[1]) == Cell.BLUE2)
         {
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
+            {
+                super.setCell(board[0] + 1, board[1] + 1);
+                return true;
+            }
             if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getCell(board[0] + 1, board[1] + 2) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 1, board[1] + 2);
                 return true;
             }
-            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1]);
-                return true;
-            }
-            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
@@ -823,24 +715,24 @@ public class AIGrid
             board[1] + 2))
             && this.getCell(board[0] + 1, board[1]) == Cell.BLUE2)
         {
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
+            {
+                super.setCell(board[0] + 1, board[1] + 1);
+                return true;
+            }
             if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getCell(board[0] + 1, board[1] + 2) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 1, board[1] + 2);
                 return true;
             }
-            else if (this.getCell(board[0], board[1]) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0], board[1]);
-                return true;
-            }
-            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
@@ -849,50 +741,50 @@ public class AIGrid
             board[1]))
             && this.getCell(board[0] + 1, board[1] + 2) == Cell.BLUE2)
         {
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
+            {
+                super.setCell(board[0] + 1, board[1] + 1);
+                return true;
+            }
             if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getCell(board[0] + 1, board[1]) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 1, board[1]);
                 return true;
             }
-            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 2, board[1] + 2);
-                return true;
-            }
-            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 1, board[1] + 1);
-                return true;
-            }
-        }
-        if ((this.getCell(board[0] + 1, board[1] + 2) == this.getCell(
-            board[0],
-            board[1]))
-            && this.getCell(board[0] + 1, board[1] + 2) == Cell.BLUE2)
-        {
             if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
-            else if (this.getCell(board[0] + 1, board[1]) == Cell.EMPTY)
+        }
+        if ((this.getCell(board[0] + 1, board[1] + 2) == this.getCell(
+            board[0] + 2,
+            board[1]))
+            && this.getCell(board[0] + 1, board[1] + 2) == Cell.BLUE2)
+        {
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
+            {
+                super.setCell(board[0] + 1, board[1] + 1);
+                return true;
+            }
+            if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
+            {
+                super.setCell(board[0] + 2, board[1] + 2);
+                return true;
+            }
+            if (this.getCell(board[0] + 1, board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 1, board[1]);
                 return true;
             }
-            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0], board[1] + 2);
-                return true;
-            }
-            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
@@ -1015,14 +907,9 @@ public class AIGrid
                 super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1]);
-                return true;
-            }
-            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
@@ -1036,12 +923,7 @@ public class AIGrid
                 super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 2, board[1]);
-                return true;
-            }
-            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1] + 2);
                 return true;
@@ -1056,12 +938,7 @@ public class AIGrid
                 super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
-            {
-                super.setCell(board[0], board[1] + 2);
-                return true;
-            }
-            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1] + 2);
                 return true;
@@ -1069,19 +946,15 @@ public class AIGrid
         }
         if ((this.getCell(board[0] + 2, board[1] + 2) == this.getCell(
             board[0] + 1,
-            board[1] + 1)) && this.getCell(board[0], board[1]) == Cell.RED1)
+            board[1] + 1))
+            && this.getCell(board[0] + 2, board[1] + 2) == Cell.RED1)
         {
-            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
-            {
-                super.setCell(board[0], board[1]);
-                return true;
-            }
-            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1]);
                 return true;
@@ -1221,11 +1094,6 @@ public class AIGrid
                 super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 2, board[1]);
-                return true;
-            }
         }
         if ((this.getCell(board[0], board[1] + 1) == this.getCell(
             board[0] + 1,
@@ -1234,11 +1102,6 @@ public class AIGrid
             if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0], board[1]);
-                return true;
-            }
-            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
-            {
-                super.setCell(board[0], board[1] + 2);
                 return true;
             }
         }
@@ -1252,11 +1115,6 @@ public class AIGrid
                 super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 2, board[1] + 2);
-                return true;
-            }
         }
         if ((this.getCell(board[0] + 2, board[1] + 1) == this.getCell(
             board[0] + 1,
@@ -1266,11 +1124,6 @@ public class AIGrid
             if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1]);
-                return true;
-            }
-            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
         }
@@ -1322,24 +1175,24 @@ public class AIGrid
             board[0],
             board[1] + 2)) && this.getCell(board[0] + 1, board[1]) == Cell.RED1)
         {
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
+            {
+                super.setCell(board[0] + 1, board[1] + 1);
+                return true;
+            }
             if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0], board[1]);
                 return true;
             }
-            else if (this.getCell(board[0] + 1, board[1] + 2) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 1, board[1] + 2);
                 return true;
             }
-            else if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
+            if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1]);
-                return true;
-            }
-            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
@@ -1347,24 +1200,24 @@ public class AIGrid
             board[0] + 2,
             board[1] + 2)) && this.getCell(board[0] + 1, board[1]) == Cell.RED1)
         {
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
+            {
+                super.setCell(board[0] + 1, board[1] + 1);
+                return true;
+            }
             if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1]);
                 return true;
             }
-            else if (this.getCell(board[0] + 1, board[1] + 2) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 1, board[1] + 2);
                 return true;
             }
-            else if (this.getCell(board[0], board[1]) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0], board[1]);
-                return true;
-            }
-            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
@@ -1372,49 +1225,49 @@ public class AIGrid
             board[0],
             board[1])) && this.getCell(board[0] + 1, board[1] + 2) == Cell.RED1)
         {
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
+            {
+                super.setCell(board[0] + 1, board[1] + 1);
+                return true;
+            }
             if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0], board[1] + 2);
                 return true;
             }
-            else if (this.getCell(board[0] + 1, board[1]) == Cell.EMPTY)
+            if (this.getCell(board[0] + 1, board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 1, board[1]);
                 return true;
             }
-            else if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 2, board[1] + 2);
-                return true;
-            }
-            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 1, board[1] + 1);
-                return true;
-            }
-        }
-        if ((this.getCell(board[0] + 1, board[1] + 2) == this.getCell(
-            board[0],
-            board[1])) && this.getCell(board[0] + 1, board[1] + 2) == Cell.RED1)
-        {
             if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 2, board[1] + 2);
                 return true;
             }
-            else if (this.getCell(board[0] + 1, board[1]) == Cell.EMPTY)
+        }
+        if ((this.getCell(board[0] + 1, board[1] + 2) == this.getCell(
+            board[0] + 2,
+            board[1])) && this.getCell(board[0] + 1, board[1] + 2) == Cell.RED1)
+        {
+            if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
+            {
+                super.setCell(board[0] + 1, board[1] + 1);
+                return true;
+            }
+            if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
+            {
+                super.setCell(board[0] + 2, board[1] + 2);
+                return true;
+            }
+            if (this.getCell(board[0] + 1, board[1]) == Cell.EMPTY)
             {
                 super.setCell(board[0] + 1, board[1]);
                 return true;
             }
-            else if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
+            if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
             {
                 super.setCell(board[0], board[1] + 2);
-                return true;
-            }
-            else if (this.getCell(board[0] + 1, board[1] + 1) == Cell.EMPTY)
-            {
-                super.setCell(board[0] + 1, board[1] + 1);
                 return true;
             }
         }
@@ -1472,76 +1325,6 @@ public class AIGrid
             && this.getCell(board[0], board[1]) == Cell.EMPTY)
         {
             super.setCell(board[0], board[1]);
-            return true;
-        }
-        return false;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Play empty corner
-     *
-     * @return true if move played
-     */
-    public boolean playEmptyCorner()
-    {
-        if (this.getCell(board[0], board[1]) == Cell.EMPTY)
-        {
-            super.setCell(board[0], board[1]);
-            return true;
-        }
-
-        if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
-        {
-            super.setCell(board[0] + 2, board[1]);
-            return true;
-        }
-
-        if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
-        {
-            super.setCell(board[0], board[1] + 2);
-            return true;
-        }
-
-        if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
-        {
-            super.setCell(board[0] + 2, board[1] + 2);
-            return true;
-        }
-        return false;
-    }
-
-
-    // ----------------------------------------------------------
-    /**
-     * Play empty side
-     *
-     * @return true if move played
-     */
-    public boolean playSide()
-    {
-        if (this.getCell(board[0] + 1, board[1]) == Cell.EMPTY)
-        {
-            super.setCell(board[0] + 1, board[1]);
-            return true;
-        }
-
-        if (this.getCell(board[0], board[1] + 1) == Cell.EMPTY)
-        {
-            super.setCell(board[0], board[1] + 1);
-            return true;
-        }
-
-        if (this.getCell(board[0] + 1, board[1] + 2) == Cell.EMPTY)
-        {
-            super.setCell(board[0] + 1, board[1] + 2);
-            return true;
-        }
-
-        if (this.getCell(board[0] + 2, board[1] + 1) == Cell.EMPTY)
-        {
-            super.setCell(board[0] + 2, board[1] + 1);
             return true;
         }
         return false;
