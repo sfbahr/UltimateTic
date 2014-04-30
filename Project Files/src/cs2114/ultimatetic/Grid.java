@@ -1,6 +1,5 @@
 package cs2114.ultimatetic;
 
-import java.util.EmptyStackException;
 import java.util.Stack;
 
 // -------------------------------------------------------------------------
@@ -397,8 +396,9 @@ public class Grid
 
     // ----------------------------------------------------------
     /**
-     * (To be implemented) Pops the last move off of the stack and applies it in
+     * Pops the last move off of the stack and applies it in
      * reverse to the grid.
+     * @return boolean True if a move was successfully undone.
      */
     public boolean undoMove()
     {
@@ -451,8 +451,6 @@ public class Grid
             }
         }
 
-
-
         // Change the turn to the other player
         if (turn == Cell.RED1)
         {
@@ -464,9 +462,6 @@ public class Grid
         }
 
         return true;
-
-        // TODO (Consider what happens when ai is playing)
-
     }
 
 

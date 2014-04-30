@@ -150,8 +150,8 @@ public class Board
 
     // ----------------------------------------------------------
     /**
-     * Sets the specified cell without any checks. Just does it. For use with
-     * the undo function.
+     * Sets the specified cell without any checks. Just does it. Used to allow
+     * the undo function to "make moves" that normally wouldn't be allowed.
      *
      * @param row
      *            The row index of the cell.

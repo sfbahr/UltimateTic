@@ -127,19 +127,11 @@ public class GridTest
         // (hopefully) a series of 17 moves leading to grid-level victory for red
         String moves = "1133226600352661036414342577174708";
 
-        //int row = Integer.parseInt(moves.charAt(0) + "");
-        //int col = Integer.parseInt(moves.charAt(1) + "");
-
-        //g1.setCell(row, col);
-
-
         // Make all the moves
         for (int i = 0;i<17;i++)
         {
             int row = Integer.parseInt(moves.charAt(2*i) + "");
             int col = Integer.parseInt(moves.charAt(1 + 2*i) + "");
-            //int row = moves.charAt(2*i);
-            //int col = moves.charAt(1+ (2*i));
 
             g1.setCell(row, col);
         }
@@ -169,7 +161,9 @@ public class GridTest
         assertEquals(g1.getWhoHasWon(), g1.checkForTriple());
         assertEquals(g1.getWhoHasWon(), Cell.RED1);
 
-        //
+        // If we undo, the grid's haswon state should be reset.
+        g1.undoMove();
+        assertEquals(g1.getWhoHasWon(), Cell.EMPTY);
     }
 
 
@@ -411,6 +405,9 @@ public class GridTest
         assertTrue(g1.getBoard(0, 2).getIsPlayable());
         assertTrue(g1.getBoard(1, 2).getIsPlayable());
         assertTrue(g1.getBoard(2, 2).getIsPlayable());
+
+        // No moves have been made
+        assertNull(g1.getLastMove());
     }
 
 
@@ -500,4 +497,57 @@ public class GridTest
         assertEquals(g1.toString(), f + e + e + e + f + e + e + e + f);
     }
 
+    // ----------------------------------------------------------
+    /**
+     * Tests the undoMove method.
+     */
+    public void testUndoMove()
+    {
+        // (hopefully) a series of 17 moves leading to grid-level victory for red
+        String moves = "1133226600352661036414342577174708";
+
+        // Make all the moves
+        for (int i = 0;i<17;i++)
+        {
+            int row = Integer.parseInt(moves.charAt(2*i) + "");
+            int col = Integer.parseInt(moves.charAt(1 + 2*i) + "");
+
+            g1.setCell(row, col);
+        }
+
+        // Check victory
+        assertEquals(g1.getWhoHasWon(), Cell.RED1);
+
+        // Undo them
+        assertTrue(g1.undoMove());
+        assertEquals(g1.getWhoHasWon(), Cell.EMPTY);
+        int[] mo = {4,7};
+        assertEquals(g1.getLastMove()[0], mo[0]);
+        assertEquals(g1.getLastMove()[1], mo[1]);
+
+        // Undo and check all the moves
+        for (int i = 14;i>=0;i--)
+        {
+            assertTrue(g1.undoMove());
+
+            mo[0] = Integer.parseInt(moves.charAt(2*i) + "");
+            mo[1] = Integer.parseInt(moves.charAt(1 + 2*i) + "");
+
+            assertEquals(g1.getLastMove()[0], mo[0]);
+            assertEquals(g1.getLastMove()[1], mo[1]);
+
+        }
+
+        // Undo the first move
+        assertTrue(g1.undoMove());
+
+        // Now undoing shouldn't do anything
+        assertFalse(g1.undoMove());
+
+        // and there should be no moves left
+        assertNull(g1.getLastMove());
+
+
+
+    }
 }
