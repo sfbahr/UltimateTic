@@ -359,4 +359,26 @@ public class Board
     {
         this.isPlayable = isPlayable;
     }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Checks if there is a cell to play in.
+     * @return boolean true if all cells are marked
+     */
+    public boolean isFull()
+    {
+        // If any cell is empty, return true.
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (board[i][j] == Cell.EMPTY)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

@@ -396,8 +396,9 @@ public class Grid
 
     // ----------------------------------------------------------
     /**
-     * Pops the last move off of the stack and applies it in
-     * reverse to the grid.
+     * Pops the last move off of the stack and applies it in reverse to the
+     * grid.
+     *
      * @return boolean True if a move was successfully undone.
      */
     public boolean undoMove()
@@ -485,9 +486,11 @@ public class Grid
                 b.setIsPlayable(false);
             }
         }
-        // Set one board playable if it is not won
+        // Set one board playable if it is not won and it has an empty place to
+        // play
         if (this.getBoard(boardRow, boardCol).getWhoHasWon() == Cell.EMPTY
-            && this.getWhoHasWon() == Cell.EMPTY)
+            && this.getWhoHasWon() == Cell.EMPTY
+            && !this.getBoard(boardRow, boardCol).isFull() )
         {
             this.getBoard(boardRow, boardCol).setIsPlayable(true);
         }

@@ -372,4 +372,24 @@ public class BoardTest
         assertEquals(b1.getIsPlayable(), true);
 
     }
+
+    // ----------------------------------------------------------
+    /**
+     * Tests the isFull method.
+     */
+    public void testIsFull()
+    {
+        // An empty board isn't full
+        assertFalse(b1.isFull());
+
+        // A tied full board
+        b1.fromString("RBRBRRBRB");
+        assertEquals(b1.checkForTriple(), Cell.EMPTY);
+        assertTrue(b1.isFull());
+
+        // A generic in progress board
+        b1.fromString("RRRBEEBBE");
+        assertFalse(b1.isFull());
+
+    }
 }
