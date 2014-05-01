@@ -425,6 +425,7 @@ public class TacGameScreen
         shape.animate(100).bounds(origBounds).alpha(opac).play();
     }
 
+
     /**
      * The restart/refresh button was pressed, open the confirmation dialog.
      */

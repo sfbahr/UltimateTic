@@ -1,5 +1,7 @@
 package cs2114.ultimatetic;
 
+import android.widget.Button;
+import sofia.app.Screen;
 import sofia.graphics.ShapeView;
 
 /**
@@ -14,6 +16,7 @@ public class TacGameScreenTests
     extends student.AndroidTestCase<TacGameScreen>
 {
     private ShapeView shapeView;
+    private TacGameScreen screen;
     private Grid grid;
 
     /**
@@ -31,11 +34,12 @@ public class TacGameScreenTests
      */
     public void setUp()
     {
-        grid = getScreen().getGrid();
+        screen = getScreen();
+        grid = screen.getGrid();
     }
 
     /**
-     * Test that touching down on a cell will place a
+     * Test that touching down on a cell will place a cell
      */
     public void testTouchCell()
     {
@@ -48,12 +52,32 @@ public class TacGameScreenTests
     }
 
     /**
-     * How to test the dialogFragment and how to test the actionbar buttons? :(
+     * Tests that the reset method properly resets the board
      */
     public void testRestartGame()
     {
         touchDown(shapeView, 40, 40);
         touchUp();
-        assertTrue(true);
+        screen.onDialogPositiveClick(null);
+        assertEquals(grid.getCell(0, 0), Cell.EMPTY);
+    }
+
+    /**
+     * Tests that the undo button works
+     */
+    public void testUndo()
+    {
+        touchDown(shapeView, 40, 40);
+        touchUp();
+        screen.action_undoClicked();
+        assertEquals(grid.getCell(0, 0), Cell.EMPTY);
+    }
+
+    /**
+     * Tests that the gridLocation method returns the proper integer
+     */
+    public void testGridLocation()
+    {
+        assertEquals(0, screen.gridLocation(40));
     }
 }
