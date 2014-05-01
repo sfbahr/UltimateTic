@@ -1,7 +1,5 @@
 package cs2114.ultimatetic;
 
-import android.widget.Button;
-import sofia.app.Screen;
 import sofia.graphics.ShapeView;
 
 /**

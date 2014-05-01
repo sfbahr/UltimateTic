@@ -1333,4 +1333,30 @@ public class AIGrid
     }
 
 
+    public boolean playEmptyCorner()
+    {
+        if (this.getCell(board[0], board[1]) == Cell.EMPTY)
+        {
+            super.setCell(board[0], board[1]);
+            return true;
+        }
+        if (this.getCell(board[0] + 2, board[1]) == Cell.EMPTY)
+        {
+            super.setCell(board[0] + 2, board[1]);
+            return true;
+        }
+        if (this.getCell(board[0], board[1] + 2) == Cell.EMPTY)
+        {
+            super.setCell(board[0], board[1] + 2);
+            return true;
+        }
+        if (this.getCell(board[0] + 2, board[1] + 2) == Cell.EMPTY)
+        {
+            super.setCell(board[0] + 2, board[1] + 2);
+            return true;
+        }
+        return false;
+
+    }
+
 }
