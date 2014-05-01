@@ -1,5 +1,6 @@
 package cs2114.ultimatetic;
 
+import sofia.util.Random;
 import junit.framework.TestCase;
 
 // -------------------------------------------------------------------------
@@ -549,5 +550,18 @@ public class GridTest
 
 
 
+    }
+
+    // ----------------------------------------------------------
+    /**
+     * Tests playRandom()
+     */
+    public void testPlayRandom()
+    {
+        int[] ints = new int[] {0, 0};
+        Random.setNextInts(0, 0);
+        int[] ints2 = g1.playRandom();
+        assertEquals(ints[0], ints2[0]);
+        assertEquals(ints[1], ints2[1]);
     }
 }

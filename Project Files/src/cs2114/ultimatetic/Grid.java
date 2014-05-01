@@ -1,6 +1,6 @@
 package cs2114.ultimatetic;
 
-import java.util.Random;
+import sofia.util.Random;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
@@ -21,6 +21,7 @@ public class Grid
     // will be used for Sam to determine whose turn it is
     private Cell         turn;
     private Stack<int[]> moves;
+    private static Random random = sofia.util.Random.generator();
 
 
     /**
@@ -487,8 +488,8 @@ public class Grid
             || !this.getBoard(x / 3, y / 3).getIsPlayable())
             && this.getWhoHasWon() == Cell.EMPTY)
         {
-            x = new Random().nextInt(9);
-            y = new Random().nextInt(9);
+            x = random.nextInt(9);
+            y = random.nextInt(9);
         }
         int[] coords = { x, y };
         return coords;
