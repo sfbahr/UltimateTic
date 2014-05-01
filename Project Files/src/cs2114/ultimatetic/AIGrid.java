@@ -1333,6 +1333,11 @@ public class AIGrid
     }
 
 
+    // ----------------------------------------------------------
+    /**
+     * Plays empty corner
+     * @return true if played
+     */
     public boolean playEmptyCorner()
     {
         if (this.getCell(board[0], board[1]) == Cell.EMPTY)

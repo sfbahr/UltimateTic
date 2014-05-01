@@ -824,7 +824,11 @@ public class AIGridTest
         assertTrue(AI.playOppositeCorner());
     }
 
-    public void testEmptyCorner()
+    // ----------------------------------------------------------
+    /**
+     * Tests playEmptyCorner()
+     */
+    public void testPlayEmptyCorner()
     {
         String grid = "BEBEEEBEE";
         AI.getBoard(2, 2).fromString(grid);

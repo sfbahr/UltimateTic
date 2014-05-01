@@ -2,9 +2,19 @@ package cs2114.ultimatetic;
 
 import student.TestCase;
 
+// -------------------------------------------------------------------------
+/**
+ *  Random AI
+ *
+ *  @author Brian Clarke
+ *  @version Apr 30, 2014
+ */
 public class RandomAIGridTest extends TestCase
 {
 
+    /**
+     * random generator
+     */
     RandomAIGrid random;
 
     /*public RandomAIGridTest()
@@ -18,11 +28,19 @@ public class RandomAIGridTest extends TestCase
         random = new RandomAIGrid();
     }
 
+    // ----------------------------------------------------------
+    /**
+     * tests setCell()
+     */
     public void testSetCell()
     {
         assertTrue(random.setCell(0, 0));
     }
 
+    // ----------------------------------------------------------
+    /**
+     * tests undoMove()
+     */
     public void testUndoMove()
     {
         assertFalse(random.undoMove());
