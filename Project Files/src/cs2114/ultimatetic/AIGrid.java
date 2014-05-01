@@ -69,7 +69,9 @@ public class AIGrid
                         {
                             if (!playOppositeCorner())
                             {
-                                playRandom();
+                                int[] coords = playRandom();
+                                super.setCell(coords[0], coords[1]);
+                                return true;
                             }
                         }
                     }
@@ -1331,23 +1333,4 @@ public class AIGrid
     }
 
 
-    // ----------------------------------------------------------
-    /**
-     * Plays random move
-     *
-     * @return true if move is played
-     */
-    public boolean playRandom()
-    {
-        int x = 0;
-        int y = 0;
-        while (this.getCell(x, y) != Cell.EMPTY
-            || !this.getBoard(x / 3, y / 3).getIsPlayable())
-        {
-            x = new Random().nextInt(9);
-            y = new Random().nextInt(9);
-        }
-        super.setCell(x, y);
-        return true;
-    }
 }

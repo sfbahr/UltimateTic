@@ -1,5 +1,6 @@
 package cs2114.ultimatetic;
 
+import java.util.Random;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
@@ -474,6 +475,26 @@ public class Grid
 
         // TODO (Consider what happens when ai is playing)
 
+    }
+
+    /**
+     * Plays random move
+     *
+     * @return true if move is played
+     */
+    public int[] playRandom()
+    {
+        int x = 0;
+        int y = 0;
+        while ((this.getCell(x, y) != Cell.EMPTY
+            || !this.getBoard(x / 3, y / 3).getIsPlayable())
+            && this.getWhoHasWon() == Cell.EMPTY)
+        {
+            x = new Random().nextInt(9);
+            y = new Random().nextInt(9);
+        }
+        int[] coords = { x, y };
+        return coords;
     }
 
 

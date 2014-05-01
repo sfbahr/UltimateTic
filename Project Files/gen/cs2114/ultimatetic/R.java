@@ -8,6 +8,9 @@
 package cs2114.ultimatetic;
 
 public final class R {
+    public static final class array {
+        public static final int game_modes=0x7f070000;
+    }
     public static final class attr {
     }
     public static final class dimen {
@@ -33,15 +36,16 @@ public final class R {
         public static final int tic_icon=0x7f020009;
     }
     public static final class id {
-        public static final int action_refresh=0x7f080002;
-        public static final int action_undo=0x7f080001;
-        public static final int shapeView=0x7f080000;
+        public static final int action_refresh=0x7f090002;
+        public static final int action_undo=0x7f090001;
+        public static final int shapeView=0x7f090000;
     }
     public static final class layout {
         public static final int tacgamescreen=0x7f030000;
+        public static final int visiblespinner=0x7f030001;
     }
     public static final class menu {
-        public static final int tacgamescreen=0x7f070000;
+        public static final int tacgamescreen=0x7f080000;
     }
     public static final class string {
         public static final int action_refresh=0x7f040004;
@@ -77,7 +81,10 @@ public final class R {
         Base application theme for API 11+. This theme completely replaces
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
     
- API 11 theme customizations can go here. 
+
+        <item name="android:spinnerDropDownItemStyle">@style/Visible</item>
+        <item name="android:actionDropDownStyle">@style/VisibleDropDown</item>
+        
 
         Base application theme for API 14+. This theme completely replaces
         AppBaseTheme from BOTH res/values/styles.xml and

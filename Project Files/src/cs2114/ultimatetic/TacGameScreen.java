@@ -1,13 +1,16 @@
 package cs2114.ultimatetic;
 
+import android.app.ListFragment;
+import android.app.FragmentTransaction;
 import android.graphics.RectF;
 import android.app.DialogFragment;
 import sofia.graphics.Color;
-
+import android.app.ActionBar.OnNavigationListener;
 import sofia.app.ShapeScreen;
 import sofia.graphics.*;
 import sofia.app.OptionsMenu;
 import android.widget.*;
+import android.app.ActionBar;
 
 /**
  * The main game screen where Ultimate Tic-Tac-Toe goes down.
@@ -20,28 +23,29 @@ import android.widget.*;
 @OptionsMenu("tacgamescreen")
 public class TacGameScreen
     extends ShapeScreen
-    implements RestartGameDialogFragment.RestartGameDialogListener
+    implements RestartGameDialogFragment.RestartGameDialogListener,
+    OnNavigationListener
 {
     // ~ Fields ................................................................
-    private Grid               grid;                                  // the
+    private Grid               grid;                                 // the
 // grid of nine tac boards
-    private final int          gridPad         = 20;                  // The
+    private final int          gridPad        = 20;                  // The
 // padding on the grid
-    private final int          boardPad        = 15;
-    private final int          gridLineWidth   = 10;
-    private final int          boardLineWidth  = 5;
-    private final Color        p1Color         = Color.indianRed;
-    private final Color        p2Color         = Color.cornflowerBlue;
-    private final Color        invalidColor    = Color.gray;
-    private final int          boardOpacity    = 120;
-    private final int          cellOpacity     = 225;
+    private final int          boardPad       = 15;
+    private final int          gridLineWidth  = 10;
+    private final int          boardLineWidth = 5;
+    private final Color        p1Color        = Color.indianRed;
+    private final Color        p2Color        = Color.cornflowerBlue;
+    private final Color        invalidColor   = Color.gray;
+    private final int          boardOpacity   = 120;
+    private final int          cellOpacity    = 225;
     private float              gridSize;
     private float              boardSize;
     private float              cellSize;
     private RectangleShape[][] cells;
     private RectangleShape[][] boards;
     private RectangleShape     guiGrid;
-    private RectangleShape     turnInd;                               // turn
+    private RectangleShape     turnInd;                              // turn
 // indicator
     private float              xDown;
     private float              yDown;
@@ -194,6 +198,58 @@ public class TacGameScreen
         guiGrid.setFillColor(invalidColor);
         guiGrid.setAlpha(0);
         add(guiGrid);
+
+        // Create the spinner that selects the game mode
+        SpinnerAdapter mSpinnerAdapter =
+            ArrayAdapter.createFromResource(
+                this,
+                R.array.game_modes,
+                R.layout.visiblespinner);
+
+        OnNavigationListener mCallback = new OnNavigationListener() {
+            // Get the same strings provided for the drop-down's ArrayAdapter
+            String[] strings = getResources()
+                                 .getStringArray(R.array.game_modes);
+
+
+            public boolean onNavigationItemSelected(int position, long itemId)
+            {
+                // Create new fragment from our own Fragment class
+                ListFragment newFragment = new ListFragment();
+                /*FragmentTransaction ft =
+                    getFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment container with this
+                // fragment and give the fragment a tag name equal to the string
+                // at the position selected
+                ft.replace(
+                    R.id.fragment_container,
+                    newFragment,
+                    strings[position]);
+
+                // Apply changes
+                ft.commit();*/
+
+                onDialogPositiveClick(null);
+                switch (position)
+                {
+                    case 0:
+                        grid = new Grid();
+                        break;
+                    case 1:
+                        grid = new RandomAIGrid();
+                        break;
+                    default:
+                        grid = new AIGrid();
+                        break;
+                }
+                return true;
+            }
+        };
+        ActionBar actions = getActionBar();
+        actions.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        actions.setDisplayShowTitleEnabled(true);
+        actions.setListNavigationCallbacks(mSpinnerAdapter, mCallback);
     }
 
 
@@ -352,7 +408,10 @@ public class TacGameScreen
             int y = grid.getLastMove()[0];
             // No need to set the FillColor since it's the same as all other
             // moves
-            String last = (grid.getCell(y, x) == Cell.RED1) ? "last_move_one" : "last_move_two";
+            String last =
+                (grid.getCell(y, x) == Cell.RED1)
+                    ? "last_move_one"
+                    : "last_move_two";
             cells[x][y].setImage(last);
         }
     }
@@ -378,23 +437,44 @@ public class TacGameScreen
         {
             shape.setAlpha(0);
             shape.setBounds(centerBounds);
-            String imgClr = (color == p1Color) ? "last_move_one" : "last_move_two";
+            String imgClr =
+                (color == p1Color) ? "last_move_one" : "last_move_two";
             shape.setImage(imgClr);
             shape.animate(100).bounds(origBounds).alpha(opac).play();
         }
         else
         {
             /*
-             *  For some reason when this code is run the shapes no longer
-             *  display
+             * For some reason when this code is run the shapes no longer
+             * display
              */
-            //shape.animate(100).bounds(centerBounds).alpha(0).play();
+            // shape.animate(100).bounds(centerBounds).alpha(0).play();
             /*
              * After it appears to have zoomed into oblivion, return it to it's
              * initial size
              */
-            //shape.setBounds(origBounds);
+            // shape.setBounds(origBounds);
         }
+    }
+
+
+    /**
+     * @param mode
+     *            The game mode ("two player" "random ai" "standard ai")
+     */
+    /*
+     * public void gameMode(String mode) { SpinnerAdapter mSpinnerAdapter =
+     * ArrayAdapter.createFromResource(this, R.array.game_modes,
+     * android.R.layout.simple_spinner_dropdown_item); }
+     */
+
+    /**
+     *
+     */
+    public boolean onNavigationItemSelected(int itemPosition, long itemId)
+    {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 
@@ -438,7 +518,7 @@ public class TacGameScreen
      */
     public void action_undoClicked()
     {
-        //if there was a last move show an animation zooming it out
+        // if there was a last move show an animation zooming it out
         if (grid.getLastMove() != null)
         {
             int x = grid.getLastMove()[1];

@@ -5,7 +5,26 @@
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
-        <!-- API 11 theme customizations can go here. -->
+        <!--
+        <item name="android:spinnerDropDownItemStyle">@style/Visible</item>
+        <item name="android:actionDropDownStyle">@style/VisibleDropDown</item>
+        -->
     </style>
-
+    <!--
+    <style name="VisibleDropDown" parent="android:style/Widget.Spinner">
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    
+    
+    <style name="Visible" parent="@android:style/android:Widget.Light.DropDownItem.Spinner">
+        <item name="android:textAppearance">@style/Visible</item>
+    </style>
+    
+    <color name="white">#FFFFFF</color>
+    
+    <style name="Visible" parent="@android:style/android:Widget">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    -->
 </resources>
