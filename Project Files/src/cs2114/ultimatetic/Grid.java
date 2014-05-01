@@ -1,5 +1,7 @@
 package cs2114.ultimatetic;
 
+import java.util.Random;
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 // -------------------------------------------------------------------------
@@ -18,7 +20,6 @@ public class Grid
 
     // will be used for Sam to determine whose turn it is
     private Cell         turn;
-
     private Stack<int[]> moves;
 
 
@@ -42,7 +43,6 @@ public class Grid
 
         whoHasWon = Cell.EMPTY;
         turn = Cell.RED1;
-
         moves = new Stack<int[]>();
     }
 
@@ -161,6 +161,15 @@ public class Grid
     public Cell getTurn()
     {
         return turn;
+    }
+
+    /**
+     * Returns the value of the turn variable.
+     * @param turn is the new turn
+     */
+    public void setTurn(Cell turn)
+    {
+        this.turn = turn;
     }
 
 
@@ -463,6 +472,26 @@ public class Grid
         }
 
         return true;
+    }
+
+    /**
+     * Plays random move
+     *
+     * @return true if move is played
+     */
+    public int[] playRandom()
+    {
+        int x = 0;
+        int y = 0;
+        while ((this.getCell(x, y) != Cell.EMPTY
+            || !this.getBoard(x / 3, y / 3).getIsPlayable())
+            && this.getWhoHasWon() == Cell.EMPTY)
+        {
+            x = new Random().nextInt(9);
+            y = new Random().nextInt(9);
+        }
+        int[] coords = { x, y };
+        return coords;
     }
 
 
