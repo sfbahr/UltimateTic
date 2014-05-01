@@ -1,13 +1,13 @@
 package cs2114.ultimatetic;
 
-import java.util.Random;
-
 // -------------------------------------------------------------------------
 /**
  * Creates an AI to play against
  *
- * @author Brian Clarke
- * @version Apr 13, 2014
+ * @author Brian Clarke (golfboy1)
+ * @author Samuel Bahr (sfbahr)
+ * @author Charles Tenny (charten)
+ * @version 2014.04.30
  */
 public class AIGrid
     extends Grid

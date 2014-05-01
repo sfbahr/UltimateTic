@@ -1,7 +1,6 @@
 package cs2114.ultimatetic;
 
 import java.util.Random;
-import java.util.EmptyStackException;
 import java.util.Stack;
 
 // -------------------------------------------------------------------------
@@ -11,14 +10,13 @@ import java.util.Stack;
  * @author Samuel Bahr (sfbahr)
  * @author Brian Clarke (golfboy1)
  * @author Charles Tenney (charten)
- * @version 2014.04.16
+ * @version 2014.04.30
  */
 public class Grid
 {
     private Board[][]    grid;
     private Cell         whoHasWon;
 
-    // will be used for Sam to determine whose turn it is
     private Cell         turn;
     private Stack<int[]> moves;
 
@@ -440,9 +438,7 @@ public class Grid
             int[] move2 = moves.peek();
 
             // Figure out where the move was
-            int boardRow2 = move2[0] / 3;
             int cellRow2 = move2[0] % 3;
-            int boardCol2 = move2[1] / 3;
             int cellCol2 = move2[1] % 3;
 
             refreshIsPlayable(cellRow2, cellCol2);

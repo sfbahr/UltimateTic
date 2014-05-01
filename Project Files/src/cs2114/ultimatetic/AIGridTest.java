@@ -6,8 +6,10 @@ import student.TestCase;
 /**
  * This tests the AIGrid
  *
- * @author Brian Clarke
- * @version Apr 29, 2014
+ * @author Brian Clarke (golfboy1)
+ * @author Samuel Bahr (sfbahr)
+ * @author Charles Tenny (charten)
+ * @version 2014.04.30
  */
 public class AIGridTest
     extends TestCase
