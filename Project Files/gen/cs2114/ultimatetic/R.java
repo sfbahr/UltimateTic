@@ -82,8 +82,7 @@ public final class R {
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
     
 
-        <item name="android:spinnerDropDownItemStyle">@style/Visible</item>
-        <item name="android:actionDropDownStyle">@style/VisibleDropDown</item>
+        Custom stylin' yo
         
 
         Base application theme for API 14+. This theme completely replaces

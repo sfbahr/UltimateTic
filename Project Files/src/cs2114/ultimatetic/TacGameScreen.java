@@ -237,10 +237,10 @@ public class TacGameScreen
                         grid = new Grid();
                         break;
                     case 1:
-                        grid = new RandomAIGrid();
+                        grid = new AIGrid();
                         break;
                     default:
-                        grid = new AIGrid();
+                        grid = new RandomAIGrid();
                         break;
                 }
                 return true;

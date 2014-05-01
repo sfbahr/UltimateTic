@@ -30,4 +30,14 @@ public class RandomAIGrid extends Grid
         }
         return boo;
     }
+
+    public boolean undoMove()
+    {
+        if (this.getWhoHasWon() == Cell.EMPTY
+            || this.getWhoHasWon() == Cell.BLUE2)
+        {
+            super.undoMove();
+        }
+        return super.undoMove();
+    }
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="game_modes">
-        <item>Local Multiplayer</item>
-        <item>Random Singleplayer</item>
-        <item>Standard Singleplayer</item>
+        <item>Multiplayer</item>
+        <item>Standard</item>
+        <item>Random</item>
     </string-array>
 </resources>
