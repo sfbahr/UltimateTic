@@ -15,32 +15,46 @@ import android.app.DialogFragment;
  * @author Samuel Bahr (sfbahr)
  * @author Brian Clarke (golfboy1)
  * @author Charles Tenney (charten)
- * @version 2014.04.16
+ * @version 2014.04.30
  */
 
 public class RestartGameDialogFragment
     extends DialogFragment
 {
+ // Use this instance of the interface to deliver action events
+    private RestartGameDialogListener mListener;
 
     /**
      * The activity that creates an instance of this dialog fragment must
-     * implement this interface in order to receive event callbacks.
-     * Each method passes the DialogFragment in case the host needs to query it.
+     * implement this interface in order to receive event callbacks. Each method
+     * passes the DialogFragment in case the host needs to query it.
      */
     public interface RestartGameDialogListener
     {
+        /**
+         * The method that is called when restart is affirmed
+         *
+         * @param dialog
+         *            The fragment that called the method
+         */
         public void onDialogPositiveClick(DialogFragment dialog);
 
 
+        /**
+         * The method that is called when restart is denied
+         *
+         * @param dialog
+         *            The fragment that called the method
+         */
         public void onDialogNegativeClick(DialogFragment dialog);
     }
 
-    // Use this instance of the interface to deliver action events
-    RestartGameDialogListener mListener;
-
-
-    // Override the Fragment.onAttach() method to instantiate the
-// RestartGameDialogListener
+    /**
+     * Override the Fragment.onAttach() method to instantiate the
+     * RestartGameDialogListener
+     *
+     * @param activity The current activity being displayed
+     */
     @Override
     public void onAttach(Activity activity)
     {
@@ -49,7 +63,7 @@ public class RestartGameDialogFragment
         try
         {
             // Instantiate the RestartGameDialogListener so we can send events
-// to the host
+            // to the host
             mListener = (RestartGameDialogListener)activity;
         }
         catch (ClassCastException e)
@@ -59,7 +73,12 @@ public class RestartGameDialogFragment
         }
     }
 
-
+    /**
+     * Creates the dialog asking whether the user really wants to restart
+     *
+     *  @param savedInstanceState Umm... the saved state or something
+     *  @return the Dialog fragment
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
@@ -73,8 +92,7 @@ public class RestartGameDialogFragment
                     public void onClick(DialogInterface dialog, int id)
                     {
                         mListener
-                            .onDialogPositiveClick(
-                                RestartGameDialogFragment.this);
+                            .onDialogPositiveClick(RestartGameDialogFragment.this);
                     }
                 })
             .setNegativeButton(
@@ -83,8 +101,7 @@ public class RestartGameDialogFragment
                     public void onClick(DialogInterface dialog, int id)
                     {
                         mListener
-                            .onDialogNegativeClick(
-                                RestartGameDialogFragment.this);
+                            .onDialogNegativeClick(RestartGameDialogFragment.this);
                     }
                 });
         // Create the AlertDialog object and return it

@@ -1,7 +1,5 @@
 package cs2114.ultimatetic;
 
-import android.app.ListFragment;
-import android.app.FragmentTransaction;
 import android.graphics.RectF;
 import android.app.DialogFragment;
 import sofia.graphics.Color;
@@ -18,13 +16,12 @@ import android.app.ActionBar;
  * @author Samuel Bahr (sfbahr)
  * @author Brian Clarke (golfboy1)
  * @author Charles Tenney (charten)
- * @version 2014.04.16
+ * @version 2014.04.30
  */
 @OptionsMenu("tacgamescreen")
 public class TacGameScreen
     extends ShapeScreen
-    implements RestartGameDialogFragment.RestartGameDialogListener,
-    OnNavigationListener
+    implements RestartGameDialogFragment.RestartGameDialogListener
 {
     // ~ Fields ................................................................
     private Grid               grid;                                 // the
@@ -57,7 +54,8 @@ public class TacGameScreen
      * What is run when the screen is first started. The grid and its shapes are
      * created along with each board and its shapes. The objects are created in
      * order of ascending layer, so the individual cells are the farthest back
-     * and the grid lines are the farthest forward.
+     * and the shape covering the whole board is the farthest forward. The
+     * spinner that selects the game mode is also initialized.
      */
     public void initialize()
     {
@@ -65,9 +63,6 @@ public class TacGameScreen
         gridSize = Math.min(getWidth(), getHeight()) - 2 * gridPad;
         boardSize = gridSize / 3 - 2 * boardPad;
         cellSize = boardSize / 3;
-
-        cells = new RectangleShape[9][9];
-        boards = new RectangleShape[3][3];
 
         // Create the turn indicator
         if (getWidth() < getHeight())
@@ -93,6 +88,7 @@ public class TacGameScreen
         add(turnInd);
 
         // Create the 9 cells for each board
+        cells = new RectangleShape[9][9];
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
@@ -157,6 +153,7 @@ public class TacGameScreen
         }
 
         // Create the 9 boards for the grid
+        boards = new RectangleShape[3][3];
         for (int i = 0; i < 3; i++)
         {
             float left = gridPad + gridSize / 3 * i;
@@ -199,56 +196,38 @@ public class TacGameScreen
         guiGrid.setAlpha(0);
         add(guiGrid);
 
-        // Create the spinner that selects the game mode
+        // ---------Create the spinner that selects the game mode---------------
         SpinnerAdapter mSpinnerAdapter =
             ArrayAdapter.createFromResource(
                 this,
                 R.array.game_modes,
                 R.layout.visiblespinner);
-
+        // The object that runs a method when an item in the spinner is clicked
         OnNavigationListener mCallback = new OnNavigationListener() {
-            // Get the same strings provided for the drop-down's ArrayAdapter
-            String[] strings = getResources()
-                                 .getStringArray(R.array.game_modes);
-
-
             public boolean onNavigationItemSelected(int position, long itemId)
             {
-                // Create new fragment from our own Fragment class
-                ListFragment newFragment = new ListFragment();
-                /*FragmentTransaction ft =
-                    getFragmentManager().beginTransaction();
-
-                // Replace whatever is in the fragment container with this
-                // fragment and give the fragment a tag name equal to the string
-                // at the position selected
-                ft.replace(
-                    R.id.fragment_container,
-                    newFragment,
-                    strings[position]);
-
-                // Apply changes
-                ft.commit();*/
-
-                onDialogPositiveClick(null);
                 switch (position)
                 {
-                    case 0:
+                    case 0: // Multiplayer
                         grid = new Grid();
                         break;
-                    case 1:
+                    case 1: // Standard
                         grid = new AIGrid();
                         break;
-                    default:
+                    default: // Random
                         grid = new RandomAIGrid();
                         break;
                 }
+                reflectModel();
                 return true;
             }
         };
         ActionBar actions = getActionBar();
+        // Adds the spinner to the action bar
         actions.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        actions.setDisplayShowTitleEnabled(true);
+        // The title of the app is hidden in favor of the spinner
+        actions.setDisplayShowTitleEnabled(false);
+        // Assigns the callback object that responds to clicks in the spinner
         actions.setListNavigationCallbacks(mSpinnerAdapter, mCallback);
     }
 
@@ -288,7 +267,7 @@ public class TacGameScreen
             {
                 Cell cell = grid.getCell(gridY, gridX);
                 Color cellColor = (cell == Cell.RED1) ? p1Color : p2Color;
-                zoom(cells[gridX][gridY], cellColor, cellOpacity, true);
+                zoom(cells[gridX][gridY], cellColor, cellOpacity);
             }
             this.reflectModel();
         }
@@ -418,10 +397,16 @@ public class TacGameScreen
 
 
     /**
+     * Plays a zoom in animation after the player sets a cell.
+     *
+     * @param shape
+     *            The cell that's zooming in
+     * @param color
+     *            The color that it's being set to
      * @param opac
      *            The opacity that the shape ends with on a zoom in
      */
-    public void zoom(RectangleShape shape, Color color, int opac, boolean in)
+    public void zoom(RectangleShape shape, Color color, int opac)
     {
         float centerX = shape.getBounds().centerX();
         float centerY = shape.getBounds().centerY();
@@ -433,50 +418,12 @@ public class TacGameScreen
         RectF centerBounds = new RectF(centerX, centerY, centerX, centerY);
         shape.setFillColor(color);
         RectF origBounds = new RectF(left, top, right, bottom);
-        if (in)
-        {
-            shape.setAlpha(0);
-            shape.setBounds(centerBounds);
-            String imgClr =
-                (color == p1Color) ? "last_move_one" : "last_move_two";
-            shape.setImage(imgClr);
-            shape.animate(100).bounds(origBounds).alpha(opac).play();
-        }
-        else
-        {
-            /*
-             * For some reason when this code is run the shapes no longer
-             * display
-             */
-            // shape.animate(100).bounds(centerBounds).alpha(0).play();
-            /*
-             * After it appears to have zoomed into oblivion, return it to it's
-             * initial size
-             */
-            // shape.setBounds(origBounds);
-        }
+        shape.setAlpha(0);
+        shape.setBounds(centerBounds);
+        String imgClr = (color == p1Color) ? "last_move_one" : "last_move_two";
+        shape.setImage(imgClr);
+        shape.animate(100).bounds(origBounds).alpha(opac).play();
     }
-
-
-    /**
-     * @param mode
-     *            The game mode ("two player" "random ai" "standard ai")
-     */
-    /*
-     * public void gameMode(String mode) { SpinnerAdapter mSpinnerAdapter =
-     * ArrayAdapter.createFromResource(this, R.array.game_modes,
-     * android.R.layout.simple_spinner_dropdown_item); }
-     */
-
-    /**
-     *
-     */
-    public boolean onNavigationItemSelected(int itemPosition, long itemId)
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
 
     /**
      * The restart/refresh button was pressed, open the confirmation dialog.
@@ -518,15 +465,8 @@ public class TacGameScreen
      */
     public void action_undoClicked()
     {
-        // if there was a last move show an animation zooming it out
         if (grid.getLastMove() != null)
         {
-            int x = grid.getLastMove()[1];
-            int y = grid.getLastMove()[0];
-
-            Cell cell = grid.getCell(y, x);
-            Color cellColor = (cell == Cell.RED1) ? p1Color : p2Color;
-            zoom(cells[x][y], cellColor, 0, false);
             grid.undoMove();
             reflectModel();
         }

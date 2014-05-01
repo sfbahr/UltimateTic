@@ -1,6 +1,11 @@
 package cs2114.ultimatetic;
 
+<<<<<<< HEAD
 import sofia.util.Random;
+import java.util.EmptyStackException;
+=======
+import java.util.Random;
+>>>>>>> 3e7075e4d604ac81acfb19bc55c14fe4475a7ca6
 import java.util.Stack;
 
 // -------------------------------------------------------------------------

@@ -5,10 +5,12 @@ import junit.framework.TestCase;
 
 // -------------------------------------------------------------------------
 /**
- * /** Tests the Grid class.
+ * Tests the Grid class.
  *
  * @author Charles Tenney (charten)
- * @version 2014.04.13
+ * @author Samuel Bahr (sfbahr)
+ * @author Brian Clarke (golfboy1)
+ * @version 2014.04.30
  */
 public class GridTest
     extends TestCase
